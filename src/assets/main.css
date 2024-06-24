@@ -1,0 +1,57 @@
+@import './css/base.css';
+@import './css/icon-fonts.css';
+@import './css/fonts-size.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html,
+    body {
+        font-family: 'NotoSans', sans-serif;
+        font-weight: 400;
+        color: white;
+        background: #303132;
+    }
+}
+
+@layer components {
+    .container {
+        @apply mx-auto max-w-[1440px] px-20;
+    }
+}
+
+/* #app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-weight: normal;
+}
+
+a,
+.green {
+    text-decoration: none;
+    color: hsla(160, 100%, 37%, 1);
+    transition: 0.4s;
+    padding: 3px;
+}
+
+@media (hover: hover) {
+    a:hover {
+        background-color: hsla(160, 100%, 37%, 0.2);
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        display: flex;
+        place-items: center;
+    }
+
+    #app {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 0 2rem;
+    }
+} */
