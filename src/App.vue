@@ -9,9 +9,11 @@
         <div>footer</div>
     </div> -->
     <RouterView />
+    <ModalsContainer />
 </template>
 
 <script setup>
+import { ModalsContainer } from 'vue-final-modal'
 import { ref, computed } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'

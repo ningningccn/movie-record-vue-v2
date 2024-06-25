@@ -3,7 +3,11 @@
         <div class="flex h-[48px] justify-between">
             <img src="/images/register-logo.png" alt="" />
             <div class="flex space-x-10">
-                <button type="button" class="flex items-center gap-x-2 hover:text-primary">
+                <button
+                    type="button"
+                    class="flex items-center gap-x-2 hover:text-primary"
+                    @click="openAddRecord()"
+                >
                     <i class="icon-plus-square"></i>
                     添加
                 </button>
@@ -23,7 +27,25 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useModal } from 'vue-final-modal'
+import AddRecord from '@/components/header/add-record.vue'
+
+const AddRecordModal = useModal({
+    component: AddRecord,
+    attrs: {
+        // title: 'Hello World!',
+        // onConfirm() {
+        //     close()
+        // },
+    },
+})
+
+const openAddRecord = () => {
+    AddRecordModal.open()
+    console.log('test open')
+}
+</script>
 
 <style scoped>
 i {

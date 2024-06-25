@@ -23,7 +23,7 @@
                     </div>
                     <div></div>
                     <button
-                        class="text-body-l-semibold mt-8 w-full rounded-[8px] border border-disable py-2"
+                        class="text-body-l-semibold border-disable mt-8 w-full rounded-[8px] border py-2"
                     >
                         登入
                     </button>
@@ -48,7 +48,7 @@
 .bg {
     background-image: url('images/register-bg.png');
     @apply bg-cover;
-    height: 100%;
+    height: 100dvh;
 }
 .main-wrap {
     background: linear-gradient(0deg, rgba(48, 49, 50, 0.6), rgba(48, 49, 50, 0.6)),
