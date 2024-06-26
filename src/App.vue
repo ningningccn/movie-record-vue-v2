@@ -1,5 +1,5 @@
 <template>
-    <HeaderA v-if="path !== '/login'" />
+    <Header v-if="path !== '/login'" />
     <!-- <Category /> -->
 
     <!-- <Header /> -->
@@ -17,7 +17,6 @@ import { ModalsContainer } from 'vue-final-modal'
 import { ref, computed } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'
-import HeaderA from '@/components/the-header-2.vue'
 import Category from '@/components/home/category.vue'
 
 const router = useRouter()
