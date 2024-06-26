@@ -2,6 +2,9 @@
     .text-heading-s {
         @apply text-[32px] font-bold;
     }
+    .text-body-xxl-medium {
+        @apply text-[24px] font-medium;
+    }
     .text-body-xl-medium {
         @apply text-[20px] font-medium;
     }
@@ -26,6 +29,7 @@
 
     /* 
         heading-s  32px 700
+        body-xxl 24px 500
         body-xl 20px 500
         body-l 16px 400, 600
         body-m 14px 500
