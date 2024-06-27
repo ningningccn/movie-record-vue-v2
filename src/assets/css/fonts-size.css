@@ -1,4 +1,7 @@
 @layer base {
+    .text-heading-m {
+        @apply text-[48px] font-bold;
+    }
     .text-heading-s {
         @apply text-[32px] font-bold;
     }

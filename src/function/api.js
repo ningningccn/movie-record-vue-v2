@@ -5,5 +5,5 @@ export const searchMovie = async (opt) => {
 }
 
 export const searchMovieDetail = async (path, opt) => {
-    return fetch({ path, opt })
+    return fetch({ path, opts: opt })
 }

@@ -41,7 +41,6 @@ const params = ref({
     page: '1',
 })
 const handleSearchMovie = async () => {
-    console.log('123')
     params.value.query = search.value
 
     const resData = await searchMovie({
