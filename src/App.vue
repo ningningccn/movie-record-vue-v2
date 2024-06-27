@@ -27,12 +27,12 @@ const path = computed(() => {
     return route.path
 })
 
-const test = async () => {
-    const a = await searchMovieFetch('玩很大')
-    console.log(a)
-}
+// const test = async () => {
+//     const a = await searchMovieFetch('玩很大')
+//     console.log(a)
+// }
 
-test()
+// test()
 // console.log(route)
 // console.log(router)
 // const path = ref(route.path)
