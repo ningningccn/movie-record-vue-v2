@@ -1,8 +1,8 @@
 <template>
-    <div class="container py-8">
-        <div class="flex h-[48px] justify-between">
+    <div class="container py-6 transition-all duration-500 md:py-8">
+        <div class="flex h-[32px] justify-between md:h-[48px]">
             <img src="/images/register-logo.png" alt="" />
-            <div class="flex space-x-10">
+            <div class="hidden space-x-10 md:flex">
                 <button
                     type="button"
                     class="flex items-center gap-x-2 hover:text-primary"

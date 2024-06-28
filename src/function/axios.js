@@ -10,6 +10,7 @@ const searchHeaders = {
 
 export const fetch = async ({ path, method = 'get', opts }) => {
     let url = `${searchBaseURL + path}`
+    console.log(opts)
     return await axios({
         method,
         url,

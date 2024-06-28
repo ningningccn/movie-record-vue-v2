@@ -1,9 +1,9 @@
 @layer base {
     .text-heading-m {
-        @apply text-[48px] font-bold;
+        @apply text-[24px] font-bold xs:text-[38px] md:text-[38px] lg:text-[48px];
     }
     .text-heading-s {
-        @apply text-[32px] font-bold;
+        @apply text-[16px] font-bold md:text-[26px] lg:text-[32px];
     }
     .text-body-xxl-medium {
         @apply text-[24px] font-medium;
