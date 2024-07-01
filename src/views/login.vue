@@ -14,16 +14,19 @@
                             type="text"
                             class="h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
                             placeholder="帳戶名稱/電郵"
+                            v-model="email"
                         />
                         <input
                             type="text"
                             class="mt-6 h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
                             placeholder="密碼"
+                            v-model="password"
                         />
                     </div>
                     <div></div>
                     <button
-                        class="text-body-l-semibold border-disable mt-8 w-full rounded-[8px] border py-2"
+                        class="text-body-l-semibold mt-8 w-full rounded-[8px] border border-disable py-2"
+                        @click="login()"
                     >
                         登入
                     </button>
@@ -34,6 +37,22 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            註冊
+            <input
+                type="text"
+                class="h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
+                placeholder="帳戶名稱/電郵"
+            />
+            <input
+                type="text"
+                class="mt-6 h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
+                placeholder="密碼"
+            />
+
+            <p @click="test()">123</p>
+        </div>
         <!-- <img
             src="/public/images/register-bg.png"
             alt=""
@@ -42,7 +61,20 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { createAccount, loginAccount } from '@/function/api'
+
+const email = ref('')
+const password = ref('')
+
+const login = () => {
+    loginAccount('test@gmail.com', '12345678')
+}
+const test = () => {
+    createAccount()
+}
+</script>
 
 <style scoped>
 .bg {

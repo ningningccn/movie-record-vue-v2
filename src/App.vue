@@ -1,15 +1,18 @@
 <template>
-    <Header v-if="path !== '/login'" />
-    <!-- <Category /> -->
+    <div class="flex h-dvh flex-col">
+        <Header v-if="path !== '/login'" />
+        <!-- <Category /> -->
 
-    <!-- <Header /> -->
-    <!-- <div class="fixed top-0 h-[120px]">header</div>
-    <div class="main">
-        <main>main</main>
-        <div>footer</div>
-    </div> -->
-    <RouterView />
-    <ModalsContainer />
+        <!-- <Header /> -->
+        <!-- <div class="fixed top-0 h-[120px]">header</div>
+            <div class="main">
+                <main>main</main>
+                <div>footer</div>
+            </div> -->
+        <div class="grow"><RouterView /></div>
+        <Footer />
+        <ModalsContainer />
+    </div>
 </template>
 
 <script setup>
@@ -17,6 +20,7 @@ import { ModalsContainer } from 'vue-final-modal'
 import { ref, computed } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'
+import Footer from '@/components/the-footer.vue'
 import Category from '@/components/home/category.vue'
 import { searchMovieFetch } from '@/function/useApi'
 

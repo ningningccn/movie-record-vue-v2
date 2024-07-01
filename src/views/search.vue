@@ -1,7 +1,12 @@
 <template>
-    <div class="container">
-        <Search v-model:search="search" @searchClick="handleSearchMovie" />
-        <div class="grid grid-cols-12 gap-5">
+    <div class="container mt-[60px]">
+        <Search v-model:search="search" @searchClick="handleSearchMovie" class="" />
+
+        <div class="text-body-xxl-medium flex items-center justify-center text-center text-enable">
+            暫未搜尋到任何結果
+        </div>
+        <!-- <div class="text-body-l mt-[60px] font-medium">結果顯示: 第1-2個 (總共2個)</div> -->
+        <div class="mt-10 grid grid-cols-12 gap-5">
             <SearchCard
                 v-for="(item, index) in resultData"
                 :key="index"
@@ -11,10 +16,9 @@
                 :date="item?.first_air_date ?? item.release_date"
                 :mediaType="item.media_type"
                 @getDataId="goSearchDetailPage"
-                class="col-span-2"
+                class="col-span-6 sm:col-span-4 md:col-span-4 lg:col-span-3 xl:col-span-2"
             />
         </div>
-        {{ resultData }}
     </div>
 </template>
 
@@ -48,6 +52,7 @@ const handleSearchMovie = async () => {
     })
     const { results } = resData.data
     resultData.value = results
+    console.log(results)
 }
 const goSearchDetailPage = () => {}
 </script>

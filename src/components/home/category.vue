@@ -1,11 +1,11 @@
 <template>
-    <div class="border-enable border-b">
+    <div class="border-b border-enable">
         <div class="container">
             <div class="flex items-center justify-center pt-6">
                 <button
                     v-for="item in data"
                     :key="item.slug"
-                    class="text-body-xl-medium text-enable relative px-[60px] py-4"
+                    class="text-body-xl-medium relative px-6 py-4 text-enable md:px-[60px]"
                     :class="{ 'text-white': currCategory == item.slug }"
                     @click="setCategory(item.slug)"
                 >

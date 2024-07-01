@@ -1,6 +1,12 @@
 <template>
     <div class="relative rounded-[8px]" @click="goSearchDetailPage()">
-        <img :src="imgUrl" alt="" class="rounded-[8px]" />
+        <div class="overflow-hidden rounded-[8px]">
+            <img
+                :src="imgUrl"
+                alt=""
+                class="aspect-[2/3] cursor-pointer object-cover transition-transform duration-500 hover:scale-110"
+            />
+        </div>
         <div class="absolute left-0 top-0">
             <!-- <div class="text-body-s-medium rounded-[4px] bg-primary px-1 py-[2px] text-second">
                 已觀看
@@ -49,7 +55,7 @@ const props = defineProps({
 })
 
 const imgUrl = computed(() => {
-    return props.poster ? `https://image.tmdb.org/t/p/w300${props.poster}` : ''
+    return props.poster ? `https://image.tmdb.org/t/p/w500${props.poster}` : ''
 })
 const type = computed(() => (props.mediaType == 'tv' ? '電視劇' : '電影'))
 

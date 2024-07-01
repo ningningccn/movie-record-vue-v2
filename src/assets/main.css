@@ -22,6 +22,9 @@
     .container {
         @apply mx-auto max-w-[1440px] px-4 md:px-10 lg:px-20;
     }
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
     .main-gradient {
         background: linear-gradient(0deg, rgba(48, 49, 50, 0.6), rgba(48, 49, 50, 0.6)),
             linear-gradient(308.46deg, rgba(0, 0, 0, 0.3) 0.66%, rgba(0, 0, 0, 0) 81.73%);
@@ -31,6 +34,7 @@
 #app {
     background: #303132;
     height: 100%;
+    position: relative;
     /* height: 100dvh; */
 }
 
