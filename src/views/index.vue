@@ -26,15 +26,14 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
-import { getMovieList } from '@/function/api'
+// import { getState, getMovieList } from '@/function/api'
 
-const test = async () => {
-    const a = await getMovieList()
-    console.log(a)
-}
+// const test = async () => {
+//     await getState()
+//     await getMovieList()
+// }
 
-// getMovieList()
-test()
+// test()
 </script>
 
 <style scoped></style>

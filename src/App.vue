@@ -22,7 +22,12 @@ import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'
 import Footer from '@/components/the-footer.vue'
 import Category from '@/components/home/category.vue'
-import { searchMovieFetch } from '@/function/useApi'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useGlobalStore } from '@/stores/global'
+const globalStore = useGlobalStore()
+
+// import { searchMovieFetch } from '@/function/useApi'
+// import { getUserState } from '@/function/api'
 
 const router = useRouter()
 const route = useRoute()
@@ -30,6 +35,15 @@ const route = useRoute()
 const path = computed(() => {
     return route.path
 })
+
+onAuthStateChanged(getAuth(), (user) => {
+    if (user) {
+        globalStore.user = user
+    } else {
+    }
+})
+
+// globalStore.getUserState()
 
 // const test = async () => {
 //     const a = await searchMovieFetch('玩很大')

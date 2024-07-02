@@ -62,6 +62,7 @@ const movieData = ref({
     mark: 0,
     favorite: false,
     watched: false,
+    postImageUrl: '',
 })
 
 const imageData = ref(null)
@@ -70,13 +71,12 @@ const setType = (state) => (movieData.value.type = state)
 const setFavorite = (state) => (movieData.value.favorite = state)
 const setWatch = (state) => (movieData.value.watched = state)
 const setStar = (state) => (movieData.value.mark = state)
-const setImageData = (data) => {
-    imageData.value = data
-    saveImageStorage(data)
-}
+const setImageData = async (data) => (imageData.value = data)
 
 const handleAddMovie = async () => {
-    const state = await addMovie(movieData.value)
+    movieData.value.postImageUrl = await saveImageStorage(imageData.value)
+    await addMovie(movieData.value)
+    console.log('added movie')
     vfm.close('add-movie-id')
 }
 
