@@ -19,6 +19,8 @@
 <script setup>
 import { ref } from 'vue'
 
+const emit = defineEmits(['imageData'])
+
 const file = ref(null)
 const fileName = ref('上傳海報')
 const showImg = ref('')
@@ -51,6 +53,8 @@ const handleFile = (e) => {
             }
         }
     }
+
+    emit('imageData', file.value)
 }
 
 const previewIn = () => {

@@ -5,6 +5,8 @@ import {
     onAuthStateChanged,
 } from 'firebase/auth'
 import { getFirestore, collection, doc, addDoc, setDoc, getDocs } from 'firebase/firestore'
+import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { storage } from '@/services/firebase'
 import { fetch } from './axios'
 
 export const searchMovie = async (opt) => {
@@ -87,3 +89,15 @@ export const getMovieList = async () => {
 // querySnapshot.forEach((doc) => {
 //     console.log(doc.id, doc.data())
 // })
+
+export const saveImageStorage = async (data) => {
+    const userEmail = await getUserEmail()
+    console.log(data, userEmail)
+    uploadBytes(
+        storageRef(storage, `images/${userEmail}/${selectedFile.value.name}`),
+        selectedFile.value,
+    ).then((snapshot) => {
+        console.log(snapshot)
+        console.log('Uploaded a blob or file!') //上傳成功
+    })
+}

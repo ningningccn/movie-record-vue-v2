@@ -13,7 +13,7 @@
                     <Input :placeholder="'年份'" v-model:text="movieData.year" />
                     <Input :placeholder="'產地'" v-model:text="movieData.country" />
                 </div>
-                <UploadImage class="my-8" />
+                <UploadImage class="my-8" @imageData="setImageData" />
                 <div class="space-y-3">
                     <Checkbox :title="'最愛'" @selected="setFavorite" />
                     <Checkbox :title="'已觀看'" @selected="setWatch" />
@@ -46,7 +46,7 @@ import Star from '@/components/header/star.vue'
 import Select from '@/components/header/select.vue'
 import Calendar from '@/components/header/calendar.vue'
 
-import { addMovie } from '@/function/api'
+import { addMovie, saveImageStorage } from '@/function/api'
 
 const vfm = useVfm()
 
@@ -64,10 +64,21 @@ const movieData = ref({
     watched: false,
 })
 
+const imageData = ref(null)
+
 const setType = (state) => (movieData.value.type = state)
 const setFavorite = (state) => (movieData.value.favorite = state)
 const setWatch = (state) => (movieData.value.watched = state)
 const setStar = (state) => (movieData.value.mark = state)
+const setImageData = (data) => {
+    imageData.value = data
+    saveImageStorage(data)
+}
+
+const handleAddMovie = async () => {
+    const state = await addMovie(movieData.value)
+    vfm.close('add-movie-id')
+}
 
 watch(
     movieData,
@@ -78,11 +89,6 @@ watch(
     },
     { deep: true },
 )
-
-const handleAddMovie = async () => {
-    const state = await addMovie(movieData.value)
-    vfm.close('add-movie-id')
-}
 </script>
 
 <style scoped>
