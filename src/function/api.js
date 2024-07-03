@@ -19,44 +19,30 @@ export const searchMovieDetail = async (path, opt) => {
 
 const db = getFirestore()
 const auth = getAuth()
-let userEmail
-// const getUserEmail = async () => {
-//     let a
-//     onAuthStateChanged(auth, (user) => {
-//         console.log(user)
-//         if (user) {´
-//             a = user.email
-//             console.log('123')
-//             // return user.email
-//             // userEmail = user.email
-//         } else {
-//             console.log('is logout')
-//         }
-//         console.log(a)
-//     })
-//     console.log(a)
-// }
-export const getUserState = async () => {
-    let a
-    console.log('1')
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            a = user
 
-            // globalStore.user = user
-        } else {
-            console.log('logout')
-        }
+export const getUserState = async () => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log(user)
+                resolve(user.email)
+            } else {
+                reject()
+                console.log('logout')
+            }
+        })
     })
 }
 
 export const addMovie = async (data) => {
-    try {
-        const user = await getUserEmail()
-    } catch (error) {}
-    if (user) {
+    const userEmail = await getUserState()
+    console.log(data)
+    if (userEmail) {
         try {
-            await addDoc(collection(db, `users/${user}`, 'post'), data)
+            await addDoc(collection(db, `users/${userEmail}`, 'post'), {
+                ...data,
+                createAt: new Date().getTime(),
+            })
         } catch (err) {
             console.log(err)
         }
@@ -82,6 +68,7 @@ export const loginAccount = (email, password) => {
     console.log('login')
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+            console.log(auth, email, password)
             // Signed in
             const user = userCredential.user
             console.log(user)
@@ -92,28 +79,15 @@ export const loginAccount = (email, password) => {
         })
 }
 
-export const getMovieList = async () => {
-    // await getState()
-    console.log(userEmail)
-    // console.log(a)
-    // const userEmail = await getUserEmail()
+export const getMovieListApi = async (slug) => {
+    const userEmail = await getUserState()
 
     const querySnapshot = await getDocs(collection(db, `users/${userEmail}/post`))
-    console.log(querySnapshot)
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, doc.data())
-    })
-    if (userEmail) {
-        // const querySnapshot = await getDocs(collection(db, `user/test6@gmail.com`))
-        // console.log(querySnapshot)
-    }
+    return querySnapshot.docs
 }
-// querySnapshot.forEach((doc) => {
-//     console.log(doc.id, doc.data())
-// })
 
 export const saveImageStorage = async (data) => {
-    const userEmail = await getUserEmail()
+    const userEmail = await getUserState()
     return await uploadBytesResumable(
         storageRef(storage, `images/${userEmail}/${data.name}`),
         data,

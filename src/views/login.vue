@@ -69,7 +69,7 @@ const email = ref('')
 const password = ref('')
 
 const login = () => {
-    loginAccount('test@gmail.com', '12345678')
+    loginAccount('test6@gmail.com', '12345678')
 }
 const test = () => {
     createAccount()

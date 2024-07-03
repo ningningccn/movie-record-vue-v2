@@ -22,9 +22,11 @@
 
 <script setup>
 import { ref } from 'vue'
+const emit = defineEmits(['selected'])
 const currCategory = ref('')
 const setCategory = (slug) => {
     currCategory.value = slug
+    emit('selected', slug)
 }
 
 const data = ref([

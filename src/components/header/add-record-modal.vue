@@ -7,7 +7,7 @@
             <div>
                 <p class="text-heading-s">添加記錄</p>
                 <div class="mt-8 space-y-6">
-                    <Calendar v-model:date="movieData.record_date" />
+                    <Calendar @selected="setDate" v-model:date="movieData.record_date" />
                     <Select @selected="setType" />
                     <Input :placeholder="'名稱'" v-model:text="movieData.name" />
                     <Input :placeholder="'年份'" v-model:text="movieData.year" />
@@ -47,6 +47,7 @@ import Select from '@/components/header/select.vue'
 import Calendar from '@/components/header/calendar.vue'
 
 import { addMovie, saveImageStorage } from '@/function/api'
+import dayjs from 'dayjs'
 
 const vfm = useVfm()
 
@@ -54,7 +55,7 @@ const myValue = ref('')
 const isSubmit = ref(false)
 
 const movieData = ref({
-    record_date: new Date(),
+    record_date: dayjs(new Date()).format('DD/MM/YYYY'),
     type: '',
     name: '',
     year: '',
@@ -67,10 +68,11 @@ const movieData = ref({
 
 const imageData = ref(null)
 
-const setType = (state) => (movieData.value.type = state)
-const setFavorite = (state) => (movieData.value.favorite = state)
-const setWatch = (state) => (movieData.value.watched = state)
-const setStar = (state) => (movieData.value.mark = state)
+const setDate = (date) => (movieData.value.record_date = date)
+const setType = (type) => (movieData.value.type = type)
+const setFavorite = (favorite) => (movieData.value.favorite = favorite)
+const setWatch = (watch) => (movieData.value.watched = watch)
+const setStar = (star) => (movieData.value.mark = star)
 const setImageData = async (data) => (imageData.value = data)
 
 const handleAddMovie = async () => {
