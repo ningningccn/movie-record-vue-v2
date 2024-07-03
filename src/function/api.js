@@ -9,8 +9,6 @@ import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebas
 import { storage } from '@/services/firebase'
 import { fetch } from './axios'
 
-import { useGlobalStore } from '@/stores/global'
-
 export const searchMovie = async (opt) => {
     return fetch({ path: `search/multi`, opts: opt })
 }
@@ -26,7 +24,7 @@ let userEmail
 //     let a
 //     onAuthStateChanged(auth, (user) => {
 //         console.log(user)
-//         if (user) {
+//         if (user) {´
 //             a = user.email
 //             console.log('123')
 //             // return user.email
@@ -39,8 +37,12 @@ let userEmail
 //     console.log(a)
 // }
 export const getUserState = async () => {
+    let a
+    console.log('1')
     onAuthStateChanged(auth, (user) => {
         if (user) {
+            a = user
+
             // globalStore.user = user
         } else {
             console.log('logout')

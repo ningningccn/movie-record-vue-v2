@@ -26,6 +26,10 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useGlobalStore } from '@/stores/global'
+const globalStore = useGlobalStore()
 // import { getState, getMovieList } from '@/function/api'
 
 // const test = async () => {
@@ -34,6 +38,13 @@ import Card from '@/components/card.vue'
 // }
 
 // test()
+
+onAuthStateChanged(getAuth(), (user) => {
+    if (user) {
+        globalStore.user = user
+    } else {
+    }
+})
 </script>
 
 <style scoped></style>

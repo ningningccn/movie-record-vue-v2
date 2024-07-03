@@ -22,25 +22,12 @@ import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'
 import Footer from '@/components/the-footer.vue'
 import Category from '@/components/home/category.vue'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { useGlobalStore } from '@/stores/global'
-const globalStore = useGlobalStore()
-
-// import { searchMovieFetch } from '@/function/useApi'
-// import { getUserState } from '@/function/api'
 
 const router = useRouter()
 const route = useRoute()
 
 const path = computed(() => {
     return route.path
-})
-
-onAuthStateChanged(getAuth(), (user) => {
-    if (user) {
-        globalStore.user = user
-    } else {
-    }
 })
 
 // globalStore.getUserState()
