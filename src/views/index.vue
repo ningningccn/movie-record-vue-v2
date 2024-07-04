@@ -43,7 +43,12 @@ const getMovieList = async (slugType) => {
     })
 }
 
-getMovieList()
+const setType = (slug) => {
+    movieList.value = []
+    getMovieList(slug)
+}
+
+getMovieList('')
 
 // 根據選擇的過濾選項應用過濾邏輯，例如從Firestore獲取數據
 // const db = this.$root.$options.provides.db
@@ -67,11 +72,6 @@ getMovieList()
 //             })
 //         })
 // }
-const setType = (slug) => {
-    movieList.value = []
-    getMovieList(slug)
-    console.log(slug)
-}
 </script>
 
 <style scoped></style>

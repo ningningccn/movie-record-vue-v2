@@ -1,16 +1,8 @@
 <template>
     <div class="flex h-dvh flex-col">
-        <Header v-if="path !== '/login'" />
-        <!-- <Category /> -->
-
-        <!-- <Header /> -->
-        <!-- <div class="fixed top-0 h-[120px]">header</div>
-            <div class="main">
-                <main>main</main>
-                <div>footer</div>
-            </div> -->
+        <Header v-if="path !== '/login' && path !== '/register'" />
         <div class="grow"><RouterView /></div>
-        <Footer />
+        <Footer v-if="path !== '/login' && path !== '/register'" />
         <ModalsContainer />
     </div>
 </template>
@@ -21,7 +13,6 @@ import { ref, computed } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import Header from '@/components/the-header.vue'
 import Footer from '@/components/the-footer.vue'
-import Category from '@/components/home/category.vue'
 
 const router = useRouter()
 const route = useRoute()

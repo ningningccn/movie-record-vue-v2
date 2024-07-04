@@ -4,7 +4,16 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
 } from 'firebase/auth'
-import { getFirestore, collection, doc, addDoc, setDoc, getDocs } from 'firebase/firestore'
+import {
+    getFirestore,
+    collection,
+    doc,
+    addDoc,
+    setDoc,
+    getDocs,
+    query,
+    where,
+} from 'firebase/firestore'
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
 import { fetch } from './axios'
@@ -24,7 +33,6 @@ export const getUserState = async () => {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log(user)
                 resolve(user.email)
             } else {
                 reject()
@@ -49,16 +57,16 @@ export const addMovie = async (data) => {
     }
 }
 
-export const createAccount = () => {
-    createUserWithEmailAndPassword(auth, 'test6@gmail.com', '12345678')
+export const createAccount = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed up
             const user = userCredential.user
             // 註冊成功 跳轉至其他頁面
-            console.log(user.email)
             setDoc(doc(db, 'users', user.email), { uuid: user.uid, email: user.email })
         })
         .catch((error) => {
+            console.log('error: ', error)
             // 錯誤訊息
         })
     // console.log(auth)
@@ -75,6 +83,7 @@ export const loginAccount = (email, password) => {
             // 登入成功 跳轉至其他頁面
         })
         .catch((error) => {
+            console.log(error.code)
             // 錯誤訊息
         })
 }
@@ -82,8 +91,14 @@ export const loginAccount = (email, password) => {
 export const getMovieListApi = async (slug) => {
     const userEmail = await getUserState()
 
-    const querySnapshot = await getDocs(collection(db, `users/${userEmail}/post`))
-    return querySnapshot.docs
+    if (slug == '') {
+        const querySnapshot = await getDocs(collection(db, `users/${userEmail}/post`))
+        return querySnapshot.docs
+    } else {
+        const q = query(collection(db, `users/${userEmail}/post`), where('type', '==', slug))
+        const querySnapshot = await getDocs(q)
+        return querySnapshot.docs
+    }
 }
 
 export const saveImageStorage = async (data) => {

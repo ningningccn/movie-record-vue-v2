@@ -8,40 +8,19 @@
                     <img src="/images/register-logo.png" alt="" />
                 </div>
                 <div class="px-20">
-                    <div class="mt-[104px] text-center text-[32px] font-bold">用戶登入</div>
+                    <div class="mt-[104px] text-center text-[32px] font-bold">用戶註冊</div>
                     <div class="mt-8 space-y-6">
                         <Input :placeholder="'帳戶名稱/電郵'" v-model:text="email" />
                         <Input :placeholder="'密碼'" v-model:text="password" />
                     </div>
-                    <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
+                    <Button :text="'註冊'" class="mt-8" :disable="isValid" @click="register()" />
 
                     <div class="text-body-s mt-8 text-center">
-                        還未有帳戶?立即<a href="" class="text-primary underline">註冊</a>
+                        還未有帳戶?立即<a href="/login" class="text-primary underline">登入</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div>
-            註冊
-            <input
-                type="text"
-                class="h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
-                placeholder="帳戶名稱/電郵"
-            />
-            <input
-                type="text"
-                class="mt-6 h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
-                placeholder="密碼"
-            />
-
-            <p @click="test()">123</p>
-        </div>
-        <!-- <img
-            src="/public/images/register-bg.png"
-            alt=""
-            class="absolute left-0 top-0 z-0 size-full"
-        /> -->
     </div>
 </template>
 
@@ -50,7 +29,7 @@ import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
 import { ref, computed } from 'vue'
-import { createAccount, loginAccount } from '@/function/api'
+import { createAccount } from '@/function/api'
 
 const email = ref('')
 const password = ref('')
@@ -59,11 +38,8 @@ const isValid = computed(() => {
     return email.value.length > 0 && password.value.length > 0
 })
 
-const login = () => {
-    loginAccount(email.value, password.value)
-}
-const test = () => {
-    createAccount()
+const register = () => {
+    createAccount(email.value, password.value)
 }
 </script>
 
