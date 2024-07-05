@@ -1,8 +1,8 @@
 <template>
     <div class="container py-6 transition-all duration-500 md:py-8">
-        <div class="flex h-[32px] justify-between md:h-[48px] relative">
+        <div class="relative flex h-[32px] justify-between md:h-[48px]">
             <router-link to="/" class="relative">
-                <img src="/images/register-logo.png" alt=""  class="size-full"/>
+                <img src="/images/register-logo.png" alt="" class="size-full" />
             </router-link>
             <div class="hidden space-x-10 md:flex">
                 <button
@@ -20,6 +20,7 @@
                 <button
                     type="button"
                     class="flex items-center gap-x-[10px] rounded-lg border border-primary px-6 py-2 text-primary"
+                    @click="logout()"
                 >
                     <i class="icon-sign-in"></i>
                     登出
@@ -35,6 +36,7 @@
 <script setup>
 import { useModal } from 'vue-final-modal'
 import AddRecord from '@/components/header/add-record-modal.vue'
+import { logout } from '@/function/api'
 
 const AddRecordModal = useModal({
     component: AddRecord,
@@ -50,6 +52,10 @@ const openAddRecord = () => {
     AddRecordModal.open()
     console.log('test open')
 }
+
+// const logout = () => {
+//     signOut()
+// }
 </script>
 
 <style scoped>

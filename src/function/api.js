@@ -2,6 +2,7 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signOut,
     onAuthStateChanged,
 } from 'firebase/auth'
 import {
@@ -17,6 +18,7 @@ import {
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
 import { fetch } from './axios'
+import router from '@/router'
 
 export const searchMovie = async (opt) => {
     return fetch({ path: `search/multi`, opts: opt })
@@ -40,6 +42,17 @@ export const getUserState = async () => {
             }
         })
     })
+}
+
+export const logout = () => {
+    signOut(auth) // 登出方法，須上方引入
+        .then(() => {
+            console.log('登出成功，跳回首頁')
+            router.push('/login') // 登出成功，跳回首頁
+        })
+        .catch((error) => {
+            console.log('登出失敗', error)
+        })
 }
 
 export const addMovie = async (data) => {
