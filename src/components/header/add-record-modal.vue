@@ -85,6 +85,7 @@ const handleAddMovie = async () => {
 watch(
     movieData,
     (val) => {
+        
         if (val.country && val.type && val.name && val.year) {
             isSubmit.value = true
         }

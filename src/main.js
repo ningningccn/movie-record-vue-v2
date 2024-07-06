@@ -5,14 +5,12 @@ import { setupFirebase } from '@/services/firebase.js'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createVfm } from 'vue-final-modal'
 import App from './App.vue'
 import router from './router'
 
-import { createVfm } from 'vue-final-modal'
-
 const app = createApp(App)
 const vfm = createVfm()
-
 
 setupFirebase
 app.use(createPinia())

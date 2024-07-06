@@ -62,9 +62,6 @@ const isValid = computed(() => {
 const login = () => {
     loginAccount(email.value, password.value)
 }
-const test = () => {
-    createAccount()
-}
 </script>
 
 <style scoped>

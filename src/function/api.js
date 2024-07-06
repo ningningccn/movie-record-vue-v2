@@ -11,6 +11,7 @@ import {
     doc,
     addDoc,
     setDoc,
+    getDoc,
     getDocs,
     query,
     where,
@@ -34,14 +35,35 @@ const auth = getAuth()
 export const getUserState = async () => {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
+            // console.log('user: ', user)
             if (user) {
                 resolve(user.email)
             } else {
-                reject()
-                console.log('logout')
+                reject(user)
+                // console.log('logout')
             }
         })
     })
+}
+
+export const loginAccount = (email, password) => {
+    console.log('login')
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log(auth, email, password)
+            // Signed in
+            const user = userCredential.user
+            console.log(user)
+
+            router.push({
+                path: '/',
+            })
+            // 登入成功 跳轉至其他頁面
+        })
+        .catch((error) => {
+            console.log(error.code)
+            // 錯誤訊息
+        })
 }
 
 export const logout = () => {
@@ -85,22 +107,6 @@ export const createAccount = (email, password) => {
     // console.log(auth)
 }
 
-export const loginAccount = (email, password) => {
-    console.log('login')
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log(auth, email, password)
-            // Signed in
-            const user = userCredential.user
-            console.log(user)
-            // 登入成功 跳轉至其他頁面
-        })
-        .catch((error) => {
-            console.log(error.code)
-            // 錯誤訊息
-        })
-}
-
 export const getMovieListApi = async (slug) => {
     const userEmail = await getUserState()
 
@@ -122,4 +128,20 @@ export const saveImageStorage = async (data) => {
     ).then(async (snapshot) => {
         return await getDownloadURL(snapshot.ref) //取得圖片url
     })
+}
+
+export const getMovieDetail = async (id) => {
+    try {
+        const userEmail = await getUserState()
+        if (userEmail) {
+            const resDoc = await getDoc(doc(db, `users/${userEmail}/post`, `${id}`))
+            if (resDoc.exists()) {
+                return resDoc.data()
+            } else {
+                console.log('No such document!')
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }

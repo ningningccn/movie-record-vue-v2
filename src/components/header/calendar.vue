@@ -18,7 +18,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { DatePicker } from 'v-calendar'
+import { Calendar, DatePicker } from 'v-calendar'
 import { useElementSize } from '@vueuse/core'
 import { onClickOutside } from '@vueuse/core'
 import 'v-calendar/style.css'

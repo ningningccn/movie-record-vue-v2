@@ -10,7 +10,7 @@ const router = createRouter({
         },
         {
             path: '/',
-            name: 'home',
+            name: 'Home',
             component: () => import('@/views/index.vue'),
             meta: { requiresAuth: true },
         },
@@ -43,26 +43,25 @@ const router = createRouter({
             component: () => import('@/views/search-detail.vue'),
             meta: { requiresAuth: true },
         },
+        {
+            path: '/movie/:id',
+            name: 'MovieDetail',
+            component: () => import('@/views/movie-detail.vue'),
+            meta: { requiresAuth: true },
+        },
     ],
 })
-
-router.beforeEach(async (to, from, next) => {
-    console.log(to.meta.requiresAuth)
-    if (to.meta.requiresAuth) {
-        // console.log("to.meta.requiresAuth: ", to.meta.requiresAuth);
-        // console.log(`這需要認證`);
+router.beforeEach(async (to, from) => {
+    if (to.fullPath === '/login') return
+    try {
         const user = await getUserState()
-        console.log(user)
-        if (user) {
-            next()
+        if (to.meta.requiresAuth && user) {
+            return
         } else {
-            next({
-                path: '/login',
-            })
+            return
         }
-    } else {
-        console.log('沒有登入')
-        next({ path: '/login' })
+    } catch (e) {
+        return '/login'
     }
 })
 

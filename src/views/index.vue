@@ -23,6 +23,7 @@
                 </div>
             </div> -->
         </main>
+        <!-- <Calendar v-model:date="date" /> -->
     </div>
 </template>
 
@@ -31,15 +32,19 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
+import Calendar from '@/components/header/calendar.vue'
+
 import { ref } from 'vue'
 import { getMovieListApi } from '@/function/api'
+
+const date = ref(new Date())
 
 const movieList = ref([])
 
 const getMovieList = async (slugType) => {
     const dataDoc = await getMovieListApi(slugType)
     dataDoc.forEach((doc) => {
-        movieList.value.push(doc.data())
+        movieList.value.push({ id: doc.id, movie: doc.data() })
     })
 }
 
