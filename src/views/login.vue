@@ -16,32 +16,11 @@
                     <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
 
                     <div class="text-body-s mt-8 text-center">
-                        還未有帳戶?立即<a href="" class="text-primary underline">註冊</a>
+                        還未有帳戶?立即<a href="/register" class="text-primary underline">註冊</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div>
-            註冊
-            <input
-                type="text"
-                class="h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
-                placeholder="帳戶名稱/電郵"
-            />
-            <input
-                type="text"
-                class="mt-6 h-[38px] w-full border-b-[1px] bg-transparent text-white placeholder:text-[#737373] focus:outline-none"
-                placeholder="密碼"
-            />
-
-            <p @click="test()">123</p>
-        </div>
-        <!-- <img
-            src="/public/images/register-bg.png"
-            alt=""
-            class="absolute left-0 top-0 z-0 size-full"
-        /> -->
     </div>
 </template>
 

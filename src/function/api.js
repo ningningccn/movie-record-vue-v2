@@ -99,6 +99,8 @@ export const createAccount = (email, password) => {
             const user = userCredential.user
             // 註冊成功 跳轉至其他頁面
             setDoc(doc(db, 'users', user.email), { uuid: user.uid, email: user.email })
+            console.log('成功')
+            router.push('/') // 登出成功，跳回首頁
         })
         .catch((error) => {
             console.log('error: ', error)

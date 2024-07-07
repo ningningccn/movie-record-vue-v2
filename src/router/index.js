@@ -52,16 +52,17 @@ const router = createRouter({
     ],
 })
 router.beforeEach(async (to, from) => {
-    if (to.fullPath === '/login') return
+    console.log(to.fullPath)
+    if (to.fullPath === '/login' || to.fullPath === '/register') return
     try {
         const user = await getUserState()
         if (to.meta.requiresAuth && user) {
             return
-        } else {
-            return
         }
+        return
     } catch (e) {
-        return '/login'
+        if (to.fullPath === '/login') return '/login'
+        if (to.fullPath === '/register') return '/register'
     }
 })
 

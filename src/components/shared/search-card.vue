@@ -4,7 +4,7 @@
             <img
                 :src="imgUrl"
                 alt=""
-                class="aspect-[2/3] cursor-pointer object-cover transition-transform duration-500 hover:scale-110"
+                class="aspect-[3/4.3] cursor-pointer object-cover transition-transform duration-500 hover:scale-110"
             />
         </div>
         <div class="absolute left-0 top-0">

@@ -21,7 +21,6 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -32,77 +31,58 @@
 }
 .icon-close:before {
     content: '\e913';
-    color: #fff;
 }
 .icon-arrow-left:before {
     content: '\e900';
-    color: #555;
 }
 .icon-arrow-right:before {
     content: '\e901';
-    color: #65e9b2;
 }
 .icon-sort:before {
     content: '\e902';
-    color: #fff;
 }
 .icon-calendar:before {
     content: '\e903';
-    color: #fff;
 }
 .icon-caret-down:before {
     content: '\e904';
-    color: #fff;
 }
 .icon-caret-up:before {
     content: '\e905';
-    color: #fff;
 }
 .icon-eye-slash:before {
     content: '\e906';
-    color: #fff;
 }
 .icon-file-arrow-ip:before {
     content: '\e907';
-    color: #fff;
 }
 .icon-filter:before {
     content: '\e908';
-    color: #fff;
 }
 .icon-heart:before {
     content: '\e909';
-    color: #fff;
 }
 .icon-heart-fill:before {
     content: '\e90a';
-    color: #fff;
 }
 .icon-search:before {
     content: '\e90b';
-    color: #fff;
 }
 .icon-pencil-simple:before {
     content: '\e90c';
-    color: #fff;
 }
 .icon-plus-square:before {
     content: '\e90d';
-    color: #fff;
 }
 .icon-sign-in:before {
     content: '\e90e';
-    color: #65e9b2;
 }
 .icon-star:before {
     content: '\e90f';
-    color: #fff;
 }
 .icon-star-fill:before {
     content: '\e910';
-    color: #fff;
 }
 .icon-trash:before {
     content: '\e911';
-    color: #fff;
 }

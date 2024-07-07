@@ -13,7 +13,7 @@
                     <i class="icon-plus-square"></i>
                     添加
                 </button>
-                <routerLink to="/search" class="flex items-center gap-x-2">
+                <routerLink to="/search" class="flex items-center gap-x-2 hover:text-primary">
                     <i class="icon-search"></i>
                     搜尋
                 </routerLink>

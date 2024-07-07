@@ -1,14 +1,54 @@
 <template>
-    <section class="container mt-10 md:mt-20">
-        <div class="md:flex md:justify-between">
-            <div class="mx-auto w-[50%] md:w-[30%] lg:w-[24%]">
-                <img :src="data?.postImageUrl" alt="" class="rounded-[8px]" />
-            </div>
-            <div class="mt-10 w-full md:mt-0 md:w-[66%]">
-                {{ data?.overview }}
+    <!-- <div
+        class="relative z-10 w-full bg-cover bg-top bg-no-repeat py-20"
+        :style="{
+            backgroundImage: `url(${data?.postImageUrl})`,
+        }"
+    > -->
+    <section class="relative pt-10 md:py-20">
+        <div
+            class="absolute left-0 top-0 z-10 size-full bg-cover bg-top bg-no-repeat py-20 blur"
+            :style="{
+                backgroundImage: `url(${data?.postImageUrl})`,
+            }"
+        >
+            <div class="absolute left-0 top-0 z-10 size-full bg-black opacity-45">123</div>
+        </div>
+        <div class="container">
+            <div class="relative z-10 flex w-full items-center justify-between">
+                <div class="w-[23%]">
+                    <img :src="data?.postImageUrl" alt="" class="rounded-[8px]" />
+                </div>
+                <div class="w-[66%]">
+                    <p class="text-heading-m">{{ data?.name }}</p>
+                    <div class="text-body-l mt-3 text-enable">
+                        <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
+                        <p>記錄日期:{{ data?.record_date }}</p>
+                        <p>片長:{{ data?.runtime }}分鐘</p>
+                        <p>產地:{{ data?.country }}</p>
+                    </div>
+                    <div
+                        class="text-body-s-medium mt-6 w-fit rounded-[4px] bg-primary px-1 py-[2px] text-second"
+                        v-if="data?.watched"
+                    >
+                        已觀看
+                    </div>
+                    <div class="mt-6 flex items-center">
+                        <div v-for="(item, index) in 5" :key="index">
+                            <i class="icon-star-fill text-[24px]" v-if="item <= data?.mark"></i>
+                            <i class="icon-star text-[24px]" v-if="item > data?.mark"></i>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex space-x-6 text-[32px]">
+                        <i class="icon-heart-fill"></i>
+                        <i class="icon-pencil-simple"></i>
+                        <i class="icon-trash"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+    <!-- </div> -->
 
     <!-- <div class="relative">
         {{ data }}
