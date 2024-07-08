@@ -26,6 +26,7 @@
                     </div>
                     <button
                         class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
+                        @click="openAddMovieModal()"
                     >
                         添加
                     </button>
@@ -67,9 +68,11 @@
 </template>
 
 <script setup>
+import { useModal } from 'vue-final-modal'
 import { searchMovieDetail } from '@/function/api'
 import { ref } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
+import AddMovie from '@/components/search/add-movie-modal.vue'
 
 // backdrop_path
 
@@ -78,13 +81,35 @@ const data = ref()
 const params = ref({
     language: 'zh-TW',
 })
-console.log(route)
 const getData = async () => {
     const resData = await searchMovieDetail(route.path, {
         params: params.value,
     })
     data.value = resData.data
     console.log(data.value)
+}
+
+const addMovieModal = useModal({
+    component: AddMovie,
+    attrs: {
+        // title: 'Hello World!',
+        // onConfirm() {
+        //     close()
+        // },
+    },
+})
+
+const openAddMovieModal = async () => {
+    addMovieModal.open()
+    addMovieModal.patchOptions({
+        attrs: {
+            name: data.value?.title ?? data?.name,
+            year: data.value?.release_date ?? data?.first_air_date,
+            country: data.value?.original_language,
+            poster_img: data.value?.poster_path,
+            type: route.params.mediaType,
+        },
+    })
 }
 
 getData()

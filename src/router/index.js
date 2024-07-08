@@ -44,7 +44,7 @@ const router = createRouter({
             meta: { requiresAuth: true },
         },
         {
-            path: '/movie/:id',
+            path: '/list/:id',
             name: 'MovieDetail',
             component: () => import('@/views/movie-detail.vue'),
             meta: { requiresAuth: true },
@@ -63,6 +63,7 @@ router.beforeEach(async (to, from) => {
     } catch (e) {
         if (to.fullPath === '/login') return '/login'
         if (to.fullPath === '/register') return '/register'
+        return '/login'
     }
 })
 

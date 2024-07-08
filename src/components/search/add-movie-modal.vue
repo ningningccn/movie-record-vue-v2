@@ -1,6 +1,8 @@
 <template>
     <VueFinalModal modal-id="add-movie-id" class="relative mx-auto h-full bg-[#30313299]">
         <!-- content-class="flex flex-col max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2" -->
+        {{ movieData }}
+
         <div
             class="main-gradient relative mx-auto mt-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
         >
@@ -8,7 +10,7 @@
                 <p class="text-heading-s">添加記錄</p>
                 <div class="mt-8 space-y-6">
                     <Calendar @selected="setDate" v-model:date="movieData.record_date" />
-                    <Select @selected="setType" />
+                    <Select :attrSelected="type" @selected="setType" />
                     <Input :placeholder="'名稱'" v-model:text="movieData.name" />
                     <Input :placeholder="'年份'" v-model:text="movieData.year" />
                     <Input :placeholder="'產地'" v-model:text="movieData.country" />
@@ -49,6 +51,32 @@ import Calendar from '@/components/header/calendar.vue'
 import { addMovie, saveImageStorage } from '@/function/api'
 import dayjs from 'dayjs'
 
+const props = defineProps({
+    name: {
+        type: String,
+    },
+    year: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
+    poster_img: {
+        type: String,
+    },
+    type: {
+        type: String,
+    },
+})
+
+console.log(props)
+
+// name: '航海王：Z',
+//     year: '2012-12-15',
+//     country: 'ja',
+//     poster_img: '/tQAaf3WzbcR4ja5VsHnScLiNDfz.jpg',
+//     type: 'movie'
+
 const vfm = useVfm()
 
 const myValue = ref('')
@@ -65,6 +93,11 @@ const movieData = ref({
     watched: false,
     postImageUrl: '',
 })
+
+movieData.value.type = 'movie'
+movieData.value.name = props?.name ?? ''
+movieData.value.year = props?.year ?? ''
+movieData.value.country = props?.country ?? ''
 
 const imageData = ref(null)
 

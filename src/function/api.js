@@ -86,6 +86,7 @@ export const addMovie = async (data) => {
                 ...data,
                 createAt: new Date().getTime(),
             })
+            await checkYearCategory(data)
         } catch (err) {
             console.log(err)
         }

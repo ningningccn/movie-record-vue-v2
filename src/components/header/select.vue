@@ -22,8 +22,13 @@
 <script setup>
 import { ref, watch } from 'vue'
 import VueMultiselect from 'vue-multiselect'
-
 const emit = defineEmits(['selected'])
+const props = defineProps({
+    attrSelected: {
+        type: String,
+    },
+})
+console.log(props.attrSelected)
 
 const value = ref('')
 const options = [
@@ -40,6 +45,9 @@ const options = [
         slug: 'tv_show',
     },
 ]
+
+const movieObject = options.find((option) => option.slug === props.attrSelected)
+value.value = movieObject
 
 watch(value, (val) => {
     console.log(val)
