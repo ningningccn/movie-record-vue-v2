@@ -2,7 +2,7 @@
     <div class="flex items-center justify-between">
         <div class="flex grow-0 items-center">
             <i class="icon-file-arrow-ip text-[24px]"></i>
-            <div class="relative ml-2" @click="previewIn()">
+            <div class="relative ml-2">
                 {{ fileName }}
                 <div class="absolute left-0 top-0" v-show="isPreview">
                     <img :src="showImg" alt="" />
@@ -20,11 +20,24 @@
 import { ref } from 'vue'
 
 const emit = defineEmits(['imageData'])
+const props = defineProps({
+    imgUrl: {
+        type: String,
+    },
+    movieName: {
+        type: String,
+    },
+})
 
 const file = ref(null)
 const fileName = ref('上傳海報')
 const showImg = ref('')
 const isPreview = ref(false)
+
+if (props.movieName && props.imgUrl) {
+    fileName.value = props.movieName
+    showImg.value = props.imgUrl
+}
 
 const handleFile = (e) => {
     file.value = e.target.files[0]

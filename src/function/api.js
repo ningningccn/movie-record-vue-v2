@@ -15,6 +15,7 @@ import {
     getDocs,
     query,
     where,
+    orderBy,
 } from 'firebase/firestore'
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
@@ -86,7 +87,6 @@ export const addMovie = async (data) => {
                 ...data,
                 createAt: new Date().getTime(),
             })
-            await checkYearCategory(data)
         } catch (err) {
             console.log(err)
         }
@@ -114,7 +114,9 @@ export const getMovieListApi = async (slug) => {
     const userEmail = await getUserState()
 
     if (slug == '') {
-        const querySnapshot = await getDocs(collection(db, `users/${userEmail}/post`))
+        const querySnapshot = await getDocs(
+            collection(db, `users/${userEmail}/post`, orderBy('createAt', 'asc')),
+        )
         return querySnapshot.docs
     } else {
         const q = query(collection(db, `users/${userEmail}/post`), where('type', '==', slug))

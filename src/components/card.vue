@@ -1,5 +1,5 @@
 <template>
-    <a :href="`/movie/${props.data.id}`" class="relative cursor-pointer">
+    <a :href="`/list/${props.data.id}`" class="relative cursor-pointer">
         <div class="">
             <img
                 :src="data?.movie?.postImageUrl"

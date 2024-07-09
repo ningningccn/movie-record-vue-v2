@@ -28,7 +28,6 @@ const props = defineProps({
         type: String,
     },
 })
-console.log(props.attrSelected)
 
 const value = ref('')
 const options = [
@@ -38,11 +37,11 @@ const options = [
     },
     {
         title: '電視劇',
-        slug: 'tv_drama',
+        slug: 'tv',
     },
     {
         title: '綜藝',
-        slug: 'tv_show',
+        slug: 'show',
     },
 ]
 
@@ -60,7 +59,7 @@ watch(value, (val) => {
     @apply border-b text-white;
 }
 :deep(.multiselect__tags) {
-    @apply flex items-center border-none bg-transparent px-1 py-0;
+    @apply flex items-center border-none bg-transparent px-0 py-0;
 }
 :deep(.multiselect__content-wrapper) {
     @apply translate-y-4 rounded-[8px] border-none bg-card;

@@ -15,7 +15,12 @@
                     <Input :placeholder="'年份'" v-model:text="movieData.year" />
                     <Input :placeholder="'產地'" v-model:text="movieData.country" />
                 </div>
-                <UploadImage class="my-8" @imageData="setImageData" />
+                <UploadImage
+                    class="my-8"
+                    :imgUrl="`https://image.tmdb.org/t/p/w780${poster_img}`"
+                    :movieName="name"
+                    @imageData="setImageData"
+                />
                 <div class="space-y-3">
                     <Checkbox :title="'最愛'" @selected="setFavorite" />
                     <Checkbox :title="'已觀看'" @selected="setWatch" />
@@ -30,15 +35,13 @@
             >
                 <i class="icon-close text-[32px]"></i>
             </button>
-
-            <!-- <button type="button" @click="test()">123</button> -->
         </div>
     </VueFinalModal>
 </template>
 
 <script setup>
 import 'vue-multiselect/dist/vue-multiselect.css'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { VueFinalModal, useVfm } from 'vue-final-modal'
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
@@ -71,16 +74,10 @@ const props = defineProps({
 
 console.log(props)
 
-// name: '航海王：Z',
-//     year: '2012-12-15',
-//     country: 'ja',
-//     poster_img: '/tQAaf3WzbcR4ja5VsHnScLiNDfz.jpg',
-//     type: 'movie'
-
 const vfm = useVfm()
 
 const myValue = ref('')
-const isSubmit = ref(false)
+const tempImage = ref(null)
 
 const movieData = ref({
     record_date: dayjs(new Date()).format('DD/MM/YYYY'),
@@ -94,30 +91,43 @@ const movieData = ref({
     postImageUrl: '',
 })
 
-movieData.value.type = 'movie'
+movieData.value.type = props?.type ?? ''
 movieData.value.name = props?.name ?? ''
 movieData.value.year = props?.year ?? ''
 movieData.value.country = props?.country ?? ''
-
-const imageData = ref(null)
 
 const setDate = (date) => (movieData.value.record_date = date)
 const setType = (type) => (movieData.value.type = type)
 const setFavorite = (favorite) => (movieData.value.favorite = favorite)
 const setWatch = (watch) => (movieData.value.watched = watch)
 const setStar = (star) => (movieData.value.mark = star)
-const setImageData = async (data) => (imageData.value = data)
+const setImageData = async (data) => (tempImage.value = data)
 
 const handleAddMovie = async () => {
     movieData.value = {
         ...movieData.value,
         watched_date: movieData.value.watched ? dayjs(new Date()).format('DD/MM/YYYY') : '',
     }
-    movieData.value.postImageUrl = await saveImageStorage(imageData.value)
+    if (props.poster_img)
+        movieData.value.postImageUrl = `https://image.tmdb.org/t/p/w780${props.poster_img}`
+    else movieData.value.postImageUrl = await saveImageStorage(tempImage.value)
+
     await addMovie(movieData.value)
     console.log('added movie')
     vfm.close('add-movie-id')
 }
+const isSubmit = computed(() => {
+    if (
+        movieData.value.country &&
+        movieData.value.type &&
+        movieData.value.name &&
+        movieData.value.year
+    ) {
+        return true
+    } else {
+        return false
+    }
+})
 
 watch(
     movieData,

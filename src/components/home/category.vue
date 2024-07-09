@@ -40,11 +40,11 @@ const data = ref([
     },
     {
         title: '電視劇',
-        slug: 'tv_drama',
+        slug: 'tv',
     },
     {
         title: '綜藝',
-        slug: 'tv_show',
+        slug: 'show',
     },
 ])
 </script>

@@ -18,11 +18,13 @@
             >
                 <div class="w-[100%] md:w-[45%]">
                     <p class="text-heading-m">{{ data?.title ?? data?.name }}</p>
-                    <p class="text-heading-s mt-1">{{ data?.original_title }}</p>
+                    <p class="text-heading-s mt-1">
+                        {{ data?.original_title ?? data?.original_name }}
+                    </p>
                     <div class="text-body-l mt-3 text-enable">
                         <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
-                        <p>片長:{{ data?.runtime }}分鐘</p>
-                        <p>產地:{{ data?.original_language }}</p>
+                        <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
+                        <p>產地:{{ country }}</p>
                     </div>
                     <button
                         class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
@@ -39,8 +41,8 @@
                 <p class="text-heading-s mt-1">{{ data?.original_title }}</p>
                 <div class="text-body-l mt-3 text-enable">
                     <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
-                    <p>片長:{{ data?.runtime }}分鐘</p>
-                    <p>產地:{{ data?.original_language }}</p>
+                    <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
+                    <p>產地:{{ country }}</p>
                 </div>
                 <button
                     class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
@@ -68,9 +70,10 @@
 </template>
 
 <script setup>
+import { countryMap } from '@/map-data/country'
 import { useModal } from 'vue-final-modal'
 import { searchMovieDetail } from '@/function/api'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import AddMovie from '@/components/search/add-movie-modal.vue'
 
@@ -103,9 +106,9 @@ const openAddMovieModal = async () => {
     addMovieModal.open()
     addMovieModal.patchOptions({
         attrs: {
-            name: data.value?.title ?? data?.name,
-            year: data.value?.release_date ?? data?.first_air_date,
-            country: data.value?.original_language,
+            name: data.value?.title ?? data.value?.name,
+            year: data.value?.release_date ?? data.value?.first_air_date,
+            country: country.value,
             poster_img: data.value?.poster_path,
             type: route.params.mediaType,
         },
@@ -113,6 +116,12 @@ const openAddMovieModal = async () => {
 }
 
 getData()
+
+const country = computed(() => {
+    const tempCountry = data.value?.origin_country[0]
+    if (countryMap.hasOwnProperty(tempCountry)) return countryMap[tempCountry]
+    else return tempCountry
+})
 </script>
 
 <style scoped>
