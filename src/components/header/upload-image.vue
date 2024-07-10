@@ -1,10 +1,12 @@
 <template>
-    <div class="flex items-center justify-between">
-        <div class="flex grow-0 items-center">
+    <div class="relative flex items-center justify-between">
+        <div class="group flex grow-0 items-center">
             <i class="icon-file-arrow-ip text-[24px]"></i>
-            <div class="relative ml-2">
-                {{ fileName }}
-                <div class="absolute left-0 top-0" v-show="isPreview">
+            <div class="dropdown-image group ml-2">
+                <p>
+                    {{ fileName }}
+                </p>
+                <div class="absolute left-0 top-[-395px] z-10 hidden size-[80%] group-hover:block">
                     <img :src="showImg" alt="" />
                 </div>
             </div>
@@ -75,4 +77,4 @@ const previewIn = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

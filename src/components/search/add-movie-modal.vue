@@ -1,7 +1,9 @@
 <template>
     <VueFinalModal modal-id="add-movie-id" class="relative mx-auto h-full bg-[#30313299]">
         <!-- content-class="flex flex-col max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2" -->
-        {{ movieData }}
+        <!-- <pre>
+            <code>{{ movieData }}</code>
+        </pre> -->
 
         <div
             class="main-gradient relative mx-auto mt-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
@@ -35,6 +37,7 @@
             >
                 <i class="icon-close text-[32px]"></i>
             </button>
+            <Category />
         </div>
     </VueFinalModal>
 </template>
@@ -50,6 +53,7 @@ import Checkbox from '@/components/header/checkbox.vue'
 import Star from '@/components/header/star.vue'
 import Select from '@/components/header/select.vue'
 import Calendar from '@/components/header/calendar.vue'
+import Category from '@/components/header/category.vue'
 
 import { addMovie, saveImageStorage } from '@/function/api'
 import dayjs from 'dayjs'
