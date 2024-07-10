@@ -27,13 +27,14 @@
                     <div>動漫</div>
                     <div>動漫</div>
                 </div>
-                <div>{{ data?.movie?.year }}</div>
+                <div>{{ year }}</div>
             </div>
         </div>
     </a>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
@@ -42,6 +43,8 @@ const props = defineProps({
         type: Object,
     },
 })
+
+const year = computed(() => props?.data?.movie?.year.slice(0, 4))
 </script>
 
 <style lang="scss" scoped></style>

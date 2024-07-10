@@ -115,11 +115,15 @@ export const getMovieListApi = async (slug) => {
 
     if (slug == '') {
         const querySnapshot = await getDocs(
-            collection(db, `users/${userEmail}/post`, orderBy('createAt', 'asc')),
+            query(collection(db, `users/${userEmail}/post`), orderBy('createAt', 'desc')),
         )
         return querySnapshot.docs
     } else {
-        const q = query(collection(db, `users/${userEmail}/post`), where('type', '==', slug))
+        const q = query(
+            collection(db, `users/${userEmail}/post`),
+            where('type', '==', slug),
+            orderBy('createAt', 'desc'),
+        )
         const querySnapshot = await getDocs(q)
         return querySnapshot.docs
     }
@@ -148,5 +152,20 @@ export const getMovieDetail = async (id) => {
         }
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const testAdd = async (data) => {
+    const userEmail = await getUserState()
+    console.log(data)
+    if (userEmail) {
+        try {
+            await addDoc(collection(db, `users/${userEmail}`, 'test'), {
+                ...data,
+                createAt: new Date().getTime(),
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

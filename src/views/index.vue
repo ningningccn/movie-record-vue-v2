@@ -1,4 +1,5 @@
 <template>
+    <div @click="test()">test</div>
     <Category @selected="setType" />
     <div class="container">
         <div class="text-body-l-semibold mt-[60px]">結果顯示: 第1-20個 (總共200個)</div>
@@ -55,6 +56,7 @@ const setType = (slug) => {
 
 getMovieList('')
 
+const test = () => {}
 // 根據選擇的過濾選項應用過濾邏輯，例如從Firestore獲取數據
 // const db = this.$root.$options.provides.db
 // const collectionRef = db.collection('your_collection')
