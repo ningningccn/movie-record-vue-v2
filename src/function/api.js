@@ -29,7 +29,6 @@ export const searchMovie = async (opt) => {
 export const searchMovieDetail = async (path, opt) => {
     return fetch({ path, opts: opt })
 }
-
 const db = getFirestore()
 const auth = getAuth()
 
@@ -79,6 +78,7 @@ export const logout = () => {
 }
 
 export const addMovie = async (data) => {
+    console.log(data)
     const userEmail = await getUserState()
     console.log(data)
     if (userEmail) {

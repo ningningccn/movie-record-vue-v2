@@ -22,10 +22,15 @@
                 <i class="icon-heart pt-1" v-else></i>
             </div>
             <div class="text-body-s-medium mt-1 flex justify-between text-enable">
-                <div class="flex space-x-2">
-                    <div>動漫</div>
-                    <div>動漫</div>
-                    <div>動漫</div>
+                <div class="flex flex-wrap gap-x-2">
+                    <div v-for="(item, index) in data?.movie?.categoryList" :key="item.slug">
+                        <div class="flex items-center" v-if="index < 3">
+                            {{ item.label }}
+                            <span v-if="data?.movie?.categoryList.length > 3 && index == 2"
+                                >...</span
+                            >
+                        </div>
+                    </div>
                 </div>
                 <div>{{ year }}</div>
             </div>

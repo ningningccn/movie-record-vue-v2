@@ -1,56 +1,67 @@
 <template>
-    {{ value }}
+    <div v-if="categoryList.length > 0">
+        <VueMultiselect
+            v-model="value"
+            :options="categoryList"
+            :multiple="true"
+            :close-on-select="false"
+            :clear-on-select="false"
+            :preserve-search="true"
+            placeholder="Pick some"
+            label="label"
+            track-by="slug"
+        >
+            <template #selection="{ values, search, isOpen }">
+                <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
+                    >{{ values.length }} options selected</span
+                >
+            </template>
+        </VueMultiselect>
+        <!-- <pre class="language-json"><code>{{ value }}</code></pre> -->
+    </div>
 
-    <VueMultiselect
-        v-model="value"
-        tag-placeholder="Add this as new tag"
-        placeholder="Search or add a tag"
-        label="label"
-        track-by="code"
-        :options="option"
-        :multiple="true"
-        tag-position="bottom"
-        :taggable="true"
-        @tag="addTag"
-    ></VueMultiselect>
-    <VueMultiselect
-        v-model="value"
-        :options="option"
-        :multiple="true"
-        :close-on-select="false"
-        :clear-on-select="false"
-        :preserve-search="true"
-        placeholder="Pick some"
-        label="label"
-        track-by="code"
-        :preselect-first="true"
-    >
-        <template #selection="{ values, search, isOpen }">
-            <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
-                >{{ values.length }} options selected</span
-            >
-        </template>
-    </VueMultiselect>
+    <div class="flex flex-wrap items-center gap-3">
+        <div
+            class="text-body-l-semibold flex items-center space-x-3 rounded-[8px] border border-enable px-2 py-1 text-enable"
+            v-for="item in value"
+            :key="item.slug"
+        >
+            {{ item.label }}
+            <button type="button" @click="delCategory(item?.slug)">
+                <i class="icon-close text-[16px]"></i>
+            </button>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import VueMultiselect from 'vue-multiselect'
+import { categoryTranslation } from '@/translation/category'
 
-const value = ref([{ label: 'Javascript', code: 'js' }])
-const option = ref([
-    { label: 'Vue.js', code: 'vu' },
-    { label: 'Javascript', code: 'js' },
-    { label: 'Open Source', code: 'os' },
-])
+const props = defineProps({
+    data: {
+        type: Object,
+    },
+})
 
-const addTag = (newTag) => {
-    const tag = {
-        label: newTag,
-        code: newTag,
+const value = defineModel('category')
+
+const categoryList = computed(() => {
+    return props.data?.map((item) => {
+        const label = categoryTranslation[item.id] ?? item.id
+        return {
+            label,
+            slug: item.id,
+        }
+    })
+})
+
+const delCategory = (slug) => {
+    const indexToRemove = value.value.findIndex((item) => item.slug === slug)
+    if (indexToRemove !== -1) {
+        value.value.splice(indexToRemove, 1)
     }
-    option.value.push(tag)
-    value.value.push(tag)
 }
 </script>
 

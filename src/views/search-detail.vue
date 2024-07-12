@@ -70,14 +70,14 @@
 </template>
 
 <script setup>
-import { countryMap } from '@/map-data/country'
+import { countryTranslate } from '@/map-data/country'
+import { categoryTranslation } from '@/translation/category.js'
 import { useModal } from 'vue-final-modal'
 import { searchMovieDetail } from '@/function/api'
-import { ref, computed } from 'vue'
-import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import AddMovie from '@/components/search/add-movie-modal.vue'
-
-// backdrop_path
+import Category from '@/components/header/category.vue'
 
 const route = useRoute()
 const data = ref()
@@ -89,6 +89,8 @@ const getData = async () => {
         params: params.value,
     })
     data.value = resData.data
+
+    // genres
     console.log(data.value)
 }
 
@@ -110,6 +112,10 @@ const openAddMovieModal = async () => {
             year: data.value?.release_date ?? data.value?.first_air_date,
             country: country.value,
             poster_img: data.value?.poster_path,
+            background_image: data.value?.backdrop_path
+                ? 'https://image.tmdb.org/t/p/w1280${data?.backdrop_path}'
+                : null,
+            genres: data.value?.genres,
             type: route.params.mediaType,
         },
     })
@@ -118,9 +124,9 @@ const openAddMovieModal = async () => {
 getData()
 
 const country = computed(() => {
-    const tempCountry = data.value?.origin_country[0]
-    if (countryMap.hasOwnProperty(tempCountry)) return countryMap[tempCountry]
-    else return tempCountry
+    const originCountry = data.value?.origin_country[0]
+    if (countryTranslate.hasOwnProperty(originCountry)) return countryTranslate[originCountry]
+    else return originCountry
 })
 </script>
 

@@ -17,6 +17,7 @@
                     <Input :placeholder="'年份'" v-model:text="movieData.year" />
                     <Input :placeholder="'產地'" v-model:text="movieData.country" />
                 </div>
+                <Category :data="genres" v-model:category="movieData.categoryList" />
                 <UploadImage
                     class="my-8"
                     :imgUrl="`https://image.tmdb.org/t/p/w780${poster_img}`"
@@ -37,7 +38,7 @@
             >
                 <i class="icon-close text-[32px]"></i>
             </button>
-            <Category />
+            {{ movieData.categoryList }}
         </div>
     </VueFinalModal>
 </template>
@@ -56,6 +57,7 @@ import Calendar from '@/components/header/calendar.vue'
 import Category from '@/components/header/category.vue'
 
 import { addMovie, saveImageStorage } from '@/function/api'
+
 import dayjs from 'dayjs'
 
 const props = defineProps({
@@ -74,6 +76,9 @@ const props = defineProps({
     type: {
         type: String,
     },
+    genres: {
+        type: Object,
+    },
 })
 
 console.log(props)
@@ -91,6 +96,7 @@ const movieData = ref({
     country: '',
     mark: 0,
     favorite: false,
+    categoryList: [],
     watched: false,
     postImageUrl: '',
 })
