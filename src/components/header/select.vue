@@ -68,18 +68,18 @@ watch(value, (val) => {
     @apply bg-transparent;
 }
 :deep(.multiselect__option--selected.multiselect__option--highlight) {
-    @apply bg-second;
+    @apply flex items-center bg-second;
 }
 :deep(.multiselect__option--selected) {
-    @apply bg-second text-white;
+    @apply flex items-center bg-second text-white;
 }
 :deep(.multiselect__option--highlight) {
-    @apply bg-second;
+    @apply flex items-center bg-second;
 }
 :deep(.multiselect__placeholder) {
     @apply text-[16px] text-placeholder;
 }
 :deep(.multiselect__option) {
-    @apply px-6 py-2;
+    @apply flex items-center px-6 py-2;
 }
 </style>

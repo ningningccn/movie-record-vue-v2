@@ -1,21 +1,20 @@
 <template>
     <div class="relative">
-        <div
-            class="bg-img relative z-10 h-[350px] w-full md:h-[564px]"
-            :style="{
-                backgroundImage: `url('https://image.tmdb.org/t/p/w1280${data?.backdrop_path}')`,
-            }"
-        >
-            <!-- <img
+        <div class="z-5 relative flex h-[375px] items-end md:flex md:h-[500px] md:items-center">
+            <img
                 :src="`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`"
                 alt=""
-                class="absolute right-0 top-0 max-h-[564px]"
-            /> -->
-            <!-- <div class="desktop-bg-overlay absolute left-0 top-0 size-full"></div> -->
-            <div class="bg-overlay absolute left-0 top-0 size-full"></div>
-            <div
-                class="container absolute left-1/2 top-[150px] hidden size-full -translate-x-1/2 items-center pt-[50px] md:top-0 md:flex"
-            >
+                class="absolute inset-0 size-full object-cover"
+                v-if="data?.backdrop_path"
+            />
+            <img
+                :src="`https://image.tmdb.org/t/p/w1280${data?.poster_path}`"
+                alt=""
+                class="absolute inset-0 size-full object-cover"
+                v-else
+            />
+            <div class="bg-overlay absolute bottom-0 left-0 h-full w-[100%]"></div>
+            <div class="container relative hidden md:block">
                 <div class="w-[100%] md:w-[45%]">
                     <p class="text-heading-m">{{ data?.title ?? data?.name }}</p>
                     <p class="text-heading-s mt-1">
@@ -25,17 +24,24 @@
                         <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
                         <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
                         <p>產地:{{ country }}</p>
+                        <p>
+                            類型:<span v-for="(item, index) in genresList" :key="index">
+                                {{ item.label }}
+                            </span>
+                        </p>
                     </div>
                     <button
                         class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
                         @click="openAddMovieModal()"
                     >
-                        添加
+                        添加紀錄
                     </button>
                 </div>
             </div>
         </div>
-        <section class="container relative z-20 mt-[-150px] block md:hidden">
+        <section
+            class="md: container relative z-20 mt-[-150px] block translate-y-[110px] md:hidden md:translate-y-0"
+        >
             <div class="w-[100%] md:w-[45%]">
                 <p class="text-heading-m">{{ data?.title ?? data?.name }}</p>
                 <p class="text-heading-s mt-1">{{ data?.original_title }}</p>
@@ -52,7 +58,7 @@
             </div>
         </section>
 
-        <section class="container mt-10 md:mt-20">
+        <section class="container mt-10 translate-y-[110px] md:mt-20 md:hidden md:translate-y-0">
             <div class="md:flex md:justify-between">
                 <div class="mx-auto w-[50%] md:ml-0 md:w-[30%] lg:w-[24%]">
                     <img
@@ -63,6 +69,7 @@
                 </div>
                 <div class="mt-10 w-full md:mt-0 md:w-[66%]">
                     {{ data?.overview }}
+                    <div></div>
                 </div>
             </div>
         </section>
@@ -78,12 +85,14 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AddMovie from '@/components/search/add-movie-modal.vue'
 import Category from '@/components/header/category.vue'
+import { genresT } from '@/function/translation'
 
 const route = useRoute()
 const data = ref()
 const params = ref({
     language: 'zh-TW',
 })
+
 const getData = async () => {
     const resData = await searchMovieDetail(route.path, {
         params: params.value,
@@ -122,6 +131,8 @@ const openAddMovieModal = async () => {
 }
 
 getData()
+const genresList = computed(() => genresT(data.value?.genres))
+console.log(genresList.value)
 
 const country = computed(() => {
     const originCountry = data.value?.origin_country[0]
@@ -132,17 +143,20 @@ const country = computed(() => {
 
 <style scoped>
 .bg-overlay {
-    background: linear-gradient(89.55deg, #303132 42.27%, rgba(48, 49, 50, 0) 99.48%);
+    /* background: linear-gradient(0deg, #303132 30.27%, rgba(48, 49, 50, 0) 99.48%); */
+
+    /* background: linear-gradient(89.55deg, #303132 42.27%, rgba(48, 49, 50, 0) 99.48%); */
+    background: linear-gradient(89.55deg, #303132 0%, rgba(48, 49, 50, 0) 99.48%);
 }
 .bg-img {
-    background-position: left calc(40vw) center;
+    /* background-position: left calc(40vw) center; */
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 @media (max-width: 768px) {
     .bg-overlay {
-        background: linear-gradient(0deg, #303132 30.27%, rgba(48, 49, 50, 0) 99.48%);
+        background: linear-gradient(0deg, #303132 1%, rgba(48, 49, 50, 0) 99.48%);
     }
     .bg-img {
         background-position: left center;

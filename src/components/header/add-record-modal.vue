@@ -1,35 +1,39 @@
 <template>
-    <VueFinalModal modal-id="add-movie-id" class="relative mx-auto h-full bg-[#30313299]">
-        <!-- content-class="flex flex-col max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2" -->
-        <div
-            class="main-gradient relative mx-auto mt-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
-        >
-            <div>
-                <p class="text-heading-s">添加記錄</p>
-                <div class="mt-8 space-y-6">
-                    <Calendar @selected="setDate" v-model:date="movieData.record_date" />
-                    <Select @selected="setType" />
-                    <Input :placeholder="'名稱'" v-model:text="movieData.name" />
-                    <Input :placeholder="'年份'" v-model:text="movieData.year" />
-                    <Input :placeholder="'產地'" v-model:text="movieData.country" />
-                </div>
-                <UploadImage class="my-8" @imageData="setImageData" />
-                <div class="space-y-3">
-                    <Checkbox :title="'最愛'" @selected="setFavorite" />
-                    <Checkbox :title="'已觀看'" @selected="setWatch" />
-                    <Star @selected="setStar" />
-                </div>
-                <Button :text="'添加'" class="mt-8" :disable="isSubmit" @click="handleAddMovie()" />
-            </div>
-            <button
-                type="button"
-                class="absolute right-10 top-10"
-                @click="vfm.close('add-movie-id')"
+    <VueFinalModal modal-id="add-record-id" class="absolute inset-0 bg-[#30313299]">
+        <div class="absolute inset-0 h-full overflow-auto">
+            <div
+                class="main-gradient relative mx-auto mt-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
             >
-                <i class="icon-close text-[32px]"></i>
-            </button>
-
-            <!-- <button type="button" @click="test()">123</button> -->
+                <div>
+                    <p class="text-heading-s">添加記錄</p>
+                    <div class="mt-8 space-y-6">
+                        <Calendar @selected="setDate" v-model:date="movieData.record_date" />
+                        <Select @selected="setType" />
+                        <Input :placeholder="'名稱'" v-model:text="movieData.name" />
+                        <Input :placeholder="'年份'" v-model:text="movieData.year" />
+                        <Input :placeholder="'產地'" v-model:text="movieData.country" />
+                    </div>
+                    <UploadImage class="my-8" @imageData="setImageData" />
+                    <div class="space-y-3">
+                        <Checkbox :title="'最愛'" @selected="setFavorite" />
+                        <Checkbox :title="'已觀看'" @selected="setWatch" />
+                        <Star @selected="setStar" />
+                    </div>
+                    <Button
+                        :text="'添加'"
+                        class="mt-8"
+                        :disable="isSubmit"
+                        @click="handleAddMovie()"
+                    />
+                </div>
+                <button
+                    type="button"
+                    class="absolute right-10 top-10"
+                    @click="vfm.close('add-record-id')"
+                >
+                    <i class="icon-close text-[32px]"></i>
+                </button>
+            </div>
         </div>
     </VueFinalModal>
 </template>
