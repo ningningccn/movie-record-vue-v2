@@ -16,7 +16,10 @@
                     <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
 
                     <div class="text-body-s mt-8 text-center">
-                        還未有帳戶?立即<a href="/register" class="text-primary underline">註冊</a>
+                        還未有帳戶?立即
+                        <router-link to="/register" class="text-primary underline">
+                            註冊
+                        </router-link>
                     </div>
                 </div>
             </div>
