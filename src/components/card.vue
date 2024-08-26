@@ -1,5 +1,5 @@
 <template>
-    <a :href="`/list/${props.data.id}`" class="relative cursor-pointer">
+    <RouterLink :to="`/list/${props.data.id}`" class="relative cursor-pointer">
         <div class="">
             <img
                 :src="data?.movie?.postImageUrl"
@@ -35,7 +35,7 @@
                 <div>{{ year }}</div>
             </div>
         </div>
-    </a>
+    </RouterLink>
 </template>
 
 <script setup>
