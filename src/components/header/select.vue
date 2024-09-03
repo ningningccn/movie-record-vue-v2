@@ -43,10 +43,15 @@ const options = [
         title: '綜藝',
         slug: 'show',
     },
+    // {
+    //     title: '動畫',
+    //     slug: 'cartoon',
+    // },
 ]
 
 const movieObject = options.find((option) => option.slug === props.attrSelected)
 value.value = movieObject
+console.log(value.value)
 
 watch(value, (val) => {
     console.log(val)

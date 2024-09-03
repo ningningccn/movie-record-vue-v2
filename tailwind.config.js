@@ -9,6 +9,7 @@ module.exports = {
                 enable: '#777777',
                 disable: '#555555',
                 card: '#3C3C3C',
+                error: '#FF4949',
             },
         },
         screens: {

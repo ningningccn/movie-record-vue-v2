@@ -9,9 +9,12 @@
                 </div>
                 <div class="px-20">
                     <div class="mt-[104px] text-center text-[32px] font-bold">用戶登入</div>
-                    <div class="mt-8 space-y-6">
+                    <form class="mt-8 space-y-6">
                         <Input :placeholder="'帳戶名稱/電郵'" v-model:text="email" />
-                        <Input :placeholder="'密碼'" v-model:text="password" />
+                        <Input :placeholder="'密碼'" :type="'password'" v-model:text="password" />
+                    </form>
+                    <div class="text-body-s text-error mt-2" v-if="errorMessage">
+                        {{ errorMessage }}
                     </div>
                     <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
 
@@ -36,13 +39,17 @@ import { createAccount, loginAccount } from '@/function/api'
 
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
 
 const isValid = computed(() => {
     return email.value.length > 0 && password.value.length > 0
 })
 
-const login = () => {
-    loginAccount(email.value, password.value)
+const login = async () => {
+    const error = await loginAccount(email.value, password.value)
+    if (error) {
+        errorMessage.value = '身份驗證/無效憑證'
+    }
 }
 </script>
 

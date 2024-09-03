@@ -14,6 +14,10 @@
                         <Calendar @selected="setDate" v-model:date="movieData.record_date" />
                         <Select :attrSelected="type" @selected="setType" />
                         <Input :placeholder="'名稱'" v-model:text="movieData.name" />
+                        <Input
+                            :placeholder="'原始名稱(選項)'"
+                            v-model:text="movieData.original_name"
+                        />
                         <Input :placeholder="'年份'" v-model:text="movieData.year" />
                         <Input :placeholder="'產地'" v-model:text="movieData.country" />
                         <Category :data="genres" v-model:category="movieData.categoryList" />
@@ -69,6 +73,9 @@ const props = defineProps({
     name: {
         type: String,
     },
+    original_name: {
+        type: String,
+    },
     year: {
         type: String,
     },
@@ -76,6 +83,9 @@ const props = defineProps({
         type: String,
     },
     poster_img: {
+        type: String,
+    },
+    background_image: {
         type: String,
     },
     type: {
@@ -90,13 +100,13 @@ console.log(props)
 
 const vfm = useVfm()
 
-const myValue = ref('')
 const tempImage = ref(null)
 
 const movieData = ref({
-    record_date: dayjs(new Date()).format('DD/MM/YYYY'),
+    record_date: dayjs(new Date()).format('DD-MM-YYYY'),
     type: '',
     name: '',
+    original_name: '',
     year: '',
     country: '',
     mark: 0,
@@ -109,7 +119,8 @@ const movieData = ref({
 
 movieData.value.type = props?.type ?? ''
 movieData.value.name = props?.name ?? ''
-movieData.value.year = props?.year ?? ''
+movieData.value.original_name = props?.original_name ?? ''
+movieData.value.year = dayjs(props?.year).format('YYYY') ?? ''
 movieData.value.country = props?.country ?? ''
 movieData.value.background_image = props?.background_image ?? null
 
@@ -123,7 +134,7 @@ const setImageData = async (data) => (tempImage.value = data)
 const handleAddMovie = async () => {
     movieData.value = {
         ...movieData.value,
-        watched_date: movieData.value.watched ? dayjs(new Date()).format('DD/MM/YYYY') : '',
+        watched_date: movieData.value.watched ? dayjs(new Date()).format('DD-MM-YYYY') : '',
     }
     if (props.poster_img)
         movieData.value.postImageUrl = `https://image.tmdb.org/t/p/w780${props.poster_img}`
@@ -146,15 +157,15 @@ const isSubmit = computed(() => {
     }
 })
 
-watch(
-    movieData,
-    (val) => {
-        if (val.country && val.type && val.name && val.year) {
-            isSubmit.value = true
-        }
-    },
-    { deep: true },
-)
+// watch(
+//     movieData,
+//     (val) => {
+//         if (val.country && val.type && val.name && val.year) {
+//             isSubmit.value = true
+//         }
+//     },
+//     { deep: true },
+// )
 </script>
 
 <style scoped>

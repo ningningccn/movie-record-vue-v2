@@ -19,9 +19,19 @@
 <script setup>
 import { ref } from 'vue'
 
+const props = defineProps({
+    current: {
+        type: Number,
+    },
+})
 const emit = defineEmits(['selected'])
 const isClick = ref(false)
 const mark = ref(0)
+
+if (props.current) {
+    mark.value = props.current
+    isClick.value = true
+}
 
 const ok = (n) => {
     isClick.value = !isClick.value

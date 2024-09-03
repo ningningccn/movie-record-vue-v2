@@ -5,8 +5,8 @@
             @click="isExpanded = !isExpanded"
         >
             <p>
-                類別
-                <span v-if="currCategoryLists.length > 0">({{ currCategoryLists.length }})</span>
+                產地
+                <span v-if="selectedLists.length > 0">({{ selectedLists.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -15,12 +15,12 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in dataList" :key="index" class="">
+                <div v-for="(item, index) in countryLists" :key="index" class="">
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
-                        @selected="setStatus"
-                        ref="categoryRef"
+                        @selected="setSelected"
+                        ref="countryRef"
                     />
                 </div>
             </div>
@@ -29,49 +29,44 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/ui/checkbox.vue'
 
-import { categoryTranslation } from '@/translation/category.js'
-
-const emit = defineEmits(['emitCurrCategory'])
+const emit = defineEmits(['selectedLists'])
 const props = defineProps({
-    categoryList: {
+    countryList: {
         type: Object,
     },
 })
 
-const dataList = computed(() => {
-    return props.categoryList.map((item) => {
-        return {
-            title: categoryTranslation[item],
-            slug: Number(item),
-        }
+const countryLists = computed(() => {
+    return props.countryList.map((item) => {
+        return { title: item, slug: item }
     })
 })
 
-const categoryRef = ref()
+const countryRef = ref()
 const isExpanded = ref(true)
-const currCategoryLists = reactive([])
+const selectedLists = reactive([])
 
-const setStatus = (data) => {
+const setSelected = (data) => {
     if (data == 'clear') {
-        currCategoryLists.length = 0
+        selectedLists.length = 0
     } else {
-        const index = currCategoryLists.indexOf(data.slug)
+        const index = selectedLists.indexOf(data.slug)
 
         if (index !== -1) {
-            currCategoryLists.splice(index, 1)
+            selectedLists.splice(index, 1)
         } else {
-            currCategoryLists.push(data.slug)
+            selectedLists.push(data.slug)
         }
-        emit('emitCurrCategory', currCategoryLists)
+        emit('selectedLists', selectedLists)
     }
 }
 
 const clearAllCheckbox = () => {
-    categoryRef.value.forEach((item) => {
+    countryRef.value.forEach((item) => {
         item.clearCheckbox()
     })
 }

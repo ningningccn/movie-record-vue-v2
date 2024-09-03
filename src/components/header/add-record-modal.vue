@@ -12,6 +12,7 @@
                         <Input :placeholder="'名稱'" v-model:text="movieData.name" />
                         <Input :placeholder="'年份'" v-model:text="movieData.year" />
                         <Input :placeholder="'產地'" v-model:text="movieData.country" />
+                        <Category v-model:category="movieData.categoryList" />
                     </div>
                     <UploadImage class="my-8" @imageData="setImageData" />
                     <div class="space-y-3">
@@ -49,6 +50,7 @@ import Checkbox from '@/components/header/checkbox.vue'
 import Star from '@/components/header/star.vue'
 import Select from '@/components/header/select.vue'
 import Calendar from '@/components/header/calendar.vue'
+import Category from '@/components/header/category.vue'
 
 import { addMovie, saveImageStorage } from '@/function/api'
 import dayjs from 'dayjs'
@@ -59,7 +61,7 @@ const myValue = ref('')
 const isSubmit = ref(false)
 
 const movieData = ref({
-    record_date: dayjs(new Date()).format('DD/MM/YYYY'),
+    record_date: dayjs(new Date()).format('DD-MM-YYYY'),
     type: '',
     name: '',
     year: '',
@@ -82,7 +84,7 @@ const setImageData = async (data) => (imageData.value = data)
 const handleAddMovie = async () => {
     movieData.value = {
         ...movieData.value,
-        watched_date: movieData.value.watched ? dayjs(new Date()).format('DD/MM/YYYY') : '',
+        watched_date: movieData.value.watched ? dayjs(new Date()).format('DD-MM-YYYY') : '',
     }
     movieData.value.postImageUrl = await saveImageStorage(imageData.value)
     await addMovie(movieData.value)

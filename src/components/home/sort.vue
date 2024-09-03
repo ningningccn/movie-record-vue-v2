@@ -17,32 +17,30 @@
                     class="text-body-m-medium text-left"
                     v-for="item in data"
                     :key="item.slug"
+                    @click="setOrdering(item.slug)"
                 >
                     {{ item.title }}
                 </button>
-                <!-- <button type="button" class="text-body-m-medium text-left">最新加入</button>
-                <button type="button" class="text-body-m-medium text-left">最舊加入</button> -->
             </div>
         </Collapse>
-        <div></div>
     </div>
-    <!-- <button @click="isExpanded = !isExpanded">Trigger</button>
-
-    <Collapse :when="isExpanded">
-        <p>{{ 'Collapsed '.repeat(100) }}</p>
-    </Collapse> -->
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { Collapse } from 'vue-collapsed'
 
+const emit = defineEmits(['order'])
 const isExpanded = ref(false)
 
 const data = [
-    { title: '最新加入', slug: 'latest' },
-    { title: '最舊加入', slug: 'old' },
+    { title: '最新加入', slug: 'desc' },
+    { title: '最舊加入', slug: 'asc' },
 ]
+
+const setOrdering = (slug) => {
+    emit('order', slug)
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -11,7 +11,7 @@
                     <div class="mt-[104px] text-center text-[32px] font-bold">用戶註冊</div>
                     <div class="mt-8 space-y-6">
                         <Input :placeholder="'帳戶名稱/電郵'" v-model:text="email" />
-                        <Input :placeholder="'密碼'" v-model:text="password" />
+                        <Input :placeholder="'密碼'" :type="'password'" v-model:text="password" />
                     </div>
                     <Button :text="'註冊'" class="mt-8" :disable="isValid" @click="register()" />
 

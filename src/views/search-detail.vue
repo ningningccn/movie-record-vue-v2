@@ -1,6 +1,8 @@
 <template>
-    <div class="relative">
-        <div class="z-5 relative flex h-[375px] items-end md:flex md:h-[500px] md:items-center">
+    <div class="relative mb-[60px]">
+        <div
+            class="z-5 relative flex h-[375px] items-end md:flex md:h-full md:min-h-[500px] md:items-center"
+        >
             <img
                 :src="`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`"
                 alt=""
@@ -14,65 +16,87 @@
                 v-else
             />
             <div class="bg-overlay absolute bottom-0 left-0 h-full w-[100%]"></div>
-            <div class="container relative hidden md:block">
+            <div class="container relative hidden md:block md:py-10">
                 <div class="w-[100%] md:w-[45%]">
                     <p class="text-heading-m">{{ data?.title ?? data?.name }}</p>
                     <p class="text-heading-s mt-1">
                         {{ data?.original_title ?? data?.original_name }}
                     </p>
-                    <div class="text-body-l mt-3 text-enable">
-                        <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
-                        <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
-                        <p>產地:{{ country }}</p>
-                        <p>
-                            類型:<span v-for="(item, index) in genresList" :key="index">
-                                {{ item.label }}
-                            </span>
-                        </p>
-                    </div>
-                    <button
-                        class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
-                        @click="openAddMovieModal()"
-                    >
-                        添加紀錄
-                    </button>
                 </div>
             </div>
         </div>
-        <section
-            class="md: container relative z-20 mt-[-150px] block translate-y-[110px] md:hidden md:translate-y-0"
-        >
+        <section class="container relative z-20 mt-[-40px] block md:hidden md:translate-y-0">
             <div class="w-[100%] md:w-[45%]">
                 <p class="text-heading-m">{{ data?.title ?? data?.name }}</p>
-                <p class="text-heading-s mt-1">{{ data?.original_title }}</p>
-                <div class="text-body-l mt-3 text-enable">
-                    <p>上映日期:{{ data?.release_date ?? data?.first_air_date }}</p>
-                    <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
-                    <p>產地:{{ country }}</p>
-                </div>
-                <button
-                    class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
-                >
-                    添加
-                </button>
+                <p class="text-heading-s mt-1">
+                    {{ data?.original_title ?? data?.original_name }}
+                </p>
             </div>
         </section>
 
-        <section class="container mt-10 translate-y-[110px] md:mt-20 md:hidden md:translate-y-0">
-            <div class="md:flex md:justify-between">
-                <div class="mx-auto w-[50%] md:ml-0 md:w-[30%] lg:w-[24%]">
+        <!-- <pre>
+                        {{ data }}
+                    </pre
+        > -->
+
+        <section class="container mt-10 md:mt-20">
+            <div class="items-center md:flex md:justify-between">
+                <div class="mx-auto w-full md:ml-0 md:w-[35%] lg:w-[30%]">
                     <img
                         :src="`https://image.tmdb.org/t/p/w780${data?.poster_path}`"
                         alt=""
                         class="rounded-[8px]"
                     />
                 </div>
-                <div class="mt-10 w-full md:mt-0 md:w-[66%]">
-                    {{ data?.overview }}
-                    <div></div>
+                <div class="mx-auto mt-10 w-full md:ml-auto md:mt-0 md:w-[55%]">
+                    <div class="mt-6">
+                        {{ data?.overview }}
+                    </div>
+                    <div class="mt-10 flex items-center justify-between">
+                        <div class="text-body-l mt-3 grid gap-y-2">
+                            <p>上映日期: {{ data?.release_date ?? data?.first_air_date }}</p>
+                            <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
+                            <p>
+                                類型:
+                                <span v-for="(item, index) in genresList" :key="index">
+                                    {{ item.label }}
+                                    <span v-show="index !== genresList.length - 1">, </span>
+                                </span>
+                            </p>
+                            <p>產地: {{ country }}</p>
+                        </div>
+                    </div>
+                    <!-- <div>
+                        <button
+                            class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
+                            @click="openAddMovieModal()"
+                        >
+                            添加
+                        </button>
+                    </div> -->
+                    <div>
+                        <button
+                            class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
+                            @click="openAddMovieModal()"
+                        >
+                            添加
+                        </button>
+                    </div>
                 </div>
             </div>
+            <!-- <div class="mx-auto mt-10 md:mt-20 md:w-full">
+                <div v-if="data?.overview">
+                    <div>
+                        {{ data?.overview }}
+                    </div>
+                </div>
+                <div v-else>no overview</div>
+            </div> -->
         </section>
+        <!-- seasons -->
+        <!-- <section class="container mt-10 md:mt-20">
+            {{ data?.seasons }}
+        </section> -->
     </div>
 </template>
 
@@ -98,8 +122,6 @@ const getData = async () => {
         params: params.value,
     })
     data.value = resData.data
-
-    // genres
     console.log(data.value)
 }
 
@@ -118,11 +140,12 @@ const openAddMovieModal = async () => {
     addMovieModal.patchOptions({
         attrs: {
             name: data.value?.title ?? data.value?.name,
+            original_name: data.value?.original_title ?? data.value?.original_name,
             year: data.value?.release_date ?? data.value?.first_air_date,
             country: country.value,
             poster_img: data.value?.poster_path,
             background_image: data.value?.backdrop_path
-                ? 'https://image.tmdb.org/t/p/w1280${data?.backdrop_path}'
+                ? `https://image.tmdb.org/t/p/w1280${data.value.backdrop_path}`
                 : null,
             genres: data.value?.genres,
             type: route.params.mediaType,

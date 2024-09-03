@@ -6,7 +6,7 @@
             @click="isShow = !isShow"
         >
             <p>
-                {{ dayjs(date).format('DD/MM/YYYY') }}
+                {{ dayjs(date).format('DD-MM-YYYY') }}
             </p>
             <i class="icon-calendar cursor-pointer text-[24px]"></i>
         </div>
@@ -32,7 +32,7 @@ const date = ref(new Date())
 const calendar = ref(null)
 
 watch(date, (val) => {
-    emit('selected', dayjs(val).format('DD/MM/YYYY'))
+    emit('selected', dayjs(val).format('DD-MM-YYYY'))
 })
 
 onClickOutside(calendar, (event) => (isShow.value = false))

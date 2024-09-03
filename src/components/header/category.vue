@@ -1,32 +1,32 @@
 <template>
-    <div v-if="categoryList.length > 0">
+    <div>
         <VueMultiselect
-            v-model="value"
-            :options="categoryList"
+            v-model="selectList"
+            :options="categoryArray"
             :multiple="true"
             :close-on-select="false"
             :clear-on-select="false"
             :preserve-search="true"
-            placeholder="Pick some"
+            placeholder="分類"
             label="label"
-            track-by="slug"
+            track-by="id"
+            selectedLabel="已選擇"
+            selectLabel="點擊選擇"
+            deselectLabel="點擊刪除"
         >
-            <!-- :selectLabel="'test'"
-            :selectedLabel="'已選擇'"
-            :deselectLabel="'點擊取消'" -->
             <template #selection="{ values, search, isOpen }">
                 <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
-                    >{{ values.length }} options selected</span
+                    >已選擇{{ values.length }}項</span
                 >
             </template>
+            <template #selectLabel="props"> 123 </template>
         </VueMultiselect>
-        <!-- <pre class="language-json"><code>{{ value }}</code></pre> -->
     </div>
 
     <div class="flex flex-wrap items-center gap-3">
         <div
             class="text-body-l-semibold flex items-center space-x-3 rounded-[8px] border border-enable px-2 py-1 text-enable"
-            v-for="item in value"
+            v-for="item in selectList"
             :key="item.slug"
         >
             {{ item.label }}
@@ -40,7 +40,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VueMultiselect from 'vue-multiselect'
-import { categoryTranslation } from '@/translation/category'
+import { categoryTranslation, categoryArray } from '@/translation/category'
 
 const props = defineProps({
     data: {
@@ -48,22 +48,23 @@ const props = defineProps({
     },
 })
 
-const value = defineModel('category')
+const selectList = defineModel('category')
 
-const categoryList = computed(() => {
-    return props.data?.map((item) => {
+if (props.data) {
+    const categoryList = props.data?.map((item) => {
         const label = categoryTranslation[item.id] ?? item.id
         return {
+            id: item.id,
             label,
-            slug: item.id,
         }
     })
-})
+    selectList.value = categoryList
+}
 
 const delCategory = (slug) => {
-    const indexToRemove = value.value.findIndex((item) => item.slug === slug)
+    const indexToRemove = selectList.value.findIndex((item) => item.slug === slug)
     if (indexToRemove !== -1) {
-        value.value.splice(indexToRemove, 1)
+        selectList.value.splice(indexToRemove, 1)
     }
 }
 </script>
@@ -103,5 +104,8 @@ const delCategory = (slug) => {
 
 :deep(.multiselect__option) {
     @apply flex items-center;
+}
+:deep(.multiselect__input) {
+    @apply text-white;
 }
 </style>

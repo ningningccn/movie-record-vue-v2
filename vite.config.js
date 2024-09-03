@@ -5,14 +5,15 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-    // base: './',
-    base: '/movie-record-vue-v2/',
-    plugins: [vue(), vueDevTools()],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-            '~': fileURLToPath(new URL('./src', import.meta.url)),
+export default defineConfig(({ mode }) => {
+    return {
+        base: mode === 'production' ? `/movie-record-vue-v2/` : '/',
+        plugins: [vue(), vueDevTools()],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url)),
+                '~': fileURLToPath(new URL('./src', import.meta.url)),
+            },
         },
-    },
+    }
 })

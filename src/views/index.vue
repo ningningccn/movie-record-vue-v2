@@ -1,29 +1,30 @@
 <template>
     <Category @selected="setType" />
     <div class="container">
-        <div class="text-body-l-semibold mt-[60px]">結果顯示: 第1-20個 (總共200個)</div>
+        <div class="text-body-l-semibold mt-[60px]">結果顯示:{{ movieList.length }}</div>
         <main class="mt-10 flex md:space-x-5">
             <div class="hidden min-w-[197px] max-w-[197px] md:block">
                 <div class="space-y-4">
-                    <Sort />
-                    <Filter />
+                    <Sort @order="setOrder" />
+                    <Filter
+                        @currStatusLists="setCurrStatusLists"
+                        @currYearLists="setCurrYearLists"
+                        @currCountryLists="setCurrCountryLists"
+                        @currCategoryLists="setCurrCategoryLists"
+                    />
                 </div>
             </div>
-            <div class="grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10">
-                <Card
-                    :data="item"
-                    class="col-span-2"
-                    v-for="(item, index) in movieList"
-                    :key="index"
-                />
-            </div>
-            <!-- <div class="relative flex w-[calc(100%-197px-80px)] flex-wrap space-x-5">
-                <div class="w-[20%]" v-for="(item, index) in 6">
-                    <Card :key="index" />
+            <div>
+                <div class="grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10">
+                    <Card
+                        :data="item"
+                        class="col-span-2"
+                        v-for="(item, index) in movieList"
+                        :key="index"
+                    />
                 </div>
-            </div> -->
+            </div>
         </main>
-        <!-- <Calendar v-model:date="date" /> -->
     </div>
 </template>
 
@@ -32,51 +33,53 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
-import Calendar from '@/components/header/calendar.vue'
+// import Calendar from '@/components/header/calendar.vue'
 
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { getMovieListApi } from '@/function/api'
 
-const date = ref(new Date())
-
+// const date = ref(new Date())
+const currType = ref('')
 const movieList = ref([])
+const filterList = reactive({
+    selectedStatusLists: [],
+    selectedYearLists: [],
+    selectedCountryLists: [],
+    selectedCategoryLists: [],
+    order: 'desc',
+})
 
-const getMovieList = async (slugType) => {
-    const dataDoc = await getMovieListApi(slugType)
+const getMovieList = async (slugType, opt) => {
+    const dataDoc = await getMovieListApi(slugType, opt)
     dataDoc.forEach((doc) => {
         movieList.value.push({ id: doc.id, movie: doc.data() })
     })
 }
 
+// init
+getMovieList(currType.value, filterList)
+
 const setType = (slug) => {
     movieList.value = []
-    getMovieList(slug)
+    currType.value = slug
+    getMovieList(currType.value, filterList)
 }
 
-getMovieList('')
+// emit
+const setOrder = (data) => (filterList.order = data)
+const setCurrStatusLists = (data) => (filterList.selectedStatusLists = data)
+const setCurrYearLists = (data) => (filterList.selectedYearLists = data)
+const setCurrCountryLists = (data) => (filterList.selectedCountryLists = data)
+const setCurrCategoryLists = (data) => (filterList.selectedCategoryLists = data)
 
-// 根據選擇的過濾選項應用過濾邏輯，例如從Firestore獲取數據
-// const db = this.$root.$options.provides.db
-// const collectionRef = db.collection('your_collection')
-
-// if (this.selectedOption === '全部') {
-//     // 獲取所有數據
-//     collectionRef.get().then((querySnapshot) => {
-//         querySnapshot.forEach((doc) => {
-//             console.log(doc.data())
-//         })
-//     })
-// } else {
-//     // 根據選擇的過濾選項進行過濾
-//     collectionRef
-//         .where('category', '==', this.selectedOption)
-//         .get()
-//         .then((querySnapshot) => {
-//             querySnapshot.forEach((doc) => {
-//                 console.log(doc.data())
-//             })
-//         })
-// }
+watch(
+    () => filterList,
+    (newValue, oldValue) => {
+        movieList.value = []
+        getMovieList(currType.value, filterList)
+    },
+    { deep: true },
+)
 </script>
 
 <style scoped></style>

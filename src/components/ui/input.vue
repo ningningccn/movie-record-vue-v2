@@ -1,6 +1,6 @@
 <template>
     <input
-        type="text"
+        :type="type"
         class="w-full border-b bg-transparent px-1 py-2 text-white placeholder:text-placeholder focus:outline-none"
         :placeholder="placeholder"
         v-model="text"
@@ -11,6 +11,10 @@
 const props = defineProps({
     placeholder: {
         type: String,
+    },
+    type: {
+        type: String,
+        default: 'text',
     },
 })
 const text = defineModel('text')

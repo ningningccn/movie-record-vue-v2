@@ -1,8 +1,8 @@
 <template>
     <div class="flex h-dvh flex-col">
-        <Header v-if="path !== '/login' && path !== '/register' && user" />
+        <Header v-show="path !== '/login' && path !== '/register' && user" />
         <div class="grow"><RouterView /></div>
-        <Footer v-if="path !== '/login' && path !== '/register' && user" />
+        <Footer v-show="path !== '/login' && path !== '/register' && user" />
         <ModalsContainer />
     </div>
 </template>

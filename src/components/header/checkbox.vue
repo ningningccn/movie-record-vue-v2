@@ -15,10 +15,15 @@ const props = defineProps({
     title: {
         type: String,
     },
+    current: {
+        type: Boolean,
+        default: () => false,
+    },
 })
+
 const emit = defineEmits(['selected'])
 
-const isCurrent = ref(false)
+const isCurrent = ref(props.current)
 const setCurrent = () => {
     isCurrent.value = !isCurrent.value
     emit('selected', isCurrent.value)

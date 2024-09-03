@@ -6,7 +6,7 @@
                     <button
                         v-for="(item, index) in data"
                         :key="item.slug"
-                        class="text-body-xl-medium relative px-6 py-4 text-enable md:px-[60px]"
+                        class="text-body-xl-medium relative px-6 py-4 text-enable hover:text-white md:px-[60px]"
                         :class="[{ 'text-white': currCategory == item.slug }, `btn-${index}`]"
                         @click="setCategory(item.slug, index, $event)"
                     >

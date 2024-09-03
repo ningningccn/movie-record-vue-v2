@@ -27,3 +27,8 @@ export const categoryTranslation = {
     10767: '脱口秀',
     10768: '戰爭與政治',
 }
+
+export const categoryArray = Object.entries(categoryTranslation).map(([id, label]) => ({
+    id: Number(id),
+    label,
+}))

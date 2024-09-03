@@ -1,8 +1,8 @@
 <template>
-    <div class="relative flex items-center justify-between">
-        <div class="group flex grow-0 items-center">
+    <div class="relative">
+        <div class="group flex items-center">
             <i class="icon-file-arrow-ip text-[24px]"></i>
-            <div class="dropdown-image group ml-2">
+            <div class="dropdown-image group ml-2 flex-1 px-2">
                 <p>
                     {{ fileName }}
                 </p>
@@ -10,12 +10,12 @@
                     <img :src="showImg" alt="" />
                 </div>
             </div>
+            <label class="cursor-pointer">
+                <p v-if="!showImg" class="text-primary">選擇圖片</p>
+                <p v-else class="text-primary">更換圖片</p>
+                <input type="file" accept="image/*" class="hidden" @change="handleFile" />
+            </label>
         </div>
-        <label class="grow-1 cursor-pointer">
-            <p v-if="!showImg" class="text-primary">選擇圖片</p>
-            <p v-else class="text-primary">更換圖片</p>
-            <input type="file" accept="image/*" class="hidden" @change="handleFile" />
-        </label>
     </div>
 </template>
 <script setup>
