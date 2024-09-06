@@ -21,7 +21,7 @@
                 :date="item?.first_air_date ?? item.release_date"
                 :mediaType="item.media_type"
                 @getDataId="goSearchDetailPage"
-                class="col-span-6 sm:col-span-4 md:col-span-4 lg:col-span-3 xl:col-span-2"
+                class="search-card col-span-6 sm:col-span-4 md:col-span-4 lg:col-span-3 xl:col-span-2"
             />
         </div>
         <div ref="infiniteRef"></div>
@@ -32,7 +32,7 @@
 import Search from '@/components/ui/search.vue'
 import SearchCard from '@/components/shared/search-card.vue'
 import { searchMovie } from '@/function/api'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useIntersectionObserver } from '@vueuse/core'
 
@@ -77,7 +77,6 @@ watch(
         } else {
             resultData.value = results
         }
-
         totalPages.value = total_pages
         totalResults.value = total_results
 

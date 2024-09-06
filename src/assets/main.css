@@ -38,6 +38,32 @@
     /* height: 100dvh; */
 }
 
+img[lazy='loading'] {
+    opacity: 0;
+}
+img[lazy='loaded'] {
+    opacity: 1;
+
+    @apply transition-opacity duration-1000;
+}
+
+/* .skeleton-card {
+    background: linear-gradient(
+            100deg,
+            rgba(256, 256, 256, 0) 30%,
+            rgba(256, 256, 256, 0.5) 50%,
+            rgba(256, 256, 256, 0) 30%
+        )
+        #737373;
+    background-size: 200% 100%;
+    background-position-x: 180%;
+    animation: 2s loading ease-in-out infinite;
+} */
+@keyframes loading {
+    to {
+        background-position-x: -20%;
+    }
+}
 /* #app {
     max-width: 1280px;
     margin: 0 auto;

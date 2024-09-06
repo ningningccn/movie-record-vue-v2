@@ -1,12 +1,12 @@
 <template>
-    <div class="border-b border-enable">
-        <div class="container">
-            <div class="flex items-center justify-center pt-6">
+    <div class="sticky top-0 z-10 bg-second" id="category-section">
+        <div class="container relative">
+            <div class="z-10 flex items-center justify-center pt-6">
                 <div class="relative">
                     <button
                         v-for="(item, index) in data"
                         :key="item.slug"
-                        class="text-body-xl-medium relative px-6 py-4 text-enable hover:text-white md:px-[60px]"
+                        class="text-body-xl-medium category-text relative px-6 py-4 text-enable hover:text-white md:px-[60px]"
                         :class="[{ 'text-white': currCategory == item.slug }, `btn-${index}`]"
                         @click="setCategory(item.slug, index, $event)"
                     >
@@ -23,12 +23,14 @@
                 </div>
             </div>
         </div>
+        <div class="border-b border-enable" id="category-bar"></div>
     </div>
 </template>
 
 <script setup>
 import { nextTick, ref, onMounted } from 'vue'
 import { useElementBounding } from '@vueuse/core'
+import gsap from 'gsap'
 
 const emit = defineEmits(['selected'])
 
@@ -64,9 +66,38 @@ const data = ref([
     },
 ])
 
+let t1 = gsap.timeline()
+const initGsap = () => {
+    t1.fromTo(
+        '#category-bar',
+        { width: 0, opacity: 0 },
+        {
+            duration: 0.5,
+            opacity: 1,
+            width: '100%',
+            onComplete: () => {
+                const btn_1_el = document.querySelector(`.btn-0`)
+                currWidth.value = btn_1_el.clientWidth
+            },
+        },
+    )
+    t1.fromTo(
+        '.category-text',
+        {
+            opacity: 0,
+            y: 10,
+        },
+        {
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.1,
+            y: 0,
+        },
+    )
+}
+
 onMounted(() => {
-    const btn_1_el = document.querySelector(`.btn-0`)
-    currWidth.value = btn_1_el.clientWidth
+    initGsap()
 })
 </script>
 

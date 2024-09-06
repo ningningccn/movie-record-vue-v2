@@ -2,9 +2,9 @@
     <RouterLink :to="`/list/${props.data.id}`" class="relative cursor-pointer">
         <div class="">
             <img
-                :src="data?.movie?.postImageUrl"
+                v-lazy="data?.movie?.postImageUrl"
                 alt=""
-                class="aspect-[3/4.3] rounded-[8px] object-cover"
+                class="aspect-[3/4.3] size-full rounded-[8px] object-cover"
             />
         </div>
         <div class="absolute left-0 top-0">

@@ -6,18 +6,13 @@
     <section>
         <div
             class="z-1 relative flex h-[375px] items-end md:flex md:h-full md:min-h-[500px] md:items-center"
+            id="backdrop"
         >
             <img
-                :src="data?.background_image"
+                :src="data?.background_image ?? data?.postImageUrl"
                 alt=""
                 class="absolute inset-0 size-full object-cover"
-                v-if="data?.background_image"
-            />
-            <img
-                :src="data?.postImageUrl"
-                alt=""
-                class="absolute inset-0 size-full object-cover"
-                v-else
+                v-if="data?.background_image ?? data?.postImageUrl"
             />
             <div class="bg-overlay absolute bottom-0 left-0 h-full w-[100%]"></div>
             <div class="container relative z-10">
@@ -33,37 +28,42 @@
     <section class="mb-20 mt-10 md:mt-20">
         <div class="container">
             <div class="relative z-10 w-full items-center justify-between md:flex">
-                <div class="mx-auto w-full md:ml-0 md:w-[35%]"> 
+                <div class="mx-auto w-full md:ml-0 md:w-[35%]" id="poster">
                     <img :src="data?.postImageUrl" alt="" class="rounded-[8px]" />
                 </div>
 
                 <div class="w-full md:w-[55%]">
                     <div
-                        class="text-body-s-medium mt-6 w-fit rounded-[4px] bg-primary px-1 py-[2px] text-second md:mt-0"
+                        class="text-body-s-medium info-anim mt-6 w-fit rounded-[4px] bg-primary px-1 py-[2px] text-second md:mt-0"
                         v-if="data?.watched"
+                        id="watched-wrap"
                     >
                         已觀看
                     </div>
-                    <div class="text-body-l mt-3 grid gap-y-2">
-                        <p>上映年份: {{ data?.year }}</p>
-                        <p>記錄日期: {{ data?.record_date }}</p>
-                        <p v-if="data?.watched">觀看日期: {{ data?.watched_date }}</p>
-                        <p>種類: {{ type }}</p>
-                        <p>
+                    <div class="text-body-l mt-3 grid gap-y-2" id="info-wrap">
+                        <p class="info-anim" v-if="data?.year">上映年份: {{ data?.year }}</p>
+                        <p class="info-anim" v-if="data?.record_date">
+                            記錄日期: {{ data?.record_date }}
+                        </p>
+                        <p class="info-anim" v-if="data?.watched">
+                            觀看日期: {{ data?.watched_date }}
+                        </p>
+                        <p class="info-anim" v-if="data?.type">種類: {{ type }}</p>
+                        <p class="info-anim" v-if="data?.categoryList">
                             分類:
                             <span v-for="item in data?.categoryList" :key="item"
                                 >{{ item.label }},</span
                             >
                         </p>
-                        <p>產地: {{ data?.country }}</p>
+                        <p class="info-anim" v-if="data?.country">產地: {{ data?.country }}</p>
                     </div>
-                    <div class="mt-6 flex items-center">
+                    <div class="info-anim mt-6 flex items-center" id="star-wrap">
                         <div v-for="(item, index) in 5" :key="index">
                             <i class="icon-star-fill text-[24px]" v-if="item <= data?.mark"></i>
                             <i class="icon-star text-[24px]" v-if="item > data?.mark"></i>
                         </div>
                     </div>
-                    <div class="mt-6 flex space-x-6 text-[32px]">
+                    <div class="info-anim info-anim mt-6 flex space-x-6 text-[32px] opacity-0">
                         <button
                             @click="updateFav()"
                             class="transition-transform duration-200 hover:scale-125"
@@ -93,8 +93,10 @@
 <script setup>
 import { useModal } from 'vue-final-modal'
 import { searchMovieDetail } from '@/function/api'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
+import gsap from 'gsap'
+
 import { getMovieDetail, editMovieDetail, deleteMovieDetail } from '@/function/api'
 
 import editMovie from '@/components/list/edit-movie-modal.vue'
@@ -151,8 +153,70 @@ const deleteData = async () => {
     await deleteMovieDetail(route.params.id)
 }
 
+let t1 = gsap.timeline()
+
+const initGsap = async () => {
+    t1.fromTo(
+        '#backdrop',
+        {
+            opacity: 0,
+        },
+        {
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+    t1.fromTo(
+        '#backdrop p',
+        {
+            opacity: 0,
+            x: 200,
+        },
+        {
+            x: 0,
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.2,
+        },
+        '-=0.5',
+    )
+    t1.fromTo(
+        '#poster',
+        {
+            opacity: 0,
+            // x: -100,
+            scale: 0.5,
+        },
+        {
+            x: 0,
+            duration: 1,
+            scale: 1,
+            opacity: 1,
+        },
+        '-=0.3',
+    )
+    t1.fromTo(
+        '.info-anim',
+        {
+            opacity: 0,
+            x: 100,
+        },
+        {
+            x: 0,
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.1,
+        },
+        '-=1',
+    )
+}
+
 onMounted(async () => {
     data.value = await getMovieDetail(route.params.id)
+    nextTick(async () => {
+        await initGsap()
+    })
 })
 </script>
 

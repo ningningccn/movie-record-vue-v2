@@ -1,12 +1,16 @@
 <template>
     <Category @selected="setType" />
-    <div class="container">
-        <div class="text-body-l-semibold mt-[60px]">結果顯示:{{ movieList.length }}</div>
-        <main class="mt-10 flex md:space-x-5">
+    <div class="container mb-20">
+        <!-- <div class="text-body-l-semibold card mt-[60px]" ref="test">
+            結果顯示:{{ movieList.length }}
+        </div> -->
+
+        <main class="mt-20 flex md:space-x-5">
             <div class="hidden min-w-[197px] max-w-[197px] md:block">
                 <div class="space-y-4">
-                    <Sort @order="setOrder" />
+                    <Sort @order="setOrder" class="an-sidebar" />
                     <Filter
+                        class="an-sidebar"
                         @currStatusLists="setCurrStatusLists"
                         @currYearLists="setCurrYearLists"
                         @currCountryLists="setCurrCountryLists"
@@ -15,10 +19,12 @@
                 </div>
             </div>
             <div>
-                <div class="grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10">
+                <div
+                    class="card-wrap grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10"
+                >
                     <Card
                         :data="item"
-                        class="col-span-2"
+                        class="card col-span-2"
                         v-for="(item, index) in movieList"
                         :key="index"
                     />
@@ -33,10 +39,13 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+gsap.registerPlugin(ScrollTrigger)
 // import Calendar from '@/components/header/calendar.vue'
 
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted, nextTick } from 'vue'
 import { getMovieListApi } from '@/function/api'
+import gsap from 'gsap'
 
 // const date = ref(new Date())
 const currType = ref('')
@@ -80,6 +89,33 @@ watch(
     },
     { deep: true },
 )
+
+const t1 = gsap.timeline()
+const initGsap = () => {
+    t1.fromTo(
+        '.an-sidebar',
+        {
+            display: 'hidden',
+            x: -100,
+            opacity: 0,
+        },
+        {
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.2,
+            delay: 0.5,
+            x: 0,
+            display: 'block',
+        },
+    )
+}
+
+const test = ref(null)
+gsap.registerPlugin(ScrollTrigger)
+
+onMounted(async () => {
+    await initGsap()
+})
 </script>
 
 <style scoped></style>
