@@ -1,9 +1,10 @@
 <template>
     <div class="container h-full pt-[60px]" ref="pageViewRef">
-        <Search v-model:search="search" @searchClick="handleSearchMovie" />
+        <Search v-model:search="search" @searchClick="handleSearchMovie" id="search-bar" />
         <div class="flex-center h-full" v-if="resultData.length == 0">
             <p
                 class="text-body-xxl-medium flex items-center justify-center text-center text-enable"
+                id="no-result"
             >
                 暫未搜尋到任何結果
             </p>
@@ -35,6 +36,7 @@ import { searchMovie } from '@/function/api'
 import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useIntersectionObserver } from '@vueuse/core'
+import gsap from 'gsap'
 
 const router = useRouter()
 const route = useRoute()
@@ -99,7 +101,6 @@ const { isActive, pause, resume } = useIntersectionObserver(
         if (isIntersecting) {
             params.value.page++
         }
-
         // if (isFirst.value == false && hasNextPage.value) {
         //     params.value.page++
         //     isVisible.value = isIntersecting
@@ -112,9 +113,27 @@ const { isActive, pause, resume } = useIntersectionObserver(
 
 const goSearchDetailPage = () => {}
 
+let t1 = gsap.timeline()
+const initGsap = async () => {
+    t1.fromTo(
+        '#search-bar, #no-result',
+        {
+            opacity: 0,
+        },
+        {
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+            stagger: 0.2,
+        },
+    )
+}
+
 onMounted(async () => {
     params.value.query = route?.query?.q
     search.value = route?.query?.q
+    await nextTick()
+    await initGsap()
 })
 </script>
 

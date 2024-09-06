@@ -4,7 +4,6 @@
         <!-- <div class="text-body-l-semibold card mt-[60px]" ref="test">
             結果顯示:{{ movieList.length }}
         </div> -->
-
         <main class="mt-20 flex md:space-x-5">
             <div class="hidden min-w-[197px] max-w-[197px] md:block">
                 <div class="space-y-4">
@@ -18,9 +17,10 @@
                     />
                 </div>
             </div>
-            <div>
+            <div class="w-full">
                 <div
                     class="card-wrap grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10"
+                    id="card-wrap"
                 >
                     <Card
                         :data="item"
@@ -28,6 +28,12 @@
                         v-for="(item, index) in movieList"
                         :key="index"
                     />
+                </div>
+                <div
+                    class="text-heading-s flex size-full items-center justify-center"
+                    v-if="movieList.length == 0"
+                >
+                    尚無資料
                 </div>
             </div>
         </main>
@@ -108,9 +114,27 @@ const initGsap = () => {
             display: 'block',
         },
     )
+
+    // t1.fromTo(
+    //     '#card-watched-wrap',
+    //     {
+    //         x: -200,
+    //     },
+    //     {
+    //         x: 0,
+    //     },
+    // )
+    // t1.fromTo(
+    //     '#card-wrap',
+    //     { opacity: 0, x: 100 },
+    //     {
+    //         duration: 0.7,
+    //         opacity: 1,
+    //         x: 0,
+    //     },
+    // )
 }
 
-const test = ref(null)
 gsap.registerPlugin(ScrollTrigger)
 
 onMounted(async () => {

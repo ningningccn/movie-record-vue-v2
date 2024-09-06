@@ -1,5 +1,10 @@
 <template>
-    <VueFinalModal modal-id="add-movie-id" content-class="absolute inset-0  bg-[#30313299]">
+    <VueFinalModal
+        modal-id="add-movie-id"
+        content-class="absolute inset-0  bg-[#30313299]"
+        :content-transition="'vfm-fade'"
+        :overlay-transition="'vfm-fade'"
+    >
         <!-- !test -->
         <!-- <pre>
             <code>{{ movieData }}</code>

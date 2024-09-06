@@ -2,6 +2,7 @@
     <div class="relative mb-[60px]">
         <div
             class="z-5 relative flex h-[375px] items-end md:flex md:h-full md:min-h-[500px] md:items-center"
+            id="backdrop-wrap"
         >
             <img
                 :src="`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`"
@@ -41,7 +42,7 @@
 
         <section class="container mt-10 md:mt-20">
             <div class="items-center md:flex md:justify-between">
-                <div class="mx-auto w-full md:ml-0 md:w-[35%] lg:w-[30%]">
+                <div class="mx-auto w-full md:ml-0 md:w-[35%] lg:w-[30%]" id="poster">
                     <img
                         :src="`https://image.tmdb.org/t/p/w780${data?.poster_path}`"
                         alt=""
@@ -49,21 +50,23 @@
                     />
                 </div>
                 <div class="mx-auto mt-10 w-full md:ml-auto md:mt-0 md:w-[55%]">
-                    <div class="mt-6">
+                    <div class="info-anim mt-6">
                         {{ data?.overview }}
                     </div>
                     <div class="mt-10 flex items-center justify-between">
                         <div class="text-body-l mt-3 grid gap-y-2">
-                            <p>上映日期: {{ data?.release_date ?? data?.first_air_date }}</p>
-                            <p v-if="data?.runtime">片長:{{ data?.runtime }}分鐘</p>
-                            <p>
+                            <p class="info-anim">
+                                上映日期: {{ data?.release_date ?? data?.first_air_date }}
+                            </p>
+                            <p class="info-anim">片長:{{ data?.runtime }}分鐘</p>
+                            <p class="info-anim">
                                 類型:
                                 <span v-for="(item, index) in genresList" :key="index">
                                     {{ item.label }}
                                     <span v-show="index !== genresList.length - 1">, </span>
                                 </span>
                             </p>
-                            <p>產地: {{ country }}</p>
+                            <p class="info-anim">產地: {{ country }}</p>
                         </div>
                     </div>
                     <!-- <div>
@@ -74,7 +77,7 @@
                             添加
                         </button>
                     </div> -->
-                    <div>
+                    <div class="info-anim">
                         <button
                             class="text-body-l-semibold mt-[24px] w-full rounded-[8px] border border-primary py-2 text-center text-primary md:max-w-[329px]"
                             @click="openAddMovieModal()"
@@ -105,11 +108,12 @@ import { countryTranslate } from '@/map-data/country'
 import { categoryTranslation } from '@/translation/category.js'
 import { useModal } from 'vue-final-modal'
 import { searchMovieDetail } from '@/function/api'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import AddMovie from '@/components/search/add-movie-modal.vue'
 import Category from '@/components/header/category.vue'
 import { genresT } from '@/function/translation'
+import gsap from 'gsap'
 
 const route = useRoute()
 const data = ref()
@@ -161,6 +165,68 @@ const country = computed(() => {
     const originCountry = data.value?.origin_country[0]
     if (countryTranslate.hasOwnProperty(originCountry)) return countryTranslate[originCountry]
     else return originCountry
+})
+
+let t1 = gsap.timeline()
+const initGsap = async () => {
+    t1.fromTo(
+        '#backdrop-wrap',
+        {
+            opacity: 0,
+        },
+        {
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+    t1.fromTo(
+        '#backdrop-wrap p',
+        {
+            opacity: 0,
+            x: 200,
+        },
+        {
+            x: 0,
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.2,
+        },
+        '-=0.5',
+    )
+    t1.fromTo(
+        '#poster',
+        {
+            opacity: 0,
+            // x: -100,
+            scale: 0.5,
+        },
+        {
+            x: 0,
+            duration: 1,
+            scale: 1,
+            opacity: 1,
+        },
+    )
+    t1.fromTo(
+        '.info-anim',
+        {
+            opacity: 0,
+            x: 100,
+        },
+        {
+            x: 0,
+            duration: 0.5,
+            opacity: 1,
+            stagger: 0.1,
+        },
+        '-=1',
+    )
+}
+
+onMounted(async () => {
+    await nextTick()
+    await initGsap()
 })
 </script>
 

@@ -1,5 +1,10 @@
 <template>
-    <VueFinalModal modal-id="add-record-id" class="absolute inset-0 bg-[#30313299]">
+    <VueFinalModal
+        modal-id="add-record-id"
+        class="absolute inset-0 bg-[#30313299]"
+        :content-transition="'vfm-fade'"
+        :overlay-transition="'vfm-fade'"
+    >
         <div class="absolute inset-0 h-full overflow-auto">
             <div
                 class="main-gradient relative mx-auto mt-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"

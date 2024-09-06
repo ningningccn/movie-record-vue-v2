@@ -30,8 +30,8 @@
             :key="item.slug"
         >
             {{ item.label }}
-            <button type="button" @click="delCategory(item?.slug)">
-                <i class="icon-close text-[16px]"></i>
+            <button type="button" class="flex" @click="delCategory(item?.slug)">
+                <i class="icon-tag-close  ml-[10px]"></i>
             </button>
         </div>
     </div>

@@ -43,11 +43,10 @@ img[lazy='loading'] {
 }
 img[lazy='loaded'] {
     opacity: 1;
-
-    @apply transition-opacity duration-1000;
+    @apply transition-all duration-500 hover:scale-110;
 }
 
-/* .skeleton-card {
+.skeleton-card {
     background: linear-gradient(
             100deg,
             rgba(256, 256, 256, 0) 30%,
@@ -58,7 +57,7 @@ img[lazy='loaded'] {
     background-size: 200% 100%;
     background-position-x: 180%;
     animation: 2s loading ease-in-out infinite;
-} */
+}
 @keyframes loading {
     to {
         background-position-x: -20%;

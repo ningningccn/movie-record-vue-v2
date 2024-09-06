@@ -110,7 +110,6 @@ export const createAccount = (email, password) => {
 }
 
 export const getMovieListApi = async (slug, opt) => {
-    console.log(opt)
     const {
         selectedStatusLists,
         selectedYearLists,
@@ -158,7 +157,7 @@ export const getMovieListApi = async (slug, opt) => {
     // asc
     const querySnapshot = await getDocs(q)
 
-    console.log(querySnapshot);
+    console.log(querySnapshot)
     return querySnapshot.docs
 }
 

@@ -13,7 +13,7 @@
                         <Input :placeholder="'帳戶名稱/電郵'" v-model:text="email" />
                         <Input :placeholder="'密碼'" :type="'password'" v-model:text="password" />
                     </form>
-                    <div class="text-body-s text-error mt-2" v-if="errorMessage">
+                    <div class="text-body-s mt-2 text-error" v-if="errorMessage">
                         {{ errorMessage }}
                     </div>
                     <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
@@ -34,8 +34,10 @@
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { createAccount, loginAccount } from '@/function/api'
+
+import gsap from 'gsap'
 
 const email = ref('')
 const password = ref('')
@@ -51,6 +53,38 @@ const login = async () => {
         errorMessage.value = '身份驗證/無效憑證'
     }
 }
+let t1 = gsap.timeline()
+const initGsap = async () => {
+    t1.fromTo(
+        '.bg',
+        {
+            opacity: 0,
+        },
+        {
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+    t1.fromTo(
+        '.main-wrap',
+        {
+            opacity: 0,
+            yPercent: -100,
+        },
+        {
+            yPercent: 0,
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+}
+
+onMounted(async () => {
+    await nextTick()
+    await initGsap()
+})
 </script>
 
 <style scoped>

@@ -26,6 +26,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-mobile-menu:before {
+    content: '\e915';
+    color: #fff;
+}
+.icon-tag-close:before {
+    content: '\e914';
+    color: #777;
+}
 .icon-check:before {
     content: '\e912';
 }

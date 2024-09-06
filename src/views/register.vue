@@ -29,8 +29,10 @@
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { createAccount } from '@/function/api'
+
+import gsap from 'gsap'
 
 const email = ref('')
 const password = ref('')
@@ -42,6 +44,39 @@ const isValid = computed(() => {
 const register = () => {
     createAccount(email.value, password.value)
 }
+
+let t1 = gsap.timeline()
+const initGsap = async () => {
+    t1.fromTo(
+        '.bg',
+        {
+            opacity: 0,
+        },
+        {
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+    t1.fromTo(
+        '.main-wrap',
+        {
+            opacity: 0,
+            yPercent: -100,
+        },
+        {
+            yPercent: 0,
+            duration: 1,
+            delay: 0,
+            opacity: 1,
+        },
+    )
+}
+
+onMounted(async () => {
+    await nextTick()
+    await initGsap()
+})
 </script>
 
 <style scoped>

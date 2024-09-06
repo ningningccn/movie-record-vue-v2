@@ -1,13 +1,13 @@
 <template>
-    <RouterLink :to="`/list/${props.data.id}`" class="relative cursor-pointer">
-        <div class="">
+    <RouterLink :to="`/list/${props.data.id}`" class="relative cursor-pointer overflow-hidden">
+        <div class="skeleton-card relative aspect-[3/4.3] overflow-hidden rounded-[8px]">
             <img
                 v-lazy="data?.movie?.postImageUrl"
                 alt=""
-                class="aspect-[3/4.3] size-full rounded-[8px] object-cover"
+                class="absolute aspect-[3/4.3] size-full cursor-pointer rounded-[8px] object-cover"
             />
         </div>
-        <div class="absolute left-0 top-0">
+        <div class="absolute left-0 top-0" id="card-watched-wrap">
             <div
                 class="text-body-s-medium rounded-[4px] bg-primary px-1 py-[2px] text-second"
                 v-if="data?.movie?.watched"
@@ -39,9 +39,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
+import gsap from 'gsap'
 
 const props = defineProps({
     data: {
@@ -49,7 +49,45 @@ const props = defineProps({
     },
 })
 
+const router = useRouter()
+
+const t1 = gsap.timeline()
+const initGsap = () => {
+    t1.fromTo(
+        '#card-watched-wrap',
+        {
+            x: -200,
+        },
+        {
+            x: 0,
+            delay: 0.5,
+        },
+    )
+}
+
 const year = computed(() => props?.data?.movie?.year.slice(0, 4))
+
+onMounted(async () => {
+    await initGsap()
+})
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.skeleton-card {
+    background: linear-gradient(
+            100deg,
+            rgba(256, 256, 256, 0) 30%,
+            rgba(256, 256, 256, 0.5) 50%,
+            rgba(256, 256, 256, 0) 30%
+        )
+        #737373;
+    background-size: 200% 100%;
+    background-position-x: 180%;
+    animation: 2s loading ease-in-out infinite;
+}
+@keyframes loading {
+    to {
+        background-position-x: -20%;
+    }
+}
+</style>

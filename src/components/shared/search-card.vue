@@ -1,17 +1,10 @@
 <template>
-    <div class="relative rounded-[8px]" @click="goSearchDetailPage()">
-        <div class="overflow-hidden rounded-[8px]">
-            <div
-                class="skeleton-card aspect-[3/4.3] cursor-pointer object-cover"
-                v-show="!isLoaded"
-            />
+    <div class="relative overflow-hidden rounded-[8px]" @click="goSearchDetailPage()">
+        <div class="skeleton-card relative aspect-[3/4.3] overflow-hidden rounded-[8px]">
             <img
-                :src="imgUrl"
+                v-lazy="imgUrl"
                 alt=""
-                @load="imageLoad()"
-                class="aspect-[3/4.3] cursor-pointer object-cover opacity-0 transition-transform duration-500 hover:scale-110"
-                :class="{ 'opacity-100 transition-opacity duration-1000': isLoaded }"
-                v-show="isLoaded"
+                class="absolute aspect-[3/4.3] size-full cursor-pointer rounded-[8px] object-cover"
             />
         </div>
         <div class="absolute left-0 top-0">

@@ -6,6 +6,7 @@
             class="text-body-xxl-medium ml-4 w-full bg-transparent text-white placeholder:text-enable focus:outline-none"
             placeholder="輸入關鍵字"
             v-model="search"
+            ref="searchInputRef"
             @keyup.enter="emit('searchClick')"
         />
         <div class="overflow-hidden">
@@ -24,10 +25,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 const emit = defineEmits(['searchClick'])
 const search = defineModel('search')
 const showClose = ref(false)
+const searchInputRef = ref(null)
 watch(
     () => search.value,
     (newValue) => {
@@ -36,6 +38,10 @@ watch(
     },
 )
 const clearSearch = () => (search.value = '')
+
+onMounted(() => {
+    searchInputRef.value.focus()
+})
 </script>
 
 <style lang="scss" scoped></style>

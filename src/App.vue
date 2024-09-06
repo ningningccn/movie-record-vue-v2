@@ -1,6 +1,6 @@
 <template>
     <div class="flex h-dvh flex-col">
-        <Header v-show="path !== '/login' && path !== '/register' && user" />
+        <Header v-if="path !== '/login' && path !== '/register' && user" />
         <div class="grow"><RouterView /></div>
         <Footer v-show="path !== '/login' && path !== '/register' && user" />
         <ModalsContainer />
@@ -19,28 +19,16 @@ import { getUserState } from '@/function/api'
 const router = useRouter()
 const route = useRoute()
 
-const path = computed(() => {
-    console.log(route.path)
-    return route.path
-})
 const user = ref(null)
-onMounted(async () => {
-    user.value = await getUserState()
+const path = computed(async () => {
+    console.log(route.path)
+    try {
+        user.value = await getUserState()
+    } catch (e) {
+        user.value = e
+    }
+    return route.path
 })
 </script>
 
-<style scoped>
-/* .main {
-    height: 100svh;
-    display: flex;
-    flex-direction: column;
-    padding-top: 120px;
-} */
-/* main {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-} */
-</style>
+<style scoped></style>
