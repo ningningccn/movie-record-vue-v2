@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     return {
-        base: mode === 'production' ? `./` : '/',
+        base: mode === 'production' ? `/movie-record-vue-v2/` : '/',
         plugins: [vue(), vueDevTools()],
         resolve: {
             alias: {
