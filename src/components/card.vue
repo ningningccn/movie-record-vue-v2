@@ -50,6 +50,7 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const isLoaded = ref(false)
 
 const t1 = gsap.timeline()
 const initGsap = () => {
@@ -72,22 +73,4 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
-.skeleton-card {
-    background: linear-gradient(
-            100deg,
-            rgba(256, 256, 256, 0) 30%,
-            rgba(256, 256, 256, 0.5) 50%,
-            rgba(256, 256, 256, 0) 30%
-        )
-        #737373;
-    background-size: 200% 100%;
-    background-position-x: 180%;
-    animation: 2s loading ease-in-out infinite;
-}
-@keyframes loading {
-    to {
-        background-position-x: -20%;
-    }
-}
-</style>
+<style scoped></style>

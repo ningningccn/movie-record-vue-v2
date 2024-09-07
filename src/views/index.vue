@@ -31,9 +31,10 @@
                 </div>
                 <div
                     class="text-heading-s flex size-full items-center justify-center"
-                    v-if="movieList.length == 0"
+                    v-if="movieList.length == 0 || isLoading"
                 >
-                    尚無資料
+                    <Loading v-show="isLoading" />
+                    <div v-if="movieList.length == 0 && !isLoading">尚無資料</div>
                 </div>
             </div>
         </main>
@@ -45,6 +46,7 @@ import Category from '@/components/home/category.vue'
 import Sort from '@/components/home/sort.vue'
 import Filter from '@/components/home/filter.vue'
 import Card from '@/components/card.vue'
+import Loading from '@/components/shared/loading.vue'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 // import Calendar from '@/components/header/calendar.vue'
@@ -54,6 +56,8 @@ import { getMovieListApi } from '@/function/api'
 import gsap from 'gsap'
 
 // const date = ref(new Date())
+
+const isLoading = ref(false)
 const currType = ref('')
 const movieList = ref([])
 const filterList = reactive({
@@ -65,10 +69,12 @@ const filterList = reactive({
 })
 
 const getMovieList = async (slugType, opt) => {
+    isLoading.value = true
     const dataDoc = await getMovieListApi(slugType, opt)
     dataDoc.forEach((doc) => {
         movieList.value.push({ id: doc.id, movie: doc.data() })
     })
+    isLoading.value = false
 }
 
 // init

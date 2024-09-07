@@ -7,11 +7,6 @@
                 class="absolute aspect-[3/4.3] size-full cursor-pointer rounded-[8px] object-cover"
             />
         </div>
-        <div class="absolute left-0 top-0">
-            <!-- <div class="text-body-s-medium rounded-[4px] bg-primary px-1 py-[2px] text-second">
-                已觀看
-            </div> -->
-        </div>
         <div>
             <div class="mt-2 flex justify-between">
                 <div class="text-body-m-medium">{{ title }}</div>
@@ -58,8 +53,6 @@ const imgUrl = computed(() => {
     return props.poster ? `https://image.tmdb.org/t/p/w500${props.poster}` : ''
 })
 const type = computed(() => (props.mediaType == 'tv' ? '電視劇' : '電影'))
-
-const isLoaded = ref(false)
 const router = useRouter()
 
 const goSearchDetailPage = () => {
@@ -71,27 +64,6 @@ const goSearchDetailPage = () => {
         },
     })
 }
-const imageLoad = () => {
-    isLoaded.value = true
-}
 </script>
 
-<style scoped>
-.skeleton-card {
-    background: linear-gradient(
-            100deg,
-            rgba(256, 256, 256, 0) 30%,
-            rgba(256, 256, 256, 0.5) 50%,
-            rgba(256, 256, 256, 0) 30%
-        )
-        #737373;
-    background-size: 200% 100%;
-    background-position-x: 180%;
-    animation: 2s loading ease-in-out infinite;
-}
-@keyframes loading {
-    to {
-        background-position-x: -20%;
-    }
-}
-</style>
+<style scoped></style>

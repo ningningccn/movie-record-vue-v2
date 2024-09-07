@@ -1,10 +1,12 @@
 <template>
     <div class="container h-full pt-[60px]" ref="pageViewRef">
         <Search v-model:search="search" @searchClick="handleSearchMovie" id="search-bar" />
-        <div class="flex-center h-full" v-if="resultData.length == 0">
+        <div class="flex-center h-full" v-if="resultData.length == 0 || isLoading">
+            <Loading v-show="isLoading" />
             <p
                 class="text-body-xxl-medium flex items-center justify-center text-center text-enable"
                 id="no-result"
+                v-if="resultData.length == 0 && !isLoading"
             >
                 暫未搜尋到任何結果
             </p>
@@ -32,6 +34,7 @@
 <script setup>
 import Search from '@/components/ui/search.vue'
 import SearchCard from '@/components/shared/search-card.vue'
+import Loading from '@/components/shared/loading.vue'
 import { searchMovie } from '@/function/api'
 import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -40,6 +43,8 @@ import gsap from 'gsap'
 
 const router = useRouter()
 const route = useRoute()
+
+const isLoading = ref(false)
 
 const search = ref('')
 const resultData = ref([])
@@ -68,6 +73,7 @@ const handleSearchMovie = async () => {
 watch(
     () => params.value,
     async (newValue, oldValue) => {
+        isLoading.value = true
         const resData = await searchMovie({
             params: params.value,
         })
@@ -81,6 +87,8 @@ watch(
         }
         totalPages.value = total_pages
         totalResults.value = total_results
+
+        isLoading.value = false
 
         if (page === total_pages) {
             hasNextPage.value = false
