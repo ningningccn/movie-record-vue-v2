@@ -1,10 +1,10 @@
 <template>
-    <div class="relative overflow-hidden rounded-[8px]" @click="goSearchDetailPage()">
+    <div class="relative overflow-hidden" @click="goSearchDetailPage()">
         <div class="skeleton-card relative aspect-[3/4.3] overflow-hidden rounded-[8px]">
             <img
                 v-lazy="imgUrl"
                 alt=""
-                class="absolute aspect-[3/4.3] size-full cursor-pointer rounded-[8px] object-cover"
+                class="absolute aspect-[3/4.3] size-full cursor-pointer object-cover"
             />
         </div>
         <div>
