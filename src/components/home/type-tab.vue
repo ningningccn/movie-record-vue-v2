@@ -10,10 +10,6 @@
                         :class="[{ 'text-white': currCategory == item.slug }, `btn-${index}`]"
                         @click="setCategory(item.slug, index, $event)"
                     >
-                        <!-- <div
-                            class="absolute bottom-0 left-0 h-[3px] w-full"
-                            :class="{ 'bg-primary': currCategory == item.slug }"
-                        ></div> -->
                         {{ item.title }}
                     </button>
                     <div
@@ -61,8 +57,8 @@ const data = ref([
         slug: 'tv',
     },
     {
-        title: '綜藝',
-        slug: 'show',
+        title: '動漫',
+        slug: 'cartoon',
     },
 ])
 

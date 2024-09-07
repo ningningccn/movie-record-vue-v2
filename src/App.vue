@@ -11,10 +11,10 @@
 import { ModalsContainer } from 'vue-final-modal'
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
-import Header from '@/components/the-header.vue'
-import Footer from '@/components/the-footer.vue'
+import Header from '@/components/global/header.vue'
+import Footer from '@/components/global/footer.vue'
 
-import { getUserState } from '@/function/api'
+import { getUserState } from '@/api/api.js'
 
 const router = useRouter()
 const route = useRoute()

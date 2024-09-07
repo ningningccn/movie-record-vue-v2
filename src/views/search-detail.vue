@@ -104,14 +104,14 @@
 </template>
 
 <script setup>
-import { countryTranslate } from '@/map-data/country'
+import { countryTranslate } from '@/translation/country'
 import { categoryTranslation } from '@/translation/category.js'
 import { useModal } from 'vue-final-modal'
-import { searchMovieDetail } from '@/function/api'
+import { searchMovieDetail } from '@/api/api.js'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import AddMovie from '@/components/search/add-movie-modal.vue'
-import Category from '@/components/header/category.vue'
+import AddMovie from '@/components/search/search-add-modal.vue'
+import Category from '@/components/global/modal/category-select.vue'
 import { genresT } from '@/function/translation'
 import gsap from 'gsap'
 

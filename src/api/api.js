@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore'
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
-import { fetch } from './axios'
+import { fetch } from '../api/axios'
 import router from '@/router'
 
 export const searchMovie = async (opt) => {

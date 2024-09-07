@@ -42,7 +42,7 @@ import Year from '@/components/home/filter/year.vue'
 import Category from '@/components/home/filter/category.vue'
 import Country from '@/components/home/filter/country.vue'
 
-import { getFilterLists } from '@/function/api'
+import { getFilterLists } from '@/api/api.js'
 import { categoryTranslation } from '@/translation/category.js'
 
 const emit = defineEmits([
@@ -52,7 +52,6 @@ const emit = defineEmits([
     'currCountryLists',
 ])
 
-const isClearDisable = false
 const isAllExpanded = ref(true)
 // const isExpanded = ref(false)
 
@@ -83,9 +82,7 @@ const init = async () => {
 
 init()
 
-const setCurrList = () => {
-    
-}
+const setCurrList = () => {}
 // emit
 const setStatusLists = (data) => {
     currStatusLists.value = data

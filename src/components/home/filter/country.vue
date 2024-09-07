@@ -31,7 +31,7 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
-import Checkbox from '@/components/ui/checkbox.vue'
+import Checkbox from '@/components/home/filter/checkbox.vue'
 
 const emit = defineEmits(['selectedLists'])
 const props = defineProps({

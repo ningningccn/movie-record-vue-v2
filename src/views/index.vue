@@ -1,5 +1,5 @@
 <template>
-    <Category @selected="setType" />
+    <TypeTab @selected="setType" />
     <div class="container mb-20">
         <!-- <div class="text-body-l-semibold card mt-[60px]" ref="test">
             結果顯示:{{ movieList.length }}
@@ -7,7 +7,7 @@
         <main class="mt-20 flex md:space-x-5">
             <div class="hidden min-w-[197px] max-w-[197px] md:block">
                 <div class="space-y-4">
-                    <Sort @order="setOrder" class="an-sidebar" />
+                    <Sort :currSlug="filterList.order" @order="setOrder" class="an-sidebar" />
                     <Filter
                         class="an-sidebar"
                         @currStatusLists="setCurrStatusLists"
@@ -42,17 +42,17 @@
 </template>
 
 <script setup>
-import Category from '@/components/home/category.vue'
+import TypeTab from '@/components/home/type-tab.vue'
 import Sort from '@/components/home/sort.vue'
-import Filter from '@/components/home/filter.vue'
-import Card from '@/components/card.vue'
+import Filter from '@/components/home/filter/index.vue'
+import Card from '@/components/home/card.vue'
 import Loading from '@/components/shared/loading.vue'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 // import Calendar from '@/components/header/calendar.vue'
 
 import { ref, reactive, watch, onMounted, nextTick } from 'vue'
-import { getMovieListApi } from '@/function/api'
+import { getMovieListApi } from '@/api/api.js'
 import gsap from 'gsap'
 
 // const date = ref(new Date())

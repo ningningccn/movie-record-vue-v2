@@ -71,14 +71,14 @@ import { useRoute } from 'vue-router'
 
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
-import UploadImage from '@/components/header/upload-image.vue'
-import Checkbox from '@/components/header/checkbox.vue'
-import Star from '@/components/header/star.vue'
-import Select from '@/components/header/select.vue'
-import Calendar from '@/components/header/calendar.vue'
-import Category from '@/components/header/category.vue'
+import UploadImage from '@/components/global/modal/upload-image.vue'
+import Checkbox from '@/components/global/modal/checkbox.vue'
+import Star from '@/components/global/modal/star.vue'
+import Select from '@/components/global/modal/type-select.vue'
+import Calendar from '@/components/global/modal/pick-calendar.vue'
+import Category from '@/components/global/modal/category-select.vue'
 
-import { addMovie, saveImageStorage, editMovieDetail } from '@/function/api'
+import { addMovie, saveImageStorage, editMovieDetail } from '@/api/api.js'
 
 import dayjs from 'dayjs'
 

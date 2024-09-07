@@ -14,12 +14,15 @@
             <div class="flex flex-col space-y-6 p-6 pb-4">
                 <button
                     type="button"
-                    class="text-body-m-medium text-left"
+                    class="text-body-m-medium flex items-center justify-between text-left"
                     v-for="item in data"
                     :key="item.slug"
                     @click="setOrdering(item.slug)"
                 >
-                    {{ item.title }}
+                    <p>
+                        {{ item.title }}
+                    </p>
+                    <i class="icon-check text-[20px]" v-if="item.slug == currSlug"></i>
                 </button>
             </div>
         </Collapse>
@@ -31,6 +34,9 @@ import { ref } from 'vue'
 import { Collapse } from 'vue-collapsed'
 
 const emit = defineEmits(['order'])
+const props = defineProps({
+    currSlug: String,
+})
 const isExpanded = ref(false)
 
 const data = [

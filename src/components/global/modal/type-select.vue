@@ -20,8 +20,10 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import VueMultiselect from 'vue-multiselect'
+import { typeOptions } from '@/translation/type.js'
+
 const emit = defineEmits(['selected'])
 const props = defineProps({
     attrSelected: {
@@ -30,31 +32,19 @@ const props = defineProps({
 })
 
 const value = ref('')
-const options = [
-    {
-        title: '電影',
-        slug: 'movie',
-    },
-    {
-        title: '電視劇',
-        slug: 'tv',
-    },
-    {
-        title: '綜藝',
-        slug: 'show',
-    },
-    // {
-    //     title: '動畫',
-    //     slug: 'cartoon',
-    // },
-]
+const options = computed(() => {
+    return Object.entries(typeOptions).map(([key, value]) => {
+        return {
+            title: value,
+            slug: key,
+        }
+    })
+})
 
-const movieObject = options.find((option) => option.slug === props.attrSelected)
+const movieObject = options.value.find((option) => option.slug === props.attrSelected)
 value.value = movieObject
-console.log(value.value)
 
 watch(value, (val) => {
-    console.log(val)
     emit('selected', val.slug)
 })
 </script>

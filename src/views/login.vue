@@ -35,7 +35,7 @@ import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { createAccount, loginAccount } from '@/function/api'
+import { createAccount, loginAccount } from '@/api/api.js'
 
 import gsap from 'gsap'
 

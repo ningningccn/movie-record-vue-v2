@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import { getUserState } from '@/function/api'
+import { getUserState } from '@/api/api.js'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

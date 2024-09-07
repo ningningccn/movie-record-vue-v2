@@ -32,10 +32,10 @@
 </template>
 
 <script setup>
-import Search from '@/components/ui/search.vue'
-import SearchCard from '@/components/shared/search-card.vue'
+import Search from '@/components/search/search-input.vue'
+import SearchCard from '@/components/search/search-card.vue'
 import Loading from '@/components/shared/loading.vue'
-import { searchMovie } from '@/function/api'
+import { searchMovie } from '@/api/api.js'
 import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useIntersectionObserver } from '@vueuse/core'

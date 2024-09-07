@@ -92,14 +92,15 @@
 
 <script setup>
 import { useModal } from 'vue-final-modal'
-import { searchMovieDetail } from '@/function/api'
+import { searchMovieDetail } from '@/api/api.js'
+import { typeOptions } from '@/translation/type.js'
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import gsap from 'gsap'
 
-import { getMovieDetail, editMovieDetail, deleteMovieDetail } from '@/function/api'
+import { getMovieDetail, editMovieDetail, deleteMovieDetail } from '@/api/api.js'
 
-import editMovie from '@/components/list/edit-movie-modal.vue'
+import editMovie from '@/components/movie-detail/edit-modal.vue'
 
 const route = useRoute()
 const data = ref()
@@ -107,11 +108,7 @@ const params = ref({
     language: 'zh-TW',
 })
 
-const type = computed(() => {
-    if (data.value?.type === 'movie') return '電影'
-    if (data.value?.type === 'tv') return '電視劇'
-    if (data.value?.type === 'show') return '綜藝'
-})
+const type = computed(() => typeOptions[data.value?.type] ?? '')
 
 // Modal config
 const editMovieModal = useModal({

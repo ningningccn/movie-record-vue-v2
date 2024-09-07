@@ -31,7 +31,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
-import Checkbox from '@/components/ui/checkbox.vue'
+import Checkbox from '@/components/home/filter/checkbox.vue'
 
 import { categoryTranslation } from '@/translation/category.js'
 

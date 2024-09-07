@@ -38,8 +38,8 @@
 
 <script setup>
 import { useModal } from 'vue-final-modal'
-import AddRecord from '@/components/header/add-record-modal.vue'
-import { logout } from '@/function/api'
+import AddRecord from '@/components/global/add-modal.vue'
+import { logout } from '@/api/api.js'
 
 import { ref, reactive, watch, onMounted } from 'vue'
 import gsap from 'gsap'
