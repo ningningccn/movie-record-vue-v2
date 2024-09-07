@@ -9,7 +9,7 @@
             id="backdrop"
         >
             <img
-                :src="data?.background_image ?? data?.postImageUrl"
+                v-lazy="data?.background_image ?? data?.postImageUrl"
                 alt=""
                 class="absolute inset-0 size-full object-cover"
                 v-if="data?.background_image ?? data?.postImageUrl"

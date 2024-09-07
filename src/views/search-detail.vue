@@ -5,13 +5,13 @@
             id="backdrop-wrap"
         >
             <img
-                :src="`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`"
+                v-lazy="`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`"
                 alt=""
                 class="absolute inset-0 size-full object-cover"
                 v-if="data?.backdrop_path"
             />
             <img
-                :src="`https://image.tmdb.org/t/p/w1280${data?.poster_path}`"
+                v-lazy="`https://image.tmdb.org/t/p/w1280${data?.poster_path}`"
                 alt=""
                 class="absolute inset-0 size-full object-cover"
                 v-else
