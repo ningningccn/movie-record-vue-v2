@@ -4,7 +4,7 @@
             <img
                 v-lazy="data?.movie?.postImageUrl"
                 alt=""
-                class="absolute aspect-[3/4.3] size-full cursor-pointer rounded-[8px] object-cover"
+                class="absolute aspect-[3/4.3] size-full cursor-pointer object-cover"
             />
         </div>
         <div class="absolute left-0 top-0" id="card-watched-wrap">
