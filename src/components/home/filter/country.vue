@@ -6,7 +6,7 @@
         >
             <p>
                 產地
-                <span v-if="selectedLists.length > 0">({{ selectedLists.length }})</span>
+                <span v-if="currCountyLists.length > 0">({{ currCountyLists.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -19,6 +19,7 @@
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
+                        :isChecked="checkExistYear(item.slug)"
                         @selected="setSelected"
                         ref="countryRef"
                     />
@@ -29,39 +30,36 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const emit = defineEmits(['selectedLists'])
-const props = defineProps({
-    countryList: {
-        type: Object,
-    },
-})
+const filterStore = useFilterStore()
 
 const countryLists = computed(() => {
-    return props.countryList.map((item) => {
+    return filterStore.countryLists.map((item) => {
         return { title: item, slug: item }
     })
 })
 
 const countryRef = ref()
 const isExpanded = ref(true)
-const selectedLists = reactive([])
+const currCountyLists = reactive(filterStore.currCountyLists)
+
+const checkExistYear = (checkId) => currCountyLists.some((item) => item === checkId)
 
 const setSelected = (data) => {
     if (data == 'clear') {
-        selectedLists.length = 0
+        currCountyLists.length = 0
     } else {
-        const index = selectedLists.indexOf(data.slug)
-
+        const index = currCountyLists.findIndex((item) => item == data.id)
         if (index !== -1) {
-            selectedLists.splice(index, 1)
+            currCountyLists.splice(index, 1)
         } else {
-            selectedLists.push(data.slug)
+            currCountyLists.push(data.id)
         }
-        emit('selectedLists', selectedLists)
+        filterStore.setCurrCountryLists(currCountyLists)
     }
 }
 

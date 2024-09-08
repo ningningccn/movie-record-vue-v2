@@ -22,7 +22,7 @@
                     <p>
                         {{ item.title }}
                     </p>
-                    <i class="icon-check text-[20px]" v-if="item.slug == currSlug"></i>
+                    <i class="icon-check text-[20px]" v-if="item.slug == filterStore.currOrder"></i>
                 </button>
             </div>
         </Collapse>
@@ -30,13 +30,12 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
+
 import { ref } from 'vue'
 import { Collapse } from 'vue-collapsed'
 
-const emit = defineEmits(['order'])
-const props = defineProps({
-    currSlug: String,
-})
+const filterStore = useFilterStore()
 const isExpanded = ref(false)
 
 const data = [
@@ -45,7 +44,7 @@ const data = [
 ]
 
 const setOrdering = (slug) => {
-    emit('order', slug)
+    filterStore.setOrder(slug)
 }
 </script>
 

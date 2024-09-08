@@ -14,27 +14,16 @@
             </p>
         </div>
         <div class="flex flex-col space-y-6 px-6 pb-4 pt-6">
-            <Status
-                :isAllExpanded="isAllExpanded"
-                @currStatusLists="setStatusLists"
-                ref="statusRef"
-            />
-            <Year :yearList="yearLists" @currYearLists="setCurrYearLists" ref="yearRef" />
-            <Category
-                :categoryList="categoryLists"
-                @emitCurrCategory="setCategoryLists"
-                ref="categoryRef"
-            />
-            <Country
-                :countryList="countryLists"
-                @selectedLists="setCurrCountryLists"
-                ref="countryRef"
-            />
+            <Status :isAllExpanded="isAllExpanded" ref="statusRef" />
+            <Year ref="yearRef" />
+            <Category ref="categoryRef" />
+            <Country ref="countryRef" />
         </div>
     </div>
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ref, watch, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Status from '@/components/home/filter/status.vue'
@@ -45,67 +34,13 @@ import Country from '@/components/home/filter/country.vue'
 import { getFilterLists } from '@/api/api.js'
 import { categoryTranslation } from '@/translation/category.js'
 
-const emit = defineEmits([
-    'currStatusLists',
-    'currCategoryLists',
-    'currYearLists',
-    'currCountryLists',
-])
-
+const filterStore = useFilterStore()
 const isAllExpanded = ref(true)
-// const isExpanded = ref(false)
 
-// api data list
-const yearLists = ref([])
-const countryLists = ref([])
-const categoryLists = ref([])
-
-// current list
-const currStatusLists = ref([])
-const currYearLists = ref([])
-const currCountyLists = ref([])
-const currCategoryLists = ref([])
-
-// ref
 const statusRef = ref()
 const yearRef = ref()
 const categoryRef = ref()
 const countryRef = ref()
-
-const init = async () => {
-    const { yearOptLists, countryOtpLists, categoryOtpList } = await getFilterLists()
-
-    yearLists.value = yearOptLists
-    countryLists.value = countryOtpLists
-    categoryLists.value = categoryOtpList
-}
-
-init()
-
-const setCurrList = () => {}
-// emit
-const setStatusLists = (data) => {
-    currStatusLists.value = data
-    emit('currStatusLists', data)
-}
-const setCategoryLists = (data) => {
-    const categoryMap = data.map((item) => {
-        return {
-            id: item,
-            label: categoryTranslation[item],
-        }
-    })
-    currCategoryLists.value = categoryMap
-    emit('currCategoryLists', categoryMap)
-}
-const setCurrYearLists = (data) => {
-    currYearLists.value = data
-    emit('currYearLists', data)
-}
-const setCurrCountryLists = (data) => {
-    currCountyLists.value = data
-    emit('currCountryLists', data)
-}
 
 const clearAllFilter = () => {
     statusRef.value.clearAllCheckbox()
@@ -115,11 +50,13 @@ const clearAllFilter = () => {
 }
 
 const isClear = computed(() => {
+    const { selectedStatusLists, selectedYearLists, selectedCategoryLists, selectedCountryLists } =
+        filterStore.getFilterList
     return (
-        currStatusLists.value.length > 0 ||
-        currYearLists.value.length > 0 ||
-        currCountyLists.value.length > 0 ||
-        currCategoryLists.value.length > 0
+        selectedStatusLists.length > 0 ||
+        selectedYearLists.length > 0 ||
+        selectedCategoryLists.length > 0 ||
+        selectedCountryLists.length > 0
     )
 })
 </script>

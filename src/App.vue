@@ -8,6 +8,7 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ModalsContainer } from 'vue-final-modal'
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
@@ -16,6 +17,7 @@ import Footer from '@/components/global/footer.vue'
 
 import { getUserState } from '@/api/api.js'
 
+const filterStore = useFilterStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -29,6 +31,8 @@ const path = computed(async () => {
     }
     return route.path
 })
+
+filterStore.setFilterLists()
 </script>
 
 <style scoped></style>

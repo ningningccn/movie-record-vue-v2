@@ -15,10 +15,11 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in dataList" :key="index" class="">
+                <div v-for="(item, index) in filterStore.categoryLists" :key="index" class="">
                     <Checkbox
-                        :title="item.title"
-                        :slug="item.slug"
+                        :title="item.label"
+                        :slug="item.id"
+                        :isChecked="checkExistCategory(item.id)"
                         @selected="setStatus"
                         ref="categoryRef"
                     />
@@ -29,44 +30,36 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ref, reactive, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-import { categoryTranslation } from '@/translation/category.js'
-
+const filterStore = useFilterStore()
 const emit = defineEmits(['emitCurrCategory'])
-const props = defineProps({
-    categoryList: {
-        type: Object,
-    },
-})
-
-const dataList = computed(() => {
-    return props.categoryList.map((item) => {
-        return {
-            title: categoryTranslation[item],
-            slug: Number(item),
-        }
-    })
-})
 
 const categoryRef = ref()
 const isExpanded = ref(true)
-const currCategoryLists = reactive([])
+const currCategoryLists = reactive(filterStore.currCategoryLists)
+
+const checkExistCategory = (checkId) => {
+    const index = currCategoryLists.findIndex((item) => {
+        return item.id === checkId
+    })
+    return index > -1
+}
 
 const setStatus = (data) => {
     if (data == 'clear') {
         currCategoryLists.length = 0
     } else {
-        const index = currCategoryLists.indexOf(data.slug)
-
+        const index = currCategoryLists.findIndex((item) => item.id == data.id)
         if (index !== -1) {
             currCategoryLists.splice(index, 1)
         } else {
-            currCategoryLists.push(data.slug)
+            currCategoryLists.push(data)
         }
-        emit('emitCurrCategory', currCategoryLists)
+        filterStore.setCurrCategoryLists(currCategoryLists)
     }
 }
 

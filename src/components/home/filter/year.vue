@@ -19,6 +19,7 @@
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
+                        :isChecked="checkExistYear(item.slug)"
                         @selected="setStatus"
                         ref="yearRef"
                     />
@@ -29,40 +30,41 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const emit = defineEmits(['currYearLists'])
-const props = defineProps({
-    yearList: {
-        type: Object,
-    },
-})
-
+const filterStore = useFilterStore()
 const yearLists = computed(() => {
-    return props.yearList.map((item) => {
+    return filterStore.yearLists.map((item) => {
         return { title: item, slug: item }
     })
 })
 
 const yearRef = ref()
 const isExpanded = ref(true)
-const currYearLists = reactive([])
+const currYearLists = reactive(filterStore.currYearLists)
 
 const setStatus = (data) => {
     if (data == 'clear') {
         currYearLists.length = 0
     } else {
-        const index = currYearLists.indexOf(data.slug)
+        const index = currYearLists.findIndex((item) => item == data.id)
 
         if (index !== -1) {
             currYearLists.splice(index, 1)
         } else {
-            currYearLists.push(data.slug)
+            currYearLists.push(data.id)
         }
-        emit('currYearLists', currYearLists)
+        filterStore.setCurrYearLists(currYearLists)
     }
+}
+const checkExistYear = (checkId) => {
+    const index = currYearLists.findIndex((item) => {
+        return item === checkId
+    })
+    return index > -1
 }
 
 const clearAllCheckbox = () => {

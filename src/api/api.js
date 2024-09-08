@@ -22,6 +22,7 @@ import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebas
 import { storage } from '@/services/firebase'
 import { fetch } from '../api/axios'
 import router from '@/router'
+import { categoryTranslation } from '@/translation/category.js'
 
 export const searchMovie = async (opt) => {
     return fetch({ path: `search/multi`, opts: opt })
@@ -113,14 +114,13 @@ export const getMovieListApi = async (slug, opt) => {
     const {
         selectedStatusLists,
         selectedYearLists,
-        selectedCountryLists,
         selectedCategoryLists,
+        selectedCountryLists,
         order,
     } = opt
 
     const userEmail = await getUserState()
     const whereSql = []
-    console.log(selectedCategoryLists)
     if (slug) {
         whereSql.push(where('type', '==', slug))
     }
@@ -211,7 +211,12 @@ export const getFilterLists = async () => {
 
     const yearOptLists = Array.from(yearFilterLists)
     const countryOtpLists = Array.from(countryFilterLists)
-    const categoryOtpList = Array.from(categoryFilterLists)
+    const categoryOtpList = Array.from(categoryFilterLists).map((item) => {
+        return {
+            label: categoryTranslation[item],
+            id: item,
+        }
+    })
 
     return { yearOptLists, countryOtpLists, categoryOtpList }
 }

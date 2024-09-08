@@ -17,10 +17,10 @@
                         :title="item.title"
                         :slug="item.slug"
                         :disabled="checkStatus(item.slug)"
+                        :isChecked="checkExistStatus(item.slug)"
                         @selected="setStatus"
                         ref="statusRef"
                     />
-                    <!-- :disabled="true" -->
                 </div>
             </div>
         </Collapse>
@@ -28,11 +28,12 @@
 </template>
 
 <script setup>
+import { useFilterStore } from '@/stores/filter.js'
 import { ref, reactive, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const emit = defineEmits(['currStatusLists'])
+const filterStore = useFilterStore()
 const props = defineProps({
     isAllExpanded: {
         type: Boolean,
@@ -46,7 +47,7 @@ const dataList = [
 ]
 
 const isExpanded = ref(true)
-const currStatusLists = reactive([])
+const currStatusLists = reactive(filterStore.currStatusLists)
 
 const statusRef = ref()
 
@@ -60,18 +61,30 @@ const checkStatus = (slug) => {
     return false
 }
 
+// const checkExistStatus = computed(() => {
+//     return
+// })
+const checkExistStatus = (checkId) => {
+    const index = currStatusLists.findIndex((item) => {
+        return item === checkId
+    })
+    console.log(index > -1)
+    return index > -1
+}
+
 const setStatus = (data) => {
     if (data == 'clear') {
         currStatusLists.length = 0
     } else {
-        const index = currStatusLists.indexOf(data.slug)
+        const index = currStatusLists.indexOf(data.id)
 
         if (index !== -1) {
             currStatusLists.splice(index, 1)
         } else {
-            currStatusLists.push(data.slug)
+            currStatusLists.push(data.id)
         }
-        emit('currStatusLists', currStatusLists)
+
+        filterStore.setCurrStatusList(currStatusLists)
     }
 }
 

@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 const props = defineProps({
     title: String,
     slug: String | Number,
@@ -25,20 +25,29 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    isChecked: Boolean,
 })
 const emit = defineEmits(['selected'])
 
 const isCurrent = ref(false)
+
 const setCurrent = () => {
     if (!props.disabled) {
         isCurrent.value = !isCurrent.value
-        emit('selected', { slug: props.slug, status: isCurrent.value })
+        emit('selected', { label: props.title, id: props.slug })
     }
 }
 const clearCheckbox = () => {
     isCurrent.value = false
     emit('selected', 'clear')
 }
+
+watch(
+    () => props.isChecked,
+    (newValue) => {
+        isCurrent.value = newValue
+    },
+)
 
 defineExpose({ clearCheckbox })
 </script>
