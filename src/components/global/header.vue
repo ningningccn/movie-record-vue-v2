@@ -29,7 +29,7 @@
                     登出
                 </button>
             </div>
-            <button class="flex items-center md:hidden">
+            <button class="flex items-center md:hidden" @click="openMobileMenu()">
                 <i class="icon-mobile-menu !text-[16px]"></i>
             </button>
         </div>
@@ -39,10 +39,11 @@
 <script setup>
 import { useModal } from 'vue-final-modal'
 import AddRecord from '@/components/global/add-modal.vue'
-import { logout } from '@/api/api.js'
-
+import MobileMenu from '@/components/global/mobile-menu.vue'
 import { ref, reactive, watch, onMounted } from 'vue'
 import gsap from 'gsap'
+
+import { logout } from '@/api/api.js'
 
 const AddRecordModal = useModal({
     component: AddRecord,
@@ -54,9 +55,27 @@ const AddRecordModal = useModal({
     },
 })
 
+const mobileMenu = useModal({
+    component: MobileMenu,
+    attrs: {
+        clickAddRecord: () => {
+            mobileMenu.close()
+            AddRecordModal.open()
+        },
+        clickLogout: () => {
+            mobileMenu.close()
+            logout()
+        },
+    },
+})
+
 const openAddRecord = () => {
     AddRecordModal.open()
     console.log('test open')
+}
+
+const openMobileMenu = () => {
+    mobileMenu.open()
 }
 
 let t1 = gsap.timeline()

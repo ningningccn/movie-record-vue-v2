@@ -7,7 +7,7 @@
     >
         <div class="absolute inset-0 h-full overflow-auto">
             <div
-                class="main-gradient relative mx-auto my-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
+                class="main-gradient relative mx-auto my-[64px] w-[90%] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:my-[128px] md:w-[489px] md:p-20"
             >
                 <div>
                     <p class="text-heading-s">修改記錄</p>

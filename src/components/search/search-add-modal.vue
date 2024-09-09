@@ -11,7 +11,7 @@
         </pre> -->
         <div class="absolute inset-0 h-full overflow-auto">
             <div
-                class="main-gradient relative mx-auto my-[128px] w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-20"
+                class="main-gradient relative mx-auto my-[64px] md:my-[128px] w-[90%] md:w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:p-20"
             >
                 <div>
                     <p class="text-heading-s">添加記錄</p>
