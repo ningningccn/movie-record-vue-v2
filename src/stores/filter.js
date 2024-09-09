@@ -26,7 +26,6 @@ export const useFilterStore = defineStore('filter', {
                 order: state.currOrder,
             }
         },
-        // doubleCount: (state) => state.count * 2,
     },
     //定義使用到的函式，可以為同步和非同步，如同 method
     actions: {

@@ -67,7 +67,7 @@ const getMovieList = async (slugType, opt) => {
 
 // init
 gsap.registerPlugin(ScrollTrigger)
-// getMovieList(currType.value, filterStore.getFilterList)
+getMovieList(currType.value, filterStore.getFilterList)
 
 const setType = (slug) => {
     movieList.value = []

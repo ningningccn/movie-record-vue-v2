@@ -3,15 +3,16 @@
         <i class="icon-search text-[48px]"></i>
         <input
             type="text"
-            class="text-body-xxl-medium ml-4 w-full bg-transparent text-white placeholder:text-enable focus:outline-none"
+            class="text-body-xxl-medium w-full bg-transparent text-white placeholder:text-enable focus:outline-none md:ml-4"
             placeholder="輸入關鍵字"
             v-model="search"
             ref="searchInputRef"
             @keyup.enter="emit('searchClick')"
         />
-        <div class="overflow-hidden">
+        <div class="w-[45px] overflow-hidden">
             <button
-                class="mr-4 flex items-center transition-transform duration-300"
+                type="button"
+                class="flex items-center transition-transform duration-300"
                 :class="[{ 'translate-x-10': !showClose }]"
                 @click="clearSearch()"
             >

@@ -31,9 +31,6 @@ import Year from '@/components/home/filter/year.vue'
 import Category from '@/components/home/filter/category.vue'
 import Country from '@/components/home/filter/country.vue'
 
-import { getFilterLists } from '@/api/api.js'
-import { categoryTranslation } from '@/translation/category.js'
-
 const filterStore = useFilterStore()
 const isAllExpanded = ref(true)
 
