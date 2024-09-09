@@ -16,23 +16,29 @@ import Header from '@/components/global/header.vue'
 import Footer from '@/components/global/footer.vue'
 
 import { getUserState } from '@/api/api.js'
+import { useGlobalStore } from '@/stores/global.js'
 
 const filterStore = useFilterStore()
 const router = useRouter()
 const route = useRoute()
+const globalStore = useGlobalStore()
 
 const user = ref(null)
 const path = computed(async () => {
-    console.log(route.path)
-    try {
-        user.value = await getUserState()
-    } catch (e) {
-        user.value = e
+    if (globalStore.user) {
+        user.value = globalStore.user.email
+        filterStore.setFilterLists()
+        return route.path
+    } else {
+        try {
+            user.value = await getUserState()
+            filterStore.setFilterLists()
+        } catch (e) {
+            user.value = e
+        }
+        return route.path
     }
-    return route.path
 })
-
-filterStore.setFilterLists()
 </script>
 
 <style scoped></style>

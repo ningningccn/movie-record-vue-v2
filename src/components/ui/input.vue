@@ -1,7 +1,7 @@
 <template>
     <input
         :type="type"
-        class="w-full border-b bg-transparent px-1 py-2 text-white placeholder:text-placeholder focus:outline-none"
+        class="w-full rounded-none border-b bg-transparent px-1 py-2 text-white placeholder:text-placeholder focus:outline-none"
         :placeholder="placeholder"
         v-model="text"
     />

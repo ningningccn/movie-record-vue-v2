@@ -51,22 +51,10 @@ import { ref, reactive, watch, onMounted, nextTick, computed } from 'vue'
 import { getMovieListApi } from '@/api/api.js'
 import gsap from 'gsap'
 
-// const date = ref(new Date())
-
 const filterStore = useFilterStore()
-// const { getCurrStatusLists, getCurrYearLists, getCurrCategoryLists, getCurrCountyLists } =
-//     filterStore
-
 const isLoading = ref(false)
 const currType = ref('')
 const movieList = ref([])
-// const filterList = reactive({
-//     selectedStatusLists: status.value,
-//     selectedYearLists: year.value,
-//     selectedCategoryLists: category.value,
-//     selectedCountryLists: county.value,
-//     order: 'desc',
-// })
 
 const getMovieList = async (slugType, opt) => {
     isLoading.value = true
@@ -79,21 +67,13 @@ const getMovieList = async (slugType, opt) => {
 
 // init
 gsap.registerPlugin(ScrollTrigger)
-getMovieList(currType.value, filterStore.getFilterList)
+// getMovieList(currType.value, filterStore.getFilterList)
 
 const setType = (slug) => {
     movieList.value = []
     currType.value = slug
     getMovieList(currType.value, filterStore.getFilterList)
 }
-
-// emit
-// const setOrder = (data) => (filterList.order = data)
-
-// const setCurrStatusLists = (data) => (filterList.selectedStatusLists = data)
-// const setCurrYearLists = (data) => (filterList.selectedYearLists = data)
-// const setCurrCountryLists = (data) => (filterList.selectedCountryLists = data)
-// const setCurrCategoryLists = (data) => (filterList.selectedCategoryLists = data)
 
 watch(
     () => filterStore.getFilterList,

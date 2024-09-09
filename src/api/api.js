@@ -22,6 +22,7 @@ import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebas
 import { storage } from '@/services/firebase'
 import { fetch } from '../api/axios'
 import router from '@/router'
+import { useGlobalStore } from '@/stores/global.js'
 import { categoryTranslation } from '@/translation/category.js'
 
 export const searchMovie = async (opt) => {
@@ -34,16 +35,20 @@ export const searchMovieDetail = async (path, opt) => {
 const db = getFirestore()
 const auth = getAuth()
 
+const getUserEmail = () => {
+    const globalStore = useGlobalStore()
+    return globalStore.user.email
+}
+
 export const getUserState = async () => {
+    const globalStore = useGlobalStore()
+
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
-            // console.log('user: ', user)
             if (user) {
+                globalStore.setUserStatus(user)
                 resolve(user.email)
-            } else {
-                reject(user)
-                // console.log('logout')
-            }
+            } else reject(user)
         })
     })
 }
@@ -69,44 +74,27 @@ export const loginAccount = async (email, password) => {
 }
 
 export const logout = () => {
+    const globalStore = useGlobalStore()
     signOut(auth) // 登出方法，須上方引入
         .then(() => {
-            console.log('登出成功，跳回首頁')
             router.push('/login') // 登出成功，跳回首頁
+            globalStore.user = {}
+            console.log('登出成功，跳回首頁')
         })
         .catch((error) => {
             console.log('登出失敗', error)
         })
 }
 
-export const addMovie = async (data) => {
-    console.log(data)
-    const userEmail = await getUserState()
-    if (userEmail) {
-        try {
-            await addDoc(collection(db, `users/${userEmail}`, 'post'), {
-                ...data,
-                createAt: new Date().getTime(),
-            })
-        } catch (err) {
-            console.log(err)
-        }
-    }
-}
-
 export const createAccount = (email, password) => {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            // Signed up
             const user = userCredential.user
-            // 註冊成功 跳轉至其他頁面
             setDoc(doc(db, 'users', user.email), { uuid: user.uid, email: user.email })
-            console.log('成功')
-            router.push('/') // 登出成功，跳回首頁
+            router.push('/')
         })
         .catch((error) => {
             console.log('error: ', error)
-            // 錯誤訊息
         })
 }
 
@@ -118,8 +106,7 @@ export const getMovieListApi = async (slug, opt) => {
         selectedCountryLists,
         order,
     } = opt
-
-    const userEmail = await getUserState()
+    const userEmail = getUserEmail()
     const whereSql = []
     if (slug) {
         whereSql.push(where('type', '==', slug))
@@ -156,24 +143,14 @@ export const getMovieListApi = async (slug, opt) => {
 
     // asc
     const querySnapshot = await getDocs(q)
-
     console.log(querySnapshot)
     return querySnapshot.docs
 }
 
-export const saveImageStorage = async (data) => {
-    const userEmail = await getUserState()
-    return await uploadBytesResumable(
-        storageRef(storage, `images/${userEmail}/${data.name}`),
-        data,
-    ).then(async (snapshot) => {
-        return await getDownloadURL(snapshot.ref) //取得圖片url
-    })
-}
-
 export const getMovieDetail = async (id) => {
     try {
-        const userEmail = await getUserState()
+        // const userEmail = await getUserState()
+        const userEmail = getUserEmail()
         if (userEmail) {
             const resDoc = await getDoc(doc(db, `users/${userEmail}/post`, `${id}`))
             if (resDoc.exists()) {
@@ -189,7 +166,7 @@ export const getMovieDetail = async (id) => {
 }
 
 export const getFilterLists = async () => {
-    const userEmail = await getUserState()
+    const userEmail = await getUserEmail()
 
     const q = query(collection(db, `users/${userEmail}/post`), orderBy('year', 'asc'))
     const querySnapshot = await getDocs(q)
@@ -220,16 +197,43 @@ export const getFilterLists = async () => {
 
     return { yearOptLists, countryOtpLists, categoryOtpList }
 }
+// Create
+export const addMovie = async (data) => {
+    // const userEmail = await getUserState()
+    const userEmail = getUserEmail()
+    if (userEmail) {
+        try {
+            await addDoc(collection(db, `users/${userEmail}`, 'post'), {
+                ...data,
+                createAt: new Date().getTime(),
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+export const saveImageStorage = async (data) => {
+    // const userEmail = await getUserState()
+    const userEmail = getUserEmail()
+    return await uploadBytesResumable(
+        storageRef(storage, `images/${userEmail}/${data.name}`),
+        data,
+    ).then(async (snapshot) => {
+        return await getDownloadURL(snapshot.ref) //取得圖片url
+    })
+}
 
 // EDIT
 export const editMovieDetail = async (id, data) => {
-    const userEmail = await getUserState()
+    // const userEmail = await getUserState()
+    const userEmail = getUserEmail()
     await setDoc(doc(db, `users/${userEmail}/post/${id}`), data, { merge: true })
 }
 
 // DELETE
 export const deleteMovieDetail = async (id) => {
-    const userEmail = await getUserState()
+    // const userEmail = await getUserState()
+    const userEmail = getUserEmail()
     await deleteDoc(doc(db, `users/${userEmail}/post/`, id))
     router.push('/')
 }

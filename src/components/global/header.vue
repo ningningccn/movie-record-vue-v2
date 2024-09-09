@@ -1,8 +1,8 @@
 <template>
     <div class="container py-6 transition-all duration-500 md:py-8">
-        <div class="relative flex h-[32px] justify-between md:h-[48px]">
-            <router-link to="/" class="relative" id="logo">
-                <img src="/images/register-logo.png" alt="" class="size-full" />
+        <div class="flex h-[32px] w-full justify-between md:h-[48px]">
+            <router-link to="/" class="relative h-full" id="logo">
+                <img src="/images/register-logo.png" alt="" class="relative h-full" />
             </router-link>
             <div class="hidden space-x-10 md:flex">
                 <button

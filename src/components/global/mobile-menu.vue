@@ -14,7 +14,7 @@
                 </div>
                 <button
                     type="button"
-                    class="flex items-center justify-center gap-x-6"
+                    class="flex items-center justify-center gap-x-2"
                     @click="clickAddRecord()"
                 >
                     <i class="icon-plus-square"></i>
@@ -23,7 +23,7 @@
 
                 <routerLink
                     to="/search"
-                    class="flex items-center justify-center gap-x-6"
+                    class="flex items-center justify-center gap-x-2"
                     @click="vfm.close('mobile-menu')"
                 >
                     <i class="icon-search"></i>
@@ -32,7 +32,7 @@
             </div>
             <button
                 type="button"
-                class="flex w-full items-center justify-center gap-x-6 rounded-lg border border-primary text-primary"
+                class="flex w-full items-center justify-center gap-x-2 rounded-lg border border-primary text-primary"
                 @click="clickLogout()"
             >
                 <i class="icon-sign-in"></i>
