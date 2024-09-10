@@ -17,6 +17,8 @@ import {
     query,
     where,
     orderBy,
+    startAfter,
+    limit,
 } from 'firebase/firestore'
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
@@ -98,13 +100,14 @@ export const createAccount = (email, password) => {
         })
 }
 
-export const getMovieListApi = async (slug, opt) => {
+export const getMovieListApi = async (slug, opt, hasNextPage) => {
     const {
         selectedStatusLists,
         selectedYearLists,
         selectedCategoryLists,
         selectedCountryLists,
         order,
+        word,
     } = opt
     const userEmail = getUserEmail()
     const whereSql = []
@@ -138,13 +141,16 @@ export const getMovieListApi = async (slug, opt) => {
     const q = query(
         collection(db, `users/${userEmail}/post`),
         ...whereSql,
-        orderBy('createAt', order),
+        orderBy(word, order),
+        ...(hasNextPage ? [startAfter(hasNextPage)] : []),
+        limit(20),
     )
 
-    // asc
     const querySnapshot = await getDocs(q)
-    console.log(querySnapshot)
-    return querySnapshot.docs
+    const latestDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
+    const dataDoc = querySnapshot.docs
+
+    return { dataDoc, latestDoc }
 }
 
 export const getMovieDetail = async (id) => {

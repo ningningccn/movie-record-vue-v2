@@ -1,6 +1,6 @@
 <template>
     <div class="sticky top-0 z-10 bg-second" id="category-section">
-        <div class="container relative">
+        <div class="container relative z-10">
             <div class="z-10 flex items-center justify-center pt-6">
                 <div class="relative">
                     <button
@@ -19,16 +19,20 @@
                 </div>
             </div>
         </div>
-        <div class="border-b border-enable" id="category-bar"></div>
+        <div class="-translate-y-[1px] border-b border-enable" id="category-bar"></div>
     </div>
 </template>
 
 <script setup>
-import { nextTick, ref, onMounted } from 'vue'
+import { nextTick, ref, onMounted, watch } from 'vue'
 import { useElementBounding } from '@vueuse/core'
+import { useWindowSize } from '@vueuse/core'
+
 import gsap from 'gsap'
 
 const emit = defineEmits(['selected'])
+
+const { width, height } = useWindowSize()
 
 const currWidth = ref(0)
 const currLeft = ref(0)
@@ -62,6 +66,13 @@ const data = ref([
     },
 ])
 
+watch(
+    () => width.value,
+    (newValue, oldValue) => {
+        const el = document.querySelector(`.btn-0`)
+        currWidth.value = el.clientWidth
+    },
+)
 let t1 = gsap.timeline()
 const initGsap = () => {
     t1.fromTo(

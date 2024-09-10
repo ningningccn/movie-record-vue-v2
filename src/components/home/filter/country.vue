@@ -15,11 +15,11 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in countryLists" :key="index" class="">
+                <div v-for="(item, index) in countryLists" :key="item.slug" class="">
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
-                        :isChecked="checkExistYear(item.slug)"
+                        :isChecked="checkExistCountry(item.slug)"
                         @selected="setSelected"
                         ref="countryRef"
                     />
@@ -47,7 +47,19 @@ const countryRef = ref()
 const isExpanded = ref(true)
 const currCountyLists = reactive(filterStore.currCountyLists)
 
-const checkExistYear = (checkId) => currCountyLists.some((item) => item === checkId)
+// const checkExistCountry = computed(() => (checkId) => {
+//     console.log(currCountyLists)
+//     const index = currCountyLists.findIndex((item) => {
+//         return item === checkId
+//     })
+//     return index > -1
+// })
+const checkExistCountry = (checkId) => {
+    const index = currCountyLists.findIndex((item) => {
+        return item === checkId
+    })
+    return index > -1
+}
 
 const setSelected = (data) => {
     if (data == 'clear') {

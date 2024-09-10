@@ -12,7 +12,7 @@
                     <Filter class="an-sidebar" />
                 </div>
             </div>
-            <div class="w-full">
+            <div class="w-full" ref="pageViewRef">
                 <div
                     class="card-wrap grid grid-cols-4 gap-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10"
                     id="card-wrap"
@@ -31,6 +31,7 @@
                     <Loading v-show="isLoading" />
                     <div v-if="movieList.length == 0 && !isLoading">尚無資料</div>
                 </div>
+                <div ref="infiniteRef"></div>
             </div>
         </main>
     </div>
@@ -45,9 +46,11 @@ import Card from '@/components/home/card.vue'
 import Loading from '@/components/shared/loading.vue'
 import FilterMobile from '@/components/home/filter/mobile/filter-m.vue'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+
 // import Calendar from '@/components/header/calendar.vue'
 
 import { ref, reactive, watch, onMounted, nextTick, computed } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 import { getMovieListApi } from '@/api/api.js'
 import gsap from 'gsap'
 
@@ -55,10 +58,12 @@ const filterStore = useFilterStore()
 const isLoading = ref(false)
 const currType = ref('')
 const movieList = ref([])
+const hasNextPage = ref(null)
 
 const getMovieList = async (slugType, opt) => {
     isLoading.value = true
-    const dataDoc = await getMovieListApi(slugType, opt)
+    const { dataDoc, latestDoc } = await getMovieListApi(slugType, opt, hasNextPage.value)
+    hasNextPage.value = latestDoc
     dataDoc.forEach((doc) => {
         movieList.value.push({ id: doc.id, movie: doc.data() })
     })
@@ -71,6 +76,7 @@ getMovieList(currType.value, filterStore.getFilterList)
 
 const setType = (slug) => {
     movieList.value = []
+    hasNextPage.value = null
     currType.value = slug
     getMovieList(currType.value, filterStore.getFilterList)
 }
@@ -79,9 +85,23 @@ watch(
     () => filterStore.getFilterList,
     (newValue, oldValue) => {
         movieList.value = []
+        hasNextPage.value = null
         getMovieList(currType.value, filterStore.getFilterList)
     },
     { deep: true },
+)
+
+const pageViewRef = ref(null)
+const infiniteRef = ref(null)
+
+const { isActive, pause, resume } = useIntersectionObserver(
+    infiniteRef,
+    ([{ isIntersecting }]) => {
+        if (isIntersecting && hasNextPage.value) {
+            getMovieList(currType.value, filterStore.getFilterList)
+        }
+    },
+    { pageViewRef },
 )
 
 const t1 = gsap.timeline()

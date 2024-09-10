@@ -11,7 +11,7 @@
         </pre> -->
         <div class="absolute inset-0 h-full overflow-auto">
             <div
-                class="main-gradient relative mx-auto my-[64px] md:my-[128px] w-[90%] md:w-[489px] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:p-20"
+                class="main-gradient relative mx-auto my-[64px] w-[90%] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:my-[128px] md:w-[489px] md:p-20"
             >
                 <div>
                     <p class="text-heading-s">添加記錄</p>
@@ -61,6 +61,7 @@
 import 'vue-multiselect/dist/vue-multiselect.css'
 import { ref, watch, computed } from 'vue'
 import { VueFinalModal, useVfm } from 'vue-final-modal'
+import dayjs from 'dayjs'
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 import UploadImage from '@/components/global/modal/upload-image.vue'
@@ -70,9 +71,8 @@ import Select from '@/components/global/modal/type-select.vue'
 import Calendar from '@/components/global/modal/pick-calendar.vue'
 import Category from '@/components/global/modal/category-select.vue'
 
+import { useFilterStore } from '@/stores/filter.js'
 import { addMovie, saveImageStorage } from '@/api/api.js'
-
-import dayjs from 'dayjs'
 
 const props = defineProps({
     name: {
@@ -101,9 +101,8 @@ const props = defineProps({
     },
 })
 
-console.log(props)
-
 const vfm = useVfm()
+const filterStore = useFilterStore()
 
 const tempImage = ref(null)
 
@@ -146,7 +145,7 @@ const handleAddMovie = async () => {
     else movieData.value.postImageUrl = await saveImageStorage(tempImage.value)
 
     await addMovie(movieData.value)
-    console.log('added movie')
+    filterStore.setFilterLists()
     vfm.close('add-movie-id')
 }
 const isSubmit = computed(() => {
@@ -157,9 +156,7 @@ const isSubmit = computed(() => {
         movieData.value.year
     ) {
         return true
-    } else {
-        return false
-    }
+    } else return false
 })
 
 // watch(

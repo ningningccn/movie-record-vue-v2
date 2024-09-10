@@ -68,7 +68,6 @@ const checkExistStatus = (checkId) => {
     const index = currStatusLists.findIndex((item) => {
         return item === checkId
     })
-    console.log(index > -1)
     return index > -1
 }
 

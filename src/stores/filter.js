@@ -9,6 +9,8 @@ export const useFilterStore = defineStore('filter', {
         countryLists: [],
         categoryLists: [],
         // current filter
+        currKey: 'latest_addition',
+        currFilterWord: 'createAt',
         currOrder: 'desc',
         currStatusLists: [],
         currYearLists: [],
@@ -24,6 +26,7 @@ export const useFilterStore = defineStore('filter', {
                 selectedCategoryLists: state.currCategoryLists,
                 selectedCountryLists: state.currCountyLists,
                 order: state.currOrder,
+                word: state.currFilterWord,
             }
         },
     },
@@ -38,7 +41,9 @@ export const useFilterStore = defineStore('filter', {
         },
 
         setOrder(data) {
-            this.currOrder = data
+            this.currKey = data.key
+            this.currOrder = data.slug
+            this.currFilterWord = data.filterWord
         },
         setCurrStatusList(data) {
             this.currStatusLists = data

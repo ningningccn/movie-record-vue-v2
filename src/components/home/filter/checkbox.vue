@@ -18,6 +18,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+const emit = defineEmits(['selected'])
 const props = defineProps({
     title: String,
     slug: String | Number,
@@ -27,9 +28,8 @@ const props = defineProps({
     },
     isChecked: Boolean,
 })
-const emit = defineEmits(['selected'])
 
-const isCurrent = ref(false)
+const isCurrent = ref(props.isChecked)
 
 const setCurrent = () => {
     if (!props.disabled) {

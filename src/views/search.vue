@@ -19,7 +19,7 @@
                 v-for="(item, index) in resultData"
                 :key="index"
                 :id="item.id"
-                :title="item?.name ?? item.title"
+                :title="item?.name ?? item?.original_title ?? item.title"
                 :poster="item.poster_path"
                 :date="item?.first_air_date ?? item.release_date"
                 :mediaType="item.media_type"
@@ -101,7 +101,6 @@ watch(
 
 const pageViewRef = ref(null)
 const infiniteRef = ref(null)
-const isVisible = ref(false)
 
 const { isActive, pause, resume } = useIntersectionObserver(
     infiniteRef,

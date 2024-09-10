@@ -16,13 +16,13 @@
                     type="button"
                     class="text-body-m-medium flex items-center justify-between text-left"
                     v-for="item in data"
-                    :key="item.slug"
-                    @click="setOrdering(item.slug)"
+                    :key="item.key"
+                    @click="setOrdering(item.key, item.slug, item.filterWord)"
                 >
                     <p>
                         {{ item.title }}
                     </p>
-                    <i class="icon-check text-[20px]" v-if="item.slug == filterStore.currOrder"></i>
+                    <i class="icon-check text-[20px]" v-if="item.key == filterStore.currKey"></i>
                 </button>
             </div>
         </Collapse>
@@ -39,12 +39,14 @@ const filterStore = useFilterStore()
 const isExpanded = ref(false)
 
 const data = [
-    { title: '最新加入', slug: 'desc' },
-    { title: '最舊加入', slug: 'asc' },
+    { title: '最新加入', key: 'latest_addition', slug: 'desc', filterWord: 'createAt' },
+    { title: '最舊加入', key: 'oldest_addition', slug: 'asc', filterWord: 'createAt' },
+    { title: '最新年份', key: 'latest_year', slug: 'desc', filterWord: 'year' },
+    { title: '最舊年份', key: 'oldest_year', slug: 'asc', filterWord: 'year' },
 ]
 
-const setOrdering = (slug) => {
-    filterStore.setOrder(slug)
+const setOrdering = (key, slug, filterWord) => {
+    filterStore.setOrder({ key, slug, filterWord })
 }
 </script>
 
