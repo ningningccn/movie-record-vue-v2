@@ -180,16 +180,17 @@ export const getFilterLists = async () => {
     const yearFilterLists = new Set()
     const countryFilterLists = new Set()
     const categoryFilterLists = new Set()
+    const nameLists = []
 
     querySnapshot.docs.forEach((doc) => {
         yearFilterLists.add(doc.data().year)
         countryFilterLists.add(doc.data().country)
         // categoryFilterLists.add(...doc.data().categoryList)
-
         const resultCategoryLists = doc.data().categoryList
         resultCategoryLists.forEach((item) => {
             categoryFilterLists.add(item.id)
         })
+        nameLists.push(doc.data().name)
     })
 
     const yearOptLists = Array.from(yearFilterLists)
@@ -201,7 +202,7 @@ export const getFilterLists = async () => {
         }
     })
 
-    return { yearOptLists, countryOtpLists, categoryOtpList }
+    return { yearOptLists, countryOtpLists, categoryOtpList, nameLists }
 }
 // Create
 export const addMovie = async (data) => {

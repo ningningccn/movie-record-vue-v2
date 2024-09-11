@@ -1,7 +1,4 @@
 <template>
-    <!-- <pre>
-        {{ data }}
-    </pre> -->
 
     <section>
         <div

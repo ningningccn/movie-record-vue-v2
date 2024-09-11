@@ -1,5 +1,5 @@
 <template>
-    <div class="container h-full pt-[60px]" ref="pageViewRef">
+    <div class="container mb-20 h-full pt-[60px]" ref="pageViewRef">
         <Search v-model:search="search" @searchClick="handleSearchMovie" id="search-bar" />
         <div class="flex-center h-full" v-if="resultData.length == 0 || isLoading">
             <Loading v-show="isLoading" />
@@ -19,7 +19,7 @@
                 v-for="(item, index) in resultData"
                 :key="index"
                 :id="item.id"
-                :title="item?.name ?? item?.original_title ?? item.title"
+                :title="item?.name ?? item.title ?? item?.original_title"
                 :poster="item.poster_path"
                 :date="item?.first_air_date ?? item.release_date"
                 :mediaType="item.media_type"
@@ -89,6 +89,7 @@ watch(
         totalResults.value = total_results
 
         isLoading.value = false
+        console.log(page, total_pages)
 
         if (page === total_pages) {
             hasNextPage.value = false
@@ -105,7 +106,7 @@ const infiniteRef = ref(null)
 const { isActive, pause, resume } = useIntersectionObserver(
     infiniteRef,
     ([{ isIntersecting }]) => {
-        if (isIntersecting) {
+        if (isIntersecting && hasNextPage.value) {
             params.value.page++
         }
         // if (isFirst.value == false && hasNextPage.value) {

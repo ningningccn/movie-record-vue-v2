@@ -50,6 +50,12 @@
                     />
                 </div>
                 <div class="mx-auto mt-10 w-full md:ml-auto md:mt-0 md:w-[55%]">
+                    <div
+                        class="text-body-s-medium info-anim mt-6 w-fit rounded-[4px] bg-primary px-1 py-[2px] text-second md:mt-0"
+                        id="added-anim"
+                    >
+                        已加入
+                    </div>
                     <div class="info-anim mt-6">
                         {{ data?.overview }}
                     </div>

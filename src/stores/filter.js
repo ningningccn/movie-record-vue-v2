@@ -8,6 +8,7 @@ export const useFilterStore = defineStore('filter', {
         yearLists: [],
         countryLists: [],
         categoryLists: [],
+        nameLists: [],
         // current filter
         currKey: 'latest_addition',
         currFilterWord: 'createAt',
@@ -33,11 +34,13 @@ export const useFilterStore = defineStore('filter', {
     //定義使用到的函式，可以為同步和非同步，如同 method
     actions: {
         async setFilterLists() {
-            const { yearOptLists, countryOtpLists, categoryOtpList } = await getFilterLists()
+            const { yearOptLists, countryOtpLists, categoryOtpList, nameLists } =
+                await getFilterLists()
 
             this.yearLists = yearOptLists
             this.countryLists = countryOtpLists
             this.categoryLists = categoryOtpList
+            this.nameLists = nameLists
         },
 
         setOrder(data) {
