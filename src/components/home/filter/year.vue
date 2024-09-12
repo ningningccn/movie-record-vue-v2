@@ -67,13 +67,17 @@ const checkExistYear = (checkId) => {
     return index > -1
 }
 
+const handleALlExpanded = (boolean) => {
+    isExpanded.value = boolean
+}
+
 const clearAllCheckbox = () => {
     yearRef.value.forEach((item) => {
         item.clearCheckbox()
     })
 }
 
-defineExpose({ clearAllCheckbox })
+defineExpose({ handleALlExpanded, clearAllCheckbox })
 </script>
 
 <style lang="scss" scoped></style>

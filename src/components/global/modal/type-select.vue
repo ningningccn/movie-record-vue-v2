@@ -31,6 +31,8 @@ const props = defineProps({
     },
 })
 
+console.log(props.attrSelected)
+
 const value = ref('')
 const options = computed(() => {
     return Object.entries(typeOptions).map(([key, value]) => {

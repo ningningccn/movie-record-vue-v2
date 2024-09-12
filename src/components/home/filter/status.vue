@@ -34,11 +34,6 @@ import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
 const filterStore = useFilterStore()
-const props = defineProps({
-    isAllExpanded: {
-        type: Boolean,
-    },
-})
 
 const dataList = [
     { title: '最愛', slug: 'favorite' },
@@ -46,10 +41,9 @@ const dataList = [
     { title: '待觀看', slug: 'to_be_watching' },
 ]
 
+const statusRef = ref()
 const isExpanded = ref(true)
 const currStatusLists = reactive(filterStore.currStatusLists)
-
-const statusRef = ref()
 
 const checkStatus = (slug) => {
     if (currStatusLists.includes('watched') && slug == 'to_be_watching') {
@@ -61,9 +55,6 @@ const checkStatus = (slug) => {
     return false
 }
 
-// const checkExistStatus = computed(() => {
-//     return
-// })
 const checkExistStatus = (checkId) => {
     const index = currStatusLists.findIndex((item) => {
         return item === checkId
@@ -87,13 +78,17 @@ const setStatus = (data) => {
     }
 }
 
+const handleALlExpanded = (boolean) => {
+    isExpanded.value = boolean
+}
+
 const clearAllCheckbox = () => {
     statusRef.value.forEach((item) => {
         item.clearCheckbox()
     })
 }
 
-defineExpose({ clearAllCheckbox })
+defineExpose({ handleALlExpanded, clearAllCheckbox })
 </script>
 
 <style lang="scss" scoped></style>

@@ -47,13 +47,6 @@ const countryRef = ref()
 const isExpanded = ref(true)
 const currCountyLists = reactive(filterStore.currCountyLists)
 
-// const checkExistCountry = computed(() => (checkId) => {
-//     console.log(currCountyLists)
-//     const index = currCountyLists.findIndex((item) => {
-//         return item === checkId
-//     })
-//     return index > -1
-// })
 const checkExistCountry = (checkId) => {
     const index = currCountyLists.findIndex((item) => {
         return item === checkId
@@ -75,13 +68,15 @@ const setSelected = (data) => {
     }
 }
 
+const handleALlExpanded = (boolean) => (isExpanded.value = boolean)
+
 const clearAllCheckbox = () => {
     countryRef.value.forEach((item) => {
         item.clearCheckbox()
     })
 }
 
-defineExpose({ clearAllCheckbox })
+defineExpose({ handleALlExpanded, clearAllCheckbox })
 </script>
 
 <style lang="scss" scoped></style>

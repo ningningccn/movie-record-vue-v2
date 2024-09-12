@@ -17,7 +17,7 @@
                     <p class="text-heading-s">添加記錄</p>
                     <div class="mt-8 space-y-6">
                         <Calendar @selected="setDate" v-model:date="movieData.record_date" />
-                        <Select :attrSelected="type" @selected="setType" />
+                        <Select :attrSelected="checkHasCartoonType" @selected="setType" />
                         <Input :placeholder="'名稱'" v-model:text="movieData.name" />
                         <Input
                             :placeholder="'原始名稱(選項)'"
@@ -120,8 +120,13 @@ const movieData = ref({
     postImageUrl: '',
     background_image: null,
 })
+const hasCartoon = props.genres.some((list) => list.id === 16)
 
-movieData.value.type = props?.type ?? ''
+const checkHasCartoonType = computed(() => (hasCartoon ? 'cartoon' : props.type))
+
+if (hasCartoon) movieData.value.type = 'cartoon'
+else movieData.value.type = props?.type ?? ''
+
 movieData.value.name = props?.name ?? ''
 movieData.value.original_name = props?.original_name ?? ''
 movieData.value.year = dayjs(props?.year).format('YYYY') ?? ''
@@ -129,7 +134,7 @@ movieData.value.country = props?.country ?? ''
 movieData.value.background_image = props?.background_image ?? null
 
 const setDate = (date) => (movieData.value.record_date = date)
-const setType = (type) => (movieData.value.type = type)
+const setType = (type) => (console.log(type), (movieData.value.type = type))
 const setFavorite = (favorite) => (movieData.value.favorite = favorite)
 const setWatch = (watch) => (movieData.value.watched = watch)
 const setStar = (star) => (movieData.value.mark = star)

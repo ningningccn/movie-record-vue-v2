@@ -63,13 +63,15 @@ const setStatus = (data) => {
     }
 }
 
+const handleALlExpanded = (boolean) => (isExpanded.value = boolean)
+
 const clearAllCheckbox = () => {
     categoryRef.value.forEach((item) => {
         item.clearCheckbox()
     })
 }
 
-defineExpose({ clearAllCheckbox })
+defineExpose({ handleALlExpanded, clearAllCheckbox })
 </script>
 
 <style lang="scss" scoped></style>

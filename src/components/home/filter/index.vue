@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between px-6 py-2">
             <div class="flex space-x-2">
                 <i class="icon-filter text-[22px]"></i>
-                <p class="cursor-pointer" @click="isAllExpanded = !isAllExpanded">篩選</p>
+                <p class="cursor-pointer" @click="handleAllExpanded()">篩選</p>
             </div>
             <p
                 class="text-body-s"
@@ -14,7 +14,7 @@
             </p>
         </div>
         <div class="flex flex-col space-y-6 px-6 pb-4 pt-6">
-            <Status :isAllExpanded="isAllExpanded" ref="statusRef" />
+            <Status ref="statusRef" />
             <Year ref="yearRef" />
             <Category ref="categoryRef" />
             <Country ref="countryRef" />
@@ -32,7 +32,7 @@ import Category from '@/components/home/filter/category.vue'
 import Country from '@/components/home/filter/country.vue'
 
 const filterStore = useFilterStore()
-const isAllExpanded = ref(true)
+const isAllOpenExpanded = ref(true)
 
 const statusRef = ref()
 const yearRef = ref()
@@ -44,6 +44,14 @@ const clearAllFilter = () => {
     yearRef.value.clearAllCheckbox()
     categoryRef.value.clearAllCheckbox()
     countryRef.value.clearAllCheckbox()
+}
+
+const handleAllExpanded = () => {
+    isAllOpenExpanded.value = !isAllOpenExpanded.value
+    statusRef.value.handleALlExpanded(isAllOpenExpanded.value)
+    yearRef.value.handleALlExpanded(isAllOpenExpanded.value)
+    categoryRef.value.handleALlExpanded(isAllOpenExpanded.value)
+    countryRef.value.handleALlExpanded(isAllOpenExpanded.value)
 }
 
 const isClear = computed(() => {

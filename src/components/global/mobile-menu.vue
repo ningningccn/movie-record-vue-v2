@@ -12,18 +12,14 @@
                         <i class="icon-close text-[24px]" @click="vfm.close('mobile-menu')"></i>
                     </button>
                 </div>
-                <button
-                    type="button"
-                    class="flex items-center justify-center gap-x-2"
-                    @click="clickAddRecord()"
-                >
+                <button type="button" class="flex items-center gap-x-2" @click="clickAddRecord()">
                     <i class="icon-plus-square"></i>
                     添加
                 </button>
 
                 <routerLink
                     to="/search"
-                    class="flex items-center justify-center gap-x-2"
+                    class="flex items-center gap-x-2"
                     @click="vfm.close('mobile-menu')"
                 >
                     <i class="icon-search"></i>
