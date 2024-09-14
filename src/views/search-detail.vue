@@ -93,19 +93,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="mx-auto mt-10 md:mt-20 md:w-full">
-                <div v-if="data?.overview">
-                    <div>
-                        {{ data?.overview }}
-                    </div>
-                </div>
-                <div v-else>no overview</div>
-            </div> -->
         </section>
-        <!-- seasons -->
-        <!-- <section class="container mt-10 md:mt-20">
-            {{ data?.seasons }}
-        </section> -->
     </div>
 </template>
 
@@ -165,7 +153,6 @@ const openAddMovieModal = async () => {
 
 getData()
 const genresList = computed(() => genresT(data.value?.genres))
-console.log(genresList.value)
 
 const country = computed(() => {
     const originCountry = data.value?.origin_country[0]

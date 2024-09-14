@@ -27,7 +27,6 @@
                 <div>{{ date }}</div>
             </div>
         </div>
-        {{ isAdded }}
     </div>
 </template>
 
