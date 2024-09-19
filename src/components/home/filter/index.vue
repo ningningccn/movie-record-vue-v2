@@ -44,7 +44,7 @@ const clearAllFilter = () => {
     yearRef.value.clearAllCheckbox()
     categoryRef.value.clearAllCheckbox()
     countryRef.value.clearAllCheckbox()
-}
+    }
 
 const handleAllExpanded = () => {
     isAllOpenExpanded.value = !isAllOpenExpanded.value
