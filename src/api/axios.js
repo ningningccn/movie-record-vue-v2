@@ -9,12 +9,16 @@ const searchHeaders = {
 }
 
 export const fetch = async ({ path, method = 'get', opts }) => {
-    let url = `${searchBaseURL + path}`
-    console.log(opts)
-    return await axios({
-        method,
-        url,
-        ...opts,
-        headers: searchHeaders,
-    })
+    const url = `${searchBaseURL}${path}`
+    try {
+        return await axios({
+            method,
+            url,
+            ...opts,
+            headers: searchHeaders,
+        })
+    } catch (error) {
+        console.error('API request failed:', error)
+        throw error
+    }
 }

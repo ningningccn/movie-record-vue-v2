@@ -1,17 +1,18 @@
 import axios from 'axios'
 
 const searchBaseURL = import.meta.env.VITE_APP_THE_MOVIE_DB_BASE_URL
-const searchApiKey = import.meta.env.VITE_APP_THE_MOVIE_DB_API_KEY
-console.log(searchBaseURL)
-console.log(searchApiKey)
+// const searchApiKey = import.meta.env.VITE_APP_THE_MOVIE_DB_API_KEY
 
-export async function searchMovieFetch(query) {
-    let apiUrl = `${searchBaseURL}${searchApiKey}&language=zh-TW&query=${query}`
-    const res = await axios.get(apiUrl)
-    return res.data
-}
-
-// https://api.themoviedb.org/3/search/multi?api_key=a44def496d0c387f06b632df3f6cb20e&language=zh-TW&query=
+// export async function searchMovieFetch(query) {
+//     const apiUrl = `${searchBaseURL}${searchApiKey}&language=zh-TW&query=${query}`
+//     try {
+//         const res = await axios.get(apiUrl)
+//         return res.data
+//     } catch (error) {
+//         console.error('Search movie fetch failed:', error)
+//         throw error
+//     }
+// }
 
 const searchHeaders = {
     accept: 'application/json',
@@ -30,17 +31,6 @@ const fetch = async ({ path, method = 'get', opts }) => {
 }
 
 export const useApi = {
-    searchMovie: async (opt) => fetch({ path: `search/multi`, opts: opt }),
-    searchMovieDetail: async (opt) => fetch({ path: ``, opts: opt }),
+    searchMovie: async (opt) => fetch({ path: 'search/multi', opts: opt }),
+    searchMovieDetail: async (path, opt) => fetch({ path, opts: opt }),
 }
-// axios({
-//     method: 'get',
-//     url: searchBaseURL,
-//     params: {
-//         include_adult: 'false',
-//         'api-key': searchApiKey,
-//         language: 'zh-TW',
-//         query: query,
-//         page: '1',
-//     },
-// })

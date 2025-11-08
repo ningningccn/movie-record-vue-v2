@@ -1,9 +1,6 @@
 <template>
     <TypeTab @selected="setType" />
     <div class="container mb-20">
-        <!-- <div class="text-body-l-semibold card mt-[60px]" ref="test">
-            結果顯示:{{ movieList.length }}
-        </div> -->
         <FilterMobile class="block md:hidden" />
         <main class="mt-6 flex md:mt-14 md:space-x-5">
             <div class="hidden min-w-[197px] max-w-[197px] md:block">
@@ -45,14 +42,12 @@ import Filter from '@/components/home/filter/index.vue'
 import Card from '@/components/home/card.vue'
 import Loading from '@/components/shared/loading.vue'
 import FilterMobile from '@/components/home/filter/mobile/filter-m.vue'
-import ScrollTrigger from 'gsap/ScrollTrigger'
 
-// import Calendar from '@/components/header/calendar.vue'
-
-import { ref, reactive, watch, onMounted, nextTick, computed } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { getMovieListApi } from '@/api/api.js'
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 const filterStore = useFilterStore()
 const isLoading = ref(false)
@@ -71,7 +66,7 @@ const getMovieList = async (slugType, opt) => {
 }
 
 // init
-gsap.registerPlugin(ScrollTrigger)
+// gsap.registerPlugin(ScrollTrigger)
 getMovieList(currType.value, filterStore.getFilterList)
 
 const setType = (slug) => {
@@ -122,31 +117,11 @@ const initGsap = () => {
             display: 'block',
         },
     )
-
-    // t1.fromTo(
-    //     '#card-watched-wrap',
-    //     {
-    //         x: -200,
-    //     },
-    //     {
-    //         x: 0,
-    //     },
-    // )
-    // t1.fromTo(
-    //     '#card-wrap',
-    //     { opacity: 0, x: 100 },
-    //     {
-    //         duration: 0.7,
-    //         opacity: 1,
-    //         x: 0,
-    //     },
-    // )
 }
 
-gsap.registerPlugin(ScrollTrigger)
-
-onMounted(async () => {
-    await initGsap()
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    initGsap()
 })
 </script>
 

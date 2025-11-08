@@ -39,8 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted } from 'vue'
 import gsap from 'gsap'
 
 const props = defineProps({
@@ -48,9 +47,6 @@ const props = defineProps({
         type: Object,
     },
 })
-
-const router = useRouter()
-const isLoaded = ref(false)
 
 const t1 = gsap.timeline()
 const initGsap = () => {

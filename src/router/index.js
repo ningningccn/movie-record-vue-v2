@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { getUserState } from '@/api/api.js'
 
 const router = createRouter({
@@ -44,18 +44,16 @@ const router = createRouter({
         },
     ],
 })
-router.beforeEach(async (to, from) => {
-    console.log(to.fullPath)
+router.beforeEach(async (to) => {
     if (to.fullPath === '/login' || to.fullPath === '/register') return
-    try {
-        const user = await getUserState()
-        if (to.meta.requiresAuth && user) {
-            return
+
+    if (to.meta.requiresAuth) {
+        try {
+            const user = await getUserState()
+            if (user) return
+        } catch (error) {
+            console.error('Auth check failed:', error)
         }
-        return
-    } catch (e) {
-        if (to.fullPath === '/login') return '/login'
-        if (to.fullPath === '/register') return '/register'
         return '/login'
     }
 })
