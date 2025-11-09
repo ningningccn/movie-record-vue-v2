@@ -63,7 +63,7 @@ const checkExistStatus = (checkId) => {
 }
 
 const setStatus = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currStatusLists.length = 0
     } else {
         const index = currStatusLists.indexOf(data.id)

@@ -23,7 +23,7 @@
                 <button
                     type="button"
                     class="an-btn flex items-center gap-x-[10px] rounded-lg border border-primary px-6 py-2 text-primary"
-                    @click="logout()"
+                    @click="handleLogout()"
                 >
                     <i class="icon-sign-in"></i>
                     登出
@@ -37,13 +37,16 @@
 </template>
 
 <script setup>
-import { useModal } from 'vue-final-modal'
-import AddRecord from '@/components/global/add-modal.vue'
-import MobileMenu from '@/components/global/mobile-menu.vue'
 import { ref, reactive, watch, onMounted } from 'vue'
+import { useModal } from 'vue-final-modal'
+import { useAuth } from '@/composables/useAuth.js'
+
+import AddRecord from '@/components/modals/add-movie-modal.vue'
+import MobileMenu from '@/components/layout/mobile-menu.vue'
+
 import gsap from 'gsap'
 
-import { logout } from '@/api/api.js'
+const { handleLogout } = useAuth()
 
 const AddRecordModal = useModal({
     component: AddRecord,
@@ -64,14 +67,13 @@ const mobileMenu = useModal({
         },
         clickLogout: () => {
             mobileMenu.close()
-            logout()
+            handleLogout()
         },
     },
 })
 
 const openAddRecord = () => {
     AddRecordModal.open()
-    console.log('test open')
 }
 
 const openMobileMenu = () => {

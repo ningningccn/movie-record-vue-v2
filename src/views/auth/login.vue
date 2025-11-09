@@ -16,7 +16,7 @@
                     <div class="text-body-s mt-2 text-error" v-if="errorMessage">
                         {{ errorMessage }}
                     </div>
-                    <Button :text="'登入'" class="mt-8" :disable="isValid" @click="login()" />
+                    <Button class="mt-8" :disable="isValid || isLoading" @click="handleLogin()">登入</Button>
 
                     <div class="text-body-s mt-8 text-center">
                         還未有帳戶?立即
@@ -34,10 +34,12 @@
 import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
-import { ref, computed, onMounted, nextTick } from 'vue'
-import { createAccount, loginAccount } from '@/api/api.js'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { useAuth } from '@/composables/useAuth.js'
 
 import gsap from 'gsap'
+
+const { login, error, isLoading } = useAuth()
 
 const email = ref('')
 const password = ref('')
@@ -47,12 +49,19 @@ const isValid = computed(() => {
     return email.value.length > 0 && password.value.length > 0
 })
 
-const login = async () => {
-    const error = await loginAccount(email.value, password.value)
-    if (error) {
+const handleLogin = async () => {
+    const success = await login(email.value, password.value)
+    if (!success) {
         errorMessage.value = '身份驗證/無效憑證'
     }
 }
+
+// Watch for error changes
+watch(error, (newError) => {
+    if (newError) {
+        errorMessage.value = '身份驗證/無效憑證'
+    }
+})
 let t1 = gsap.timeline()
 const initGsap = async () => {
     t1.fromTo(

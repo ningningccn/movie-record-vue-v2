@@ -6,7 +6,7 @@
         >
             <p>
                 產地
-                <span v-if="currCountyLists.length > 0">({{ currCountyLists.length }})</span>
+                <span v-if="currCountryLists.length > 0">({{ currCountryLists.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -45,26 +45,26 @@ const countryLists = computed(() => {
 
 const countryRef = ref()
 const isExpanded = ref(true)
-const currCountyLists = reactive(filterStore.currCountyLists)
+const currCountryLists = reactive(filterStore.currCountryLists)
 
 const checkExistCountry = (checkId) => {
-    const index = currCountyLists.findIndex((item) => {
+    const index = currCountryLists.findIndex((item) => {
         return item === checkId
     })
     return index > -1
 }
 
 const setSelected = (data) => {
-    if (data == 'clear') {
-        currCountyLists.length = 0
+    if (data === 'clear') {
+        currCountryLists.length = 0
     } else {
-        const index = currCountyLists.findIndex((item) => item == data.id)
+        const index = currCountryLists.findIndex((item) => item === data.id)
         if (index !== -1) {
-            currCountyLists.splice(index, 1)
+            currCountryLists.splice(index, 1)
         } else {
-            currCountyLists.push(data.id)
+            currCountryLists.push(data.id)
         }
-        filterStore.setCurrCountryLists(currCountyLists)
+        filterStore.setCurrCountryLists(currCountryLists)
     }
 }
 

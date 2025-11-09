@@ -50,10 +50,10 @@ const checkExistCategory = (checkId) => {
 }
 
 const setStatus = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currCategoryLists.length = 0
     } else {
-        const index = currCategoryLists.findIndex((item) => item.id == data.id)
+        const index = currCategoryLists.findIndex((item) => item.id === data.id)
         if (index !== -1) {
             currCategoryLists.splice(index, 1)
         } else {

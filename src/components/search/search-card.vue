@@ -32,7 +32,7 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue'
-import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useFilterStore } from '@/stores/filter.js'
 import gsap from 'gsap'
 
@@ -65,7 +65,7 @@ const isAdded = computed(() => filterStore.nameLists.some((name) => name === pro
 const imgUrl = computed(() => {
     return props.poster ? `https://image.tmdb.org/t/p/w500${props.poster}` : ''
 })
-const type = computed(() => (props.mediaType == 'tv' ? '電視劇' : '電影'))
+const type = computed(() => (props.mediaType === 'tv' ? '電視劇' : '電影'))
 const router = useRouter()
 
 const goSearchDetailPage = () => {

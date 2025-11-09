@@ -96,7 +96,7 @@ const filterStore = useFilterStore()
 const currStatusLists = reactive(filterStore.currStatusLists)
 const currYearLists = reactive(filterStore.currYearLists)
 const currCategoryLists = reactive(filterStore.currCategoryLists)
-const currCountryLists = reactive(filterStore.currCountyLists)
+const currCountryLists = reactive(filterStore.currCountryLists)
 
 const countryMapLists = computed(() => {
     return filterStore.countryLists.map((item) => {
@@ -122,8 +122,7 @@ const checkStatus = (slug) => {
 }
 
 const setStatus = (data) => {
-    console.log(data)
-    if (data == 'clear') {
+    if (data === 'clear') {
         currStatusLists.length = 0
     } else {
         const index = currStatusLists.indexOf(data.slug)
@@ -139,7 +138,7 @@ const setStatus = (data) => {
 }
 
 const setYear = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currYearLists.length = 0
     } else {
         const index = currYearLists.indexOf(data)
@@ -154,7 +153,7 @@ const setYear = (data) => {
 }
 
 const setCategory = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currCategoryLists.length = 0
     } else {
         const index = currCategoryLists.findIndex((item) => {
@@ -169,7 +168,7 @@ const setCategory = (data) => {
 }
 
 const setCountry = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currCountryLists.length = 0
     } else {
         const index = currCountryLists.indexOf(data.slug)

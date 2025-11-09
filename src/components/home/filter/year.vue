@@ -47,10 +47,10 @@ const isExpanded = ref(true)
 const currYearLists = reactive(filterStore.currYearLists)
 
 const setStatus = (data) => {
-    if (data == 'clear') {
+    if (data === 'clear') {
         currYearLists.length = 0
     } else {
-        const index = currYearLists.findIndex((item) => item == data.id)
+        const index = currYearLists.findIndex((item) => item === data.id)
 
         if (index !== -1) {
             currYearLists.splice(index, 1)

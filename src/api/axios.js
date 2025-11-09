@@ -1,21 +1,22 @@
 import axios from 'axios'
+import { API_CONFIG, API_HEADERS } from '@/constants'
 
-const searchBaseURL = import.meta.env.VITE_APP_THE_MOVIE_DB_BASE_URL
-// const searchApiKey = import.meta.env.VITE_APP_THE_MOVIE_DB_API_KEY
-const searchHeaders = {
-    accept: 'application/json',
-    Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNDRkZWY0OTZkMGMzODdmMDZiNjMyZGYzZjZjYjIwZSIsIm5iZiI6MTcxOTQ3MDM2Mi44OTUzNDksInN1YiI6IjYwNGYzM2NmODcxYjM0MDAzYzk0NDg5ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GK8vrQP-AmlzaFayj4cNG2zwKd9XpRZdn4NnjxhNV5w',
-}
-
+/**
+ * Fetch data from The Movie DB API
+ * @param {Object} options - Request options
+ * @param {string} options.path - API path
+ * @param {string} options.method - HTTP method (default: 'get')
+ * @param {Object} options.opts - Additional axios options
+ * @returns {Promise} Axios response
+ */
 export const fetch = async ({ path, method = 'get', opts }) => {
-    const url = `${searchBaseURL}${path}`
+    const url = `${API_CONFIG.THE_MOVIE_DB_BASE_URL}${path}`
     try {
         return await axios({
             method,
             url,
             ...opts,
-            headers: searchHeaders,
+            headers: API_HEADERS,
         })
     } catch (error) {
         console.error('API request failed:', error)

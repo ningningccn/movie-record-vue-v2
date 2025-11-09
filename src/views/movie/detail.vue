@@ -89,15 +89,15 @@
 
 <script setup>
 import { useModal } from 'vue-final-modal'
-import { searchMovieDetail } from '@/api/api.js'
+import { fetchMovieDetailFromApi } from '@/services/searchService.js'
 import { typeOptions } from '@/translation/type.js'
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import gsap from 'gsap'
 
-import { getMovieDetail, editMovieDetail, deleteMovieDetail } from '@/api/api.js'
+import { fetchMovieById, updateMovie, deleteMovie } from '@/services/movieService.js'
 
-import editMovie from '@/components/movie-detail/edit-modal.vue'
+import editMovie from '@/components/modals/edit-movie-modal.vue'
 
 const route = useRoute()
 const data = ref()
@@ -112,19 +112,17 @@ const editMovieModal = useModal({
     component: editMovie,
     attrs: {
         updatedMovie: async () => {
-            console.log('test')
-            data.value = await getMovieDetail(route.params.id)
+            data.value = await fetchMovieById(route.params.id)
         },
     },
 })
 
 const updateFav = async () => {
-    await editMovieDetail(route.params.id, { favorite: !data.value?.favorite })
-    data.value = await getMovieDetail(route.params.id)
+    await updateMovie(route.params.id, { favorite: !data.value?.favorite })
+    data.value = await fetchMovieById(route.params.id)
 }
 
 const editData = async () => {
-    console.log(data.value)
     const { name, original_name, year, country, type, mark, watched, favorite, categoryList } =
         data.value
     editMovieModal.open()
@@ -144,7 +142,7 @@ const editData = async () => {
 }
 
 const deleteData = async () => {
-    await deleteMovieDetail(route.params.id)
+    await deleteMovie(route.params.id)
 }
 
 let t1 = gsap.timeline()
@@ -207,7 +205,7 @@ const initGsap = async () => {
 }
 
 onMounted(async () => {
-    data.value = await getMovieDetail(route.params.id)
+    data.value = await fetchMovieById(route.params.id)
     nextTick(async () => {
         await initGsap()
     })

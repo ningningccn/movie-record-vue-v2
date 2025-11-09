@@ -101,12 +101,13 @@
 import { countryTranslate } from '@/translation/country'
 import { categoryTranslation } from '@/translation/category.js'
 import { useModal } from 'vue-final-modal'
-import { searchMovieDetail } from '@/api/api.js'
+import { fetchMovieDetailFromApi } from '@/services/searchService.js'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import AddMovie from '@/components/search/search-add-modal.vue'
-import Category from '@/components/global/modal/category-select.vue'
-import { genresT } from '@/function/translation'
+import { genresT } from '@/translation'
+
+import AddMovie from '@/components/modals/search-add-movie-modal.vue'
+import Category from '@/components/forms/category-select.vue'
 import gsap from 'gsap'
 
 const route = useRoute()
@@ -116,11 +117,10 @@ const params = ref({
 })
 
 const getData = async () => {
-    const resData = await searchMovieDetail(route.path, {
+    const resData = await fetchMovieDetailFromApi(route.path, {
         params: params.value,
     })
     data.value = resData.data
-    console.log(data.value)
 }
 
 const addMovieModal = useModal({

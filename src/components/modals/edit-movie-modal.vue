@@ -3,27 +3,19 @@
         modal-id="edit-movie-id"
         content-class="absolute inset-0  bg-[#30313299]"
         :content-transition="'vfm-fade'"
-        :overlay-transition="'vfm-fade'"
-    >
+        :overlay-transition="'vfm-fade'">
         <div class="absolute inset-0 h-full overflow-auto">
             <div
-                class="main-gradient relative mx-auto my-[64px] w-[90%] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:my-[128px] md:w-[489px] md:p-20"
-            >
+                class="main-gradient relative mx-auto my-[64px] w-[90%] rounded-[50px] border border-[#FFFFFF33] bg-black p-14 md:my-[128px] md:w-[489px] md:p-20">
                 <div>
                     <p class="text-heading-s">修改記錄</p>
                     <div class="mt-8 space-y-6">
                         <Select :attrSelected="editMovie?.type" @selected="setType" />
                         <Input :placeholder="'名稱'" v-model:text="editMovie.name" />
-                        <Input
-                            :placeholder="'原始名稱(選項)'"
-                            v-model:text="editMovie.original_name"
-                        />
+                        <Input :placeholder="'原始名稱(選項)'" v-model:text="editMovie.original_name" />
                         <Input :placeholder="'年份'" v-model:text="editMovie.year" />
                         <Input :placeholder="'產地'" v-model:text="editMovie.country" />
-                        <Category
-                            :data="props.categoryList"
-                            v-model:category="editMovie.categoryList"
-                        />
+                        <Category :data="props.categoryList" v-model:category="editMovie.categoryList" />
                     </div>
                     <!-- <UploadImage
                         class="my-8"
@@ -32,30 +24,13 @@
                         @imageData="setImageData"
                     /> -->
                     <div class="mt-8 space-y-3">
-                        <Checkbox
-                            :title="'最愛'"
-                            :current="editMovie.favorite"
-                            @selected="setFavorite"
-                        />
-                        <Checkbox
-                            :title="'已觀看'"
-                            :current="editMovie.watched"
-                            @selected="setWatch"
-                        />
+                        <Checkbox :title="'最愛'" :current="editMovie.favorite" @selected="setFavorite" />
+                        <Checkbox :title="'已觀看'" :current="editMovie.watched" @selected="setWatch" />
                         <Star :current="editMovie.mark" @selected="setStar" />
                     </div>
-                    <Button
-                        :text="'修改'"
-                        class="mt-8"
-                        :disable="true"
-                        @click="handleEditMovie()"
-                    />
+                    <Button class="mt-8" :disable="true" @click="handleEditMovie()">修改</Button>
                 </div>
-                <button
-                    type="button"
-                    class="absolute right-10 top-10"
-                    @click="vfm.close('edit-movie-id')"
-                >
+                <button type="button" class="absolute right-10 top-10" @click="vfm.close('edit-movie-id')">
                     <i class="icon-close text-[32px]"></i>
                 </button>
             </div>
@@ -64,23 +39,23 @@
 </template>
 
 <script setup>
-import 'vue-multiselect/dist/vue-multiselect.css'
-import { ref, watch, computed, reactive } from 'vue'
-import { VueFinalModal, useVfm } from 'vue-final-modal'
-import { useRoute } from 'vue-router'
+import "vue-multiselect/dist/vue-multiselect.css"
+import { ref, watch, computed, reactive } from "vue"
+import { VueFinalModal, useVfm } from "vue-final-modal"
+import { useRoute } from "vue-router"
 
-import Input from '@/components/ui/input.vue'
-import Button from '@/components/ui/button.vue'
-import UploadImage from '@/components/global/modal/upload-image.vue'
-import Checkbox from '@/components/global/modal/checkbox.vue'
-import Star from '@/components/global/modal/star.vue'
-import Select from '@/components/global/modal/type-select.vue'
-import Calendar from '@/components/global/modal/pick-calendar.vue'
-import Category from '@/components/global/modal/category-select.vue'
+import Input from "@/components/ui/input.vue"
+import Button from "@/components/ui/button.vue"
+import UploadImage from "@/components/forms/upload-image.vue"
+import Checkbox from "@/components/forms/checkbox.vue"
+import Star from "@/components/forms/star.vue"
+import Select from "@/components/forms/type-select.vue"
+import DatePicker from "@/components/forms/date-picker.vue"
+import Category from "@/components/forms/category-select.vue"
 
-import { addMovie, saveImageStorage, editMovieDetail } from '@/api/api.js'
+import { updateMovie } from "@/services/movieService.js"
 
-import dayjs from 'dayjs'
+import dayjs from "dayjs"
 
 const props = defineProps({
     updatedMovie: {
@@ -124,7 +99,6 @@ const props = defineProps({
     },
 })
 
-console.log(props.categoryList)
 const vfm = useVfm()
 const route = useRoute()
 
@@ -173,11 +147,10 @@ const setStar = (star) => (editMovie.mark = star)
 // const setImageData = async (data) => (tempImage.value = data)
 
 const handleEditMovie = async () => {
-    editMovie.watched_date = editMovie.watched ? dayjs(new Date()).format('DD-MM-YYYY') : ''
-    await editMovieDetail(route.params.id, editMovie)
+    editMovie.watched_date = editMovie.watched ? dayjs(new Date()).format("DD-MM-YYYY") : ""
+    await updateMovie(route.params.id, editMovie)
     await props.updatedMovie()
-    console.log('updated movie')
-    vfm.close('edit-movie-id')
+    vfm.close("edit-movie-id")
 }
 
 // const handleAddMovie = async () => {

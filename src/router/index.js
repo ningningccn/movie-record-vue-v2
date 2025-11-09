@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getUserState } from '@/api/api.js'
+import { getUserState } from '@/services/authService.js'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,35 +11,35 @@ const router = createRouter({
         {
             path: '/',
             name: 'Home',
-            component: () => import('@/views/index.vue'),
+            component: () => import('@/views/movie/home.vue'),
             meta: { requiresAuth: true },
         },
         {
             path: '/login',
             name: 'login',
-            component: () => import('@/views/login.vue'),
+            component: () => import('@/views/auth/login.vue'),
         },
         {
             path: '/register',
             name: 'register',
-            component: () => import('@/views/register.vue'),
+            component: () => import('@/views/auth/register.vue'),
         },
         {
             path: '/search',
             name: 'search',
-            component: () => import('@/views/search.vue'),
+            component: () => import('@/views/search/index.vue'),
             meta: { requiresAuth: true },
         },
         {
             path: '/:mediaType/:mediaID',
             name: 'searched',
-            component: () => import('@/views/search-detail.vue'),
+            component: () => import('@/views/search/detail.vue'),
             meta: { requiresAuth: true },
         },
         {
             path: '/list/:id',
             name: 'MovieDetail',
-            component: () => import('@/views/movie-detail.vue'),
+            component: () => import('@/views/movie/detail.vue'),
             meta: { requiresAuth: true },
         },
     ],

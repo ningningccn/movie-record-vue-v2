@@ -35,7 +35,7 @@
 import Search from '@/components/search/search-input.vue'
 import SearchCard from '@/components/search/search-card.vue'
 import Loading from '@/components/shared/loading.vue'
-import { searchMovie } from '@/api/api.js'
+import { searchMovies } from '@/services/searchService.js'
 import { ref, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useIntersectionObserver } from '@vueuse/core'
@@ -74,7 +74,7 @@ watch(
     () => params.value,
     async (newValue, oldValue) => {
         isLoading.value = true
-        const resData = await searchMovie({
+        const resData = await searchMovies({
             params: params.value,
         })
         const { page, results, total_pages, total_results } = resData.data
@@ -89,7 +89,6 @@ watch(
         totalResults.value = total_results
 
         isLoading.value = false
-        console.log(page, total_pages)
 
         if (page === total_pages) {
             hasNextPage.value = false

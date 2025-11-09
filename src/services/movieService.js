@@ -1,11 +1,4 @@
 import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-} from 'firebase/auth'
-import {
     getFirestore,
     collection,
     doc,
@@ -21,86 +14,28 @@ import {
     limit,
 } from 'firebase/firestore'
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { storage } from '@/services/firebase'
-import { fetch } from '../api/axios'
+import { storage, setupFirebase } from '@/services/firebase'
 import router from '@/router'
-import { useGlobalStore } from '@/stores/global.js'
+import { getUserEmail } from '@/services/authService.js'
 import { categoryTranslation } from '@/translation/category.js'
 
-export const searchMovie = async (opt) => {
-    return fetch({ path: `search/multi`, opts: opt })
-}
+// Initialize Firestore
+const db = getFirestore(setupFirebase)
 
-export const searchMovieDetail = async (path, opt) => {
-    return fetch({ path, opts: opt })
-}
-const db = getFirestore()
-const auth = getAuth()
-
-const getUserEmail = () => {
-    const globalStore = useGlobalStore()
-    return globalStore.user.email
-}
-
-export const getUserState = async () => {
-    const globalStore = useGlobalStore()
-
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                globalStore.setUserStatus(user)
-                resolve(user.email)
-            } else reject(user)
-        })
-    })
-}
-
-export const loginAccount = async (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log(auth, email, password)
-            // Signed in
-            const user = userCredential.user
-            console.log(user)
-
-            router.push({
-                path: '/',
-            })
-            // 登入成功 跳轉至其他頁面
-        })
-        .catch((error) => {
-            console.log(error.code)
-            return error.code
-            // 錯誤訊息
-        })
-}
-
-export const logout = () => {
-    const globalStore = useGlobalStore()
-    signOut(auth) // 登出方法，須上方引入
-        .then(() => {
-            router.push('/login') // 登出成功，跳回首頁
-            globalStore.user = {}
-            console.log('登出成功，跳回首頁')
-        })
-        .catch((error) => {
-            console.log('登出失敗', error)
-        })
-}
-
-export const createAccount = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user
-            setDoc(doc(db, 'users', user.email), { uuid: user.uid, email: user.email })
-            router.push('/')
-        })
-        .catch((error) => {
-            console.log('error: ', error)
-        })
-}
-
-export const getMovieListApi = async (slug, opt, hasNextPage) => {
+/**
+ * Fetch movie list with filters and pagination
+ * @param {string} slug - Movie type slug
+ * @param {Object} opt - Filter options
+ * @param {Array} opt.selectedStatusLists - Selected status filters
+ * @param {Array} opt.selectedYearLists - Selected year filters
+ * @param {Array} opt.selectedCategoryLists - Selected category filters
+ * @param {Array} opt.selectedCountryLists - Selected country filters
+ * @param {string} opt.order - Sort order (asc/desc)
+ * @param {string} opt.word - Sort field
+ * @param {DocumentSnapshot} hasNextPage - Last document for pagination
+ * @returns {Promise<{dataDoc: Array, latestDoc: DocumentSnapshot}>}
+ */
+export const fetchMovieList = async (slug, opt, hasNextPage) => {
     const {
         selectedStatusLists,
         selectedYearLists,
@@ -111,13 +46,16 @@ export const getMovieListApi = async (slug, opt, hasNextPage) => {
     } = opt
     const userEmail = getUserEmail()
     const whereSql = []
+
     if (slug) {
         whereSql.push(where('type', '==', slug))
     }
+
     if (selectedStatusLists.length > 0) {
         const indexFav = selectedStatusLists.indexOf('favorite')
         const indexWatched = selectedStatusLists.indexOf('watched')
         const indexWatching = selectedStatusLists.indexOf('to_be_watching')
+
         if (indexFav !== -1) {
             whereSql.push(where('favorite', '==', true))
         }
@@ -128,12 +66,15 @@ export const getMovieListApi = async (slug, opt, hasNextPage) => {
             whereSql.push(where('watched', '==', false))
         }
     }
+
     if (selectedYearLists.length > 0) {
         whereSql.push(where('year', 'in', selectedYearLists))
     }
+
     if (selectedCountryLists.length > 0) {
         whereSql.push(where('country', 'in', selectedCountryLists))
     }
+
     if (selectedCategoryLists.length > 0) {
         whereSql.push(where('categoryList', 'array-contains-any', selectedCategoryLists))
     }
@@ -153,9 +94,13 @@ export const getMovieListApi = async (slug, opt, hasNextPage) => {
     return { dataDoc, latestDoc }
 }
 
-export const getMovieDetail = async (id) => {
+/**
+ * Fetch movie detail by ID
+ * @param {string} id - Movie document ID
+ * @returns {Promise<Object|undefined>} Movie data or undefined if not found
+ */
+export const fetchMovieById = async (id) => {
     try {
-        // const userEmail = await getUserState()
         const userEmail = getUserEmail()
         if (userEmail) {
             const resDoc = await getDoc(doc(db, `users/${userEmail}/post`, `${id}`))
@@ -163,16 +108,20 @@ export const getMovieDetail = async (id) => {
                 return resDoc.data()
             } else {
                 router.push('/')
-                console.log('No such document!')
+                console.warn('No such document!')
             }
         }
     } catch (error) {
-        console.log(error)
+        console.error('Error fetching movie:', error)
     }
 }
 
-export const getFilterLists = async () => {
-    const userEmail = await getUserEmail()
+/**
+ * Fetch filter options (years, countries, categories, names)
+ * @returns {Promise<{yearOptLists: Array, countryOtpLists: Array, categoryOtpList: Array, nameLists: Array}>}
+ */
+export const fetchFilterOptions = async () => {
+    const userEmail = getUserEmail()
 
     const q = query(collection(db, `users/${userEmail}/post`), orderBy('year', 'asc'))
     const querySnapshot = await getDocs(q)
@@ -185,7 +134,7 @@ export const getFilterLists = async () => {
     querySnapshot.docs.forEach((doc) => {
         yearFilterLists.add(doc.data().year)
         countryFilterLists.add(doc.data().country)
-        // categoryFilterLists.add(...doc.data().categoryList)
+
         const resultCategoryLists = doc.data().categoryList
         resultCategoryLists.forEach((item) => {
             categoryFilterLists.add(item.id)
@@ -204,43 +153,59 @@ export const getFilterLists = async () => {
 
     return { yearOptLists, countryOtpLists, categoryOtpList, nameLists }
 }
-// Create
-export const addMovie = async (data) => {
-    // const userEmail = await getUserState()
+
+/**
+ * Create a new movie record
+ * @param {Object} data - Movie data object
+ * @returns {Promise<void>}
+ */
+export const createMovie = async (data) => {
+    try {
     const userEmail = getUserEmail()
-    if (userEmail) {
-        try {
-            await addDoc(collection(db, `users/${userEmail}`, 'post'), {
+        await addDoc(collection(db, `users/${userEmail}/post`), {
                 ...data,
                 createAt: new Date().getTime(),
             })
         } catch (err) {
-            console.log(err)
-        }
+        console.error('Error creating movie:', err)
+        throw err
     }
 }
-export const saveImageStorage = async (data) => {
-    // const userEmail = await getUserState()
+
+/**
+ * Upload movie image to Firebase Storage
+ * @param {File} data - Image file
+ * @returns {Promise<string>} Download URL of the uploaded image
+ */
+export const uploadMovieImage = async (data) => {
     const userEmail = getUserEmail()
     return await uploadBytesResumable(
         storageRef(storage, `images/${userEmail}/${data.name}`),
         data,
     ).then(async (snapshot) => {
-        return await getDownloadURL(snapshot.ref) //取得圖片url
+        return await getDownloadURL(snapshot.ref) // Get image URL
     })
 }
 
-// EDIT
-export const editMovieDetail = async (id, data) => {
-    // const userEmail = await getUserState()
+/**
+ * Update movie record
+ * @param {string} id - Movie document ID
+ * @param {Object} data - Updated movie data
+ * @returns {Promise<void>}
+ */
+export const updateMovie = async (id, data) => {
     const userEmail = getUserEmail()
     await setDoc(doc(db, `users/${userEmail}/post/${id}`), data, { merge: true })
 }
 
-// DELETE
-export const deleteMovieDetail = async (id) => {
-    // const userEmail = await getUserState()
+/**
+ * Delete movie record
+ * @param {string} id - Movie document ID
+ * @returns {Promise<void>}
+ */
+export const deleteMovie = async (id) => {
     const userEmail = getUserEmail()
     await deleteDoc(doc(db, `users/${userEmail}/post/`, id))
     router.push('/')
 }
+

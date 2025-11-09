@@ -8,37 +8,48 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
-import { ModalsContainer } from 'vue-final-modal'
-import { ref, computed, onMounted } from 'vue'
-import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
-import Header from '@/components/global/header.vue'
-import Footer from '@/components/global/footer.vue'
+import { useFilterStore } from "@/stores/filter.js"
+import { ModalsContainer } from "vue-final-modal"
+import { ref, computed, onMounted, watch } from "vue"
+import { RouterView, useRoute } from "vue-router"
+import Header from "@/components/layout/header.vue"
+import Footer from "@/components/layout/footer.vue"
 
-import { getUserState } from '@/api/api.js'
-import { useGlobalStore } from '@/stores/global.js'
+import { getUserState } from "@/services/authService.js"
+import { useGlobalStore } from "@/stores/global.js"
 
 const filterStore = useFilterStore()
-const router = useRouter()
 const route = useRoute()
 const globalStore = useGlobalStore()
 
 const user = ref(null)
-const path = computed(async () => {
-    if (globalStore.user) {
+const path = computed(() => route.path)
+
+// Initialize user state on mount
+onMounted(async () => {
+    if (globalStore.user?.email) {
         user.value = globalStore.user.email
-        filterStore.setFilterLists()
-        return route.path
+        await filterStore.setFilterLists()
     } else {
         try {
             user.value = await getUserState()
-            filterStore.setFilterLists()
-        } catch (e) {
-            user.value = e
+            await filterStore.setFilterLists()
+        } catch (error) {
+            user.value = null
+            console.error("Failed to get user state:", error)
         }
-        return route.path
     }
 })
+
+// Watch for route changes and update filter lists if user is authenticated
+watch(
+    () => route.path,
+    async () => {
+        if (user.value) {
+            await filterStore.setFilterLists()
+        }
+    },
+)
 </script>
 
 <style scoped></style>

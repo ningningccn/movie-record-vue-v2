@@ -13,7 +13,7 @@
                         <Input :placeholder="'帳戶名稱/電郵'" v-model:text="email" />
                         <Input :placeholder="'密碼'" :type="'password'" v-model:text="password" />
                     </div>
-                    <Button :text="'註冊'" class="mt-8" :disable="isValid" @click="register()" />
+                    <Button class="mt-8" :disable="isValid || isLoading" @click="handleRegister()">註冊</Button>
 
                     <div class="text-body-s mt-8 text-center">
                         還未有帳戶?立即
@@ -30,9 +30,11 @@ import Input from '@/components/ui/input.vue'
 import Button from '@/components/ui/button.vue'
 
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { createAccount } from '@/api/api.js'
+import { useAuth } from '@/composables/useAuth.js'
 
 import gsap from 'gsap'
+
+const { register, isLoading } = useAuth()
 
 const email = ref('')
 const password = ref('')
@@ -41,8 +43,8 @@ const isValid = computed(() => {
     return email.value.length > 0 && password.value.length > 0
 })
 
-const register = () => {
-    createAccount(email.value, password.value)
+const handleRegister = async () => {
+    await register(email.value, password.value)
 }
 
 let t1 = gsap.timeline()
