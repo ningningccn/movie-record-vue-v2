@@ -56,7 +56,7 @@ import Select from "@/components/forms/type-select.vue"
 import DatePicker from "@/components/forms/date-picker.vue"
 import Category from "@/components/forms/category-select.vue"
 
-import { useFilterStore } from "@/stores/filter.js"
+import { useMovieFilterStore } from "@/stores/movieFilter.js"
 import { createMovie, uploadMovieImage } from "@/services/movieService.js"
 
 const props = defineProps({
@@ -87,7 +87,7 @@ const props = defineProps({
 })
 
 const vfm = useVfm()
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 
 const tempImage = ref(null)
 

@@ -6,7 +6,7 @@
         >
             <p>
                 類別
-                <span v-if="currCategoryLists.length > 0">({{ currCategoryLists.length }})</span>
+                <span v-if="currCategoryList.length > 0">({{ currCategoryList.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -15,7 +15,7 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in filterStore.categoryLists" :key="index" class="">
+                <div v-for="(item, index) in filterStore.categoryList" :key="index" class="">
                     <Checkbox
                         :title="item.label"
                         :slug="item.id"
@@ -30,20 +30,20 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { ref, reactive, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const emit = defineEmits(['emitCurrCategory'])
 
 const categoryRef = ref()
 const isExpanded = ref(true)
-const currCategoryLists = reactive(filterStore.currCategoryLists)
+const currCategoryList = reactive(filterStore.currCategoryList)
 
 const checkExistCategory = (checkId) => {
-    const index = currCategoryLists.findIndex((item) => {
+    const index = currCategoryList.findIndex((item) => {
         return item.id === checkId
     })
     return index > -1
@@ -51,15 +51,15 @@ const checkExistCategory = (checkId) => {
 
 const setStatus = (data) => {
     if (data === 'clear') {
-        currCategoryLists.length = 0
+        currCategoryList.length = 0
     } else {
-        const index = currCategoryLists.findIndex((item) => item.id === data.id)
+        const index = currCategoryList.findIndex((item) => item.id === data.id)
         if (index !== -1) {
-            currCategoryLists.splice(index, 1)
+            currCategoryList.splice(index, 1)
         } else {
-            currCategoryLists.push(data)
+            currCategoryList.push(data)
         }
-        filterStore.setCurrCategoryLists(currCategoryLists)
+        filterStore.setCurrCategoryList(currCategoryList)
     }
 }
 

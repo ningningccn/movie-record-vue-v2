@@ -1,13 +1,13 @@
-import { categoryTranslation } from '@/translation/category'
+import { categoryLabels } from '@/constants'
 
 /**
- * Translate genres list to localized labels
+ * Get genre labels from genres list
  * @param {Array} genresList - Array of genre objects with id property
  * @returns {Array} Array of genre objects with label and slug
  */
-export const genresT = (genresList) => {
+export const getGenreLabels = (genresList) => {
     return genresList?.map((item) => {
-        const label = categoryTranslation[item.id] ?? item.id
+        const label = categoryLabels[item.id] ?? item.id
         return {
             label,
             slug: item.id,

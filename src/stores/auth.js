@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
-export const useGlobalStore = defineStore('global', {
+export const useAuthStore = defineStore('auth', {
     //定義狀態初始值
     state: () => ({
         user: {},
@@ -15,3 +14,4 @@ export const useGlobalStore = defineStore('global', {
         },
     },
 })
+

@@ -20,7 +20,7 @@
                         :key="item.slug"
                         @click="setStatus(item)"
                         :class="{
-                            'border-primary bg-primary': currStatusLists.indexOf(item.slug) >= 0,
+                            'border-primary bg-primary': currStatusList.indexOf(item.slug) >= 0,
                             'cursor-default border-disable text-disable': checkStatus(item.slug),
                         }"
                     >
@@ -34,10 +34,10 @@
                     <button
                         type="button"
                         class="rounded-[8px] border border-enable px-2 py-1"
-                        v-for="item in filterStore.yearLists"
+                        v-for="item in filterStore.yearList"
                         :key="item"
                         @click="setYear(item)"
-                        :class="{ 'border-primary bg-primary': currYearLists.indexOf(item) >= 0 }"
+                        :class="{ 'border-primary bg-primary': currYearList.indexOf(item) >= 0 }"
                     >
                         <p>{{ item }}</p>
                     </button>
@@ -49,7 +49,7 @@
                     <button
                         type="button"
                         class="rounded-[8px] border border-enable px-2 py-1"
-                        v-for="item in filterStore.categoryLists"
+                        v-for="item in filterStore.categoryList"
                         :key="item.id"
                         @click="setCategory(item)"
                         :class="{
@@ -66,11 +66,11 @@
                     <button
                         type="button"
                         class="rounded-[8px] border border-enable px-2 py-1"
-                        v-for="item in countryMapLists"
+                        v-for="item in countryMapList"
                         :key="item.slug"
                         @click="setCountry(item)"
                         :class="{
-                            'border-primary bg-primary': currCountryLists.indexOf(item.slug) >= 0,
+                            'border-primary bg-primary': currCountryList.indexOf(item.slug) >= 0,
                         }"
                     >
                         <p>{{ item.title }}</p>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { VueFinalModal } from 'vue-final-modal'
 import { ref, reactive, computed } from 'vue'
 
@@ -92,30 +92,30 @@ const statusList = [
     { title: '待觀看', slug: 'to_be_watching' },
 ]
 
-const filterStore = useFilterStore()
-const currStatusLists = reactive(filterStore.currStatusLists)
-const currYearLists = reactive(filterStore.currYearLists)
-const currCategoryLists = reactive(filterStore.currCategoryLists)
-const currCountryLists = reactive(filterStore.currCountryLists)
+const filterStore = useMovieFilterStore()
+const currStatusList = reactive(filterStore.currStatusList)
+const currYearList = reactive(filterStore.currYearList)
+const currCategoryList = reactive(filterStore.currCategoryList)
+const currCountryList = reactive(filterStore.currCountryList)
 
-const countryMapLists = computed(() => {
-    return filterStore.countryLists.map((item) => {
+const countryMapList = computed(() => {
+    return filterStore.countryList.map((item) => {
         return { title: item, slug: item }
     })
 })
 
 const checkExistCategory = (checkId) => {
-    const index = currCategoryLists.findIndex((item) => {
+    const index = currCategoryList.findIndex((item) => {
         return item.id === checkId
     })
     return index > -1
 }
 
 const checkStatus = (slug) => {
-    if (currStatusLists.includes('watched') && slug == 'to_be_watching') {
+    if (currStatusList.includes('watched') && slug == 'to_be_watching') {
         return true
     }
-    if (currStatusLists.includes('to_be_watching') && slug == 'watched') {
+    if (currStatusList.includes('to_be_watching') && slug == 'watched') {
         return true
     }
     return false
@@ -123,62 +123,62 @@ const checkStatus = (slug) => {
 
 const setStatus = (data) => {
     if (data === 'clear') {
-        currStatusLists.length = 0
+        currStatusList.length = 0
     } else {
-        const index = currStatusLists.indexOf(data.slug)
+        const index = currStatusList.indexOf(data.slug)
 
         if (index !== -1) {
-            currStatusLists.splice(index, 1)
+            currStatusList.splice(index, 1)
         } else {
-            currStatusLists.push(data.slug)
+            currStatusList.push(data.slug)
         }
 
-        filterStore.setCurrStatusList(currStatusLists)
+        filterStore.setCurrStatusList(currStatusList)
     }
 }
 
 const setYear = (data) => {
     if (data === 'clear') {
-        currYearLists.length = 0
+        currYearList.length = 0
     } else {
-        const index = currYearLists.indexOf(data)
+        const index = currYearList.indexOf(data)
 
         if (index !== -1) {
-            currYearLists.splice(index, 1)
+            currYearList.splice(index, 1)
         } else {
-            currYearLists.push(data)
+            currYearList.push(data)
         }
-        filterStore.setCurrYearLists(currYearLists)
+        filterStore.setCurrYearList(currYearList)
     }
 }
 
 const setCategory = (data) => {
     if (data === 'clear') {
-        currCategoryLists.length = 0
+        currCategoryList.length = 0
     } else {
-        const index = currCategoryLists.findIndex((item) => {
+        const index = currCategoryList.findIndex((item) => {
             return item.id === data.id
         })
         if (index !== -1) {
-            currCategoryLists.splice(index, 1)
+            currCategoryList.splice(index, 1)
         } else {
-            currCategoryLists.push(data)
+            currCategoryList.push(data)
         }
     }
 }
 
 const setCountry = (data) => {
     if (data === 'clear') {
-        currCountryLists.length = 0
+        currCountryList.length = 0
     } else {
-        const index = currCountryLists.indexOf(data.slug)
+        const index = currCountryList.indexOf(data.slug)
 
         if (index !== -1) {
-            currCountryLists.splice(index, 1)
+            currCountryList.splice(index, 1)
         } else {
-            currCountryLists.push(data.slug)
+            currCountryList.push(data.slug)
         }
-        filterStore.setCurrCountryLists(currCountryLists)
+        filterStore.setCurrCountryList(currCountryList)
     }
 }
 </script>

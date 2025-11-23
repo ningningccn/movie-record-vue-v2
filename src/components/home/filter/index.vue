@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { ref, watch, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Status from '@/components/home/filter/status.vue'
@@ -31,7 +31,7 @@ import Year from '@/components/home/filter/year.vue'
 import Category from '@/components/home/filter/category.vue'
 import Country from '@/components/home/filter/country.vue'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const isAllOpenExpanded = ref(true)
 
 const statusRef = ref()
@@ -55,13 +55,13 @@ const handleAllExpanded = () => {
 }
 
 const isClear = computed(() => {
-    const { selectedStatusLists, selectedYearLists, selectedCategoryLists, selectedCountryLists } =
+    const { selectedStatusList, selectedYearList, selectedCategoryList, selectedCountryList } =
         filterStore.getFilterList
     return (
-        selectedStatusLists.length > 0 ||
-        selectedYearLists.length > 0 ||
-        selectedCategoryLists.length > 0 ||
-        selectedCountryLists.length > 0
+        selectedStatusList.length > 0 ||
+        selectedYearList.length > 0 ||
+        selectedCategoryList.length > 0 ||
+        selectedCountryList.length > 0
     )
 })
 </script>

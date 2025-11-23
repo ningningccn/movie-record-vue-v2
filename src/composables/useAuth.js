@@ -1,6 +1,6 @@
 import { ref, computed } from "vue"
 import { loginAccount, createAccount, logout, getUserState } from "@/services/authService.js"
-import { useGlobalStore } from "@/stores/global.js"
+import { useAuthStore } from "@/stores/auth.js"
 
 /**
  * Authentication composable
@@ -8,7 +8,7 @@ import { useGlobalStore } from "@/stores/global.js"
  * @returns {Object} Authentication state and methods
  */
 export function useAuth() {
-    const globalStore = useGlobalStore()
+    const authStore = useAuthStore()
     const isLoading = ref(false)
     const error = ref(null)
     const user = ref(null)
@@ -17,14 +17,14 @@ export function useAuth() {
      * Check if user is authenticated
      */
     const isAuthenticated = computed(() => {
-        return !!user.value || !!globalStore.user?.email
+        return !!user.value || !!authStore.user?.email
     })
 
     /**
      * Get current user email
      */
     const userEmail = computed(() => {
-        return user.value || globalStore.user?.email || null
+        return user.value || authStore.user?.email || null
     })
 
     /**

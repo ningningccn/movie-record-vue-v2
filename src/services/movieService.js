@@ -17,7 +17,7 @@ import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebas
 import { storage, setupFirebase } from '@/services/firebase'
 import router from '@/router'
 import { getUserEmail } from '@/services/authService.js'
-import { categoryTranslation } from '@/translation/category.js'
+import { categoryLabels } from '@/constants'
 
 // Initialize Firestore
 const db = getFirestore(setupFirebase)
@@ -26,10 +26,10 @@ const db = getFirestore(setupFirebase)
  * Fetch movie list with filters and pagination
  * @param {string} slug - Movie type slug
  * @param {Object} opt - Filter options
- * @param {Array} opt.selectedStatusLists - Selected status filters
- * @param {Array} opt.selectedYearLists - Selected year filters
- * @param {Array} opt.selectedCategoryLists - Selected category filters
- * @param {Array} opt.selectedCountryLists - Selected country filters
+ * @param {Array} opt.selectedStatusList - Selected status filters
+ * @param {Array} opt.selectedYearList - Selected year filters
+ * @param {Array} opt.selectedCategoryList - Selected category filters
+ * @param {Array} opt.selectedCountryList - Selected country filters
  * @param {string} opt.order - Sort order (asc/desc)
  * @param {string} opt.word - Sort field
  * @param {DocumentSnapshot} hasNextPage - Last document for pagination
@@ -37,10 +37,10 @@ const db = getFirestore(setupFirebase)
  */
 export const fetchMovieList = async (slug, opt, hasNextPage) => {
     const {
-        selectedStatusLists,
-        selectedYearLists,
-        selectedCategoryLists,
-        selectedCountryLists,
+        selectedStatusList,
+        selectedYearList,
+        selectedCategoryList,
+        selectedCountryList,
         order,
         word,
     } = opt
@@ -51,10 +51,10 @@ export const fetchMovieList = async (slug, opt, hasNextPage) => {
         whereSql.push(where('type', '==', slug))
     }
 
-    if (selectedStatusLists.length > 0) {
-        const indexFav = selectedStatusLists.indexOf('favorite')
-        const indexWatched = selectedStatusLists.indexOf('watched')
-        const indexWatching = selectedStatusLists.indexOf('to_be_watching')
+    if (selectedStatusList.length > 0) {
+        const indexFav = selectedStatusList.indexOf('favorite')
+        const indexWatched = selectedStatusList.indexOf('watched')
+        const indexWatching = selectedStatusList.indexOf('to_be_watching')
 
         if (indexFav !== -1) {
             whereSql.push(where('favorite', '==', true))
@@ -67,16 +67,16 @@ export const fetchMovieList = async (slug, opt, hasNextPage) => {
         }
     }
 
-    if (selectedYearLists.length > 0) {
-        whereSql.push(where('year', 'in', selectedYearLists))
+    if (selectedYearList.length > 0) {
+        whereSql.push(where('year', 'in', selectedYearList))
     }
 
-    if (selectedCountryLists.length > 0) {
-        whereSql.push(where('country', 'in', selectedCountryLists))
+    if (selectedCountryList.length > 0) {
+        whereSql.push(where('country', 'in', selectedCountryList))
     }
 
-    if (selectedCategoryLists.length > 0) {
-        whereSql.push(where('categoryList', 'array-contains-any', selectedCategoryLists))
+    if (selectedCategoryList.length > 0) {
+        whereSql.push(where('categoryList', 'array-contains-any', selectedCategoryList))
     }
 
     const q = query(
@@ -118,7 +118,7 @@ export const fetchMovieById = async (id) => {
 
 /**
  * Fetch filter options (years, countries, categories, names)
- * @returns {Promise<{yearOptLists: Array, countryOtpLists: Array, categoryOtpList: Array, nameLists: Array}>}
+ * @returns {Promise<{yearOptList: Array, countryOptList: Array, categoryOptList: Array, nameList: Array}>}
  */
 export const fetchFilterOptions = async () => {
     const userEmail = getUserEmail()
@@ -126,32 +126,32 @@ export const fetchFilterOptions = async () => {
     const q = query(collection(db, `users/${userEmail}/post`), orderBy('year', 'asc'))
     const querySnapshot = await getDocs(q)
 
-    const yearFilterLists = new Set()
-    const countryFilterLists = new Set()
-    const categoryFilterLists = new Set()
-    const nameLists = []
+    const yearFilterList = new Set()
+    const countryFilterList = new Set()
+    const categoryFilterList = new Set()
+    const nameList = []
 
     querySnapshot.docs.forEach((doc) => {
-        yearFilterLists.add(doc.data().year)
-        countryFilterLists.add(doc.data().country)
+        yearFilterList.add(doc.data().year)
+        countryFilterList.add(doc.data().country)
 
-        const resultCategoryLists = doc.data().categoryList
-        resultCategoryLists.forEach((item) => {
-            categoryFilterLists.add(item.id)
+        const resultCategoryList = doc.data().categoryList
+        resultCategoryList.forEach((item) => {
+            categoryFilterList.add(item.id)
         })
-        nameLists.push(doc.data().name)
+        nameList.push(doc.data().name)
     })
 
-    const yearOptLists = Array.from(yearFilterLists)
-    const countryOtpLists = Array.from(countryFilterLists)
-    const categoryOtpList = Array.from(categoryFilterLists).map((item) => {
+    const yearOptList = Array.from(yearFilterList)
+    const countryOptList = Array.from(countryFilterList)
+    const categoryOptList = Array.from(categoryFilterList).map((item) => {
         return {
-            label: categoryTranslation[item],
+            label: categoryLabels[item],
             id: item,
         }
     })
 
-    return { yearOptLists, countryOtpLists, categoryOtpList, nameLists }
+    return { yearOptList, countryOptList, categoryOptList, nameList }
 }
 
 /**

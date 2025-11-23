@@ -28,12 +28,12 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { ref, reactive, computed } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 
 const dataList = [
     { title: '最愛', slug: 'favorite' },
@@ -43,20 +43,20 @@ const dataList = [
 
 const statusRef = ref()
 const isExpanded = ref(true)
-const currStatusLists = reactive(filterStore.currStatusLists)
+const currStatusList = reactive(filterStore.currStatusList)
 
 const checkStatus = (slug) => {
-    if (currStatusLists.includes('watched') && slug == 'to_be_watching') {
+    if (currStatusList.includes('watched') && slug == 'to_be_watching') {
         return true
     }
-    if (currStatusLists.includes('to_be_watching') && slug == 'watched') {
+    if (currStatusList.includes('to_be_watching') && slug == 'watched') {
         return true
     }
     return false
 }
 
 const checkExistStatus = (checkId) => {
-    const index = currStatusLists.findIndex((item) => {
+    const index = currStatusList.findIndex((item) => {
         return item === checkId
     })
     return index > -1
@@ -64,17 +64,17 @@ const checkExistStatus = (checkId) => {
 
 const setStatus = (data) => {
     if (data === 'clear') {
-        currStatusLists.length = 0
+        currStatusList.length = 0
     } else {
-        const index = currStatusLists.indexOf(data.id)
+        const index = currStatusList.indexOf(data.id)
 
         if (index !== -1) {
-            currStatusLists.splice(index, 1)
+            currStatusList.splice(index, 1)
         } else {
-            currStatusLists.push(data.id)
+            currStatusList.push(data.id)
         }
 
-        filterStore.setCurrStatusList(currStatusLists)
+        filterStore.setCurrStatusList(currStatusList)
     }
 }
 

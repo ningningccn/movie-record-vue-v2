@@ -22,7 +22,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import VueMultiselect from 'vue-multiselect'
-import { typeOptions } from '@/translation/type.js'
+import { typeLabels } from '@/constants'
 
 const emit = defineEmits(['selected'])
 const props = defineProps({
@@ -33,7 +33,7 @@ const props = defineProps({
 
 const value = ref('')
 const options = computed(() => {
-    return Object.entries(typeOptions).map(([key, value]) => {
+    return Object.entries(typeLabels).map(([key, value]) => {
         return {
             title: value,
             slug: key,

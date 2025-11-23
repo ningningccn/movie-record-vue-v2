@@ -14,3 +14,6 @@ export const API_HEADERS = {
     Authorization: API_CONFIG.THE_MOVIE_DB_BEARER_TOKEN,
 }
 
+// TMDB label mappings
+export { categoryLabels, categoryOptions, countryLabels, typeLabels } from './tmdb'
+

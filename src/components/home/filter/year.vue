@@ -6,7 +6,7 @@
         >
             <p>
                 年份
-                <span v-if="currYearLists.length > 0">({{ currYearLists.length }})</span>
+                <span v-if="currYearList.length > 0">({{ currYearList.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -15,7 +15,7 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in yearLists" :key="index" class="">
+                <div v-for="(item, index) in yearList" :key="index" class="">
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
@@ -30,38 +30,38 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const filterStore = useFilterStore()
-const yearLists = computed(() => {
-    return filterStore.yearLists.map((item) => {
+const filterStore = useMovieFilterStore()
+const yearList = computed(() => {
+    return filterStore.yearList.map((item) => {
         return { title: item, slug: item }
     })
 })
 
 const yearRef = ref()
 const isExpanded = ref(true)
-const currYearLists = reactive(filterStore.currYearLists)
+const currYearList = reactive(filterStore.currYearList)
 
 const setStatus = (data) => {
     if (data === 'clear') {
-        currYearLists.length = 0
+        currYearList.length = 0
     } else {
-        const index = currYearLists.findIndex((item) => item === data.id)
+        const index = currYearList.findIndex((item) => item === data.id)
 
         if (index !== -1) {
-            currYearLists.splice(index, 1)
+            currYearList.splice(index, 1)
         } else {
-            currYearLists.push(data.id)
+            currYearList.push(data.id)
         }
-        filterStore.setCurrYearLists(currYearLists)
+        filterStore.setCurrYearList(currYearList)
     }
 }
 const checkExistYear = (checkId) => {
-    const index = currYearLists.findIndex((item) => {
+    const index = currYearList.findIndex((item) => {
         return item === checkId
     })
     return index > -1

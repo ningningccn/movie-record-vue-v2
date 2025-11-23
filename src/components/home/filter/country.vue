@@ -6,7 +6,7 @@
         >
             <p>
                 產地
-                <span v-if="currCountryLists.length > 0">({{ currCountryLists.length }})</span>
+                <span v-if="currCountryList.length > 0">({{ currCountryList.length }})</span>
             </p>
             <i
                 class="icon-caret-down text-[20px] transition-transform duration-500"
@@ -15,7 +15,7 @@
         </div>
         <Collapse :when="isExpanded">
             <div class="flex flex-col space-y-3 pt-3">
-                <div v-for="(item, index) in countryLists" :key="item.slug" class="">
+                <div v-for="(item, index) in countryList" :key="item.slug" class="">
                     <Checkbox
                         :title="item.title"
                         :slug="item.slug"
@@ -30,25 +30,25 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import { ref, computed, reactive } from 'vue'
 import { Collapse } from 'vue-collapsed'
 import Checkbox from '@/components/home/filter/checkbox.vue'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 
-const countryLists = computed(() => {
-    return filterStore.countryLists.map((item) => {
+const countryList = computed(() => {
+    return filterStore.countryList.map((item) => {
         return { title: item, slug: item }
     })
 })
 
 const countryRef = ref()
 const isExpanded = ref(true)
-const currCountryLists = reactive(filterStore.currCountryLists)
+const currCountryList = reactive(filterStore.currCountryList)
 
 const checkExistCountry = (checkId) => {
-    const index = currCountryLists.findIndex((item) => {
+    const index = currCountryList.findIndex((item) => {
         return item === checkId
     })
     return index > -1
@@ -56,15 +56,15 @@ const checkExistCountry = (checkId) => {
 
 const setSelected = (data) => {
     if (data === 'clear') {
-        currCountryLists.length = 0
+        currCountryList.length = 0
     } else {
-        const index = currCountryLists.findIndex((item) => item === data.id)
+        const index = currCountryList.findIndex((item) => item === data.id)
         if (index !== -1) {
-            currCountryLists.splice(index, 1)
+            currCountryList.splice(index, 1)
         } else {
-            currCountryLists.push(data.id)
+            currCountryList.push(data.id)
         }
-        filterStore.setCurrCountryLists(currCountryLists)
+        filterStore.setCurrCountryList(currCountryList)
     }
 }
 

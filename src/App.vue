@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { useFilterStore } from "@/stores/filter.js"
+import { useMovieFilterStore } from "@/stores/movieFilter.js"
 import { ModalsContainer } from "vue-final-modal"
 import { ref, computed, onMounted, watch } from "vue"
 import { RouterView, useRoute } from "vue-router"
@@ -16,19 +16,19 @@ import Header from "@/components/layout/header.vue"
 import Footer from "@/components/layout/footer.vue"
 
 import { getUserState } from "@/services/authService.js"
-import { useGlobalStore } from "@/stores/global.js"
+import { useAuthStore } from "@/stores/auth.js"
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const route = useRoute()
-const globalStore = useGlobalStore()
+const authStore = useAuthStore()
 
 const user = ref(null)
 const path = computed(() => route.path)
 
 // Initialize user state on mount
 onMounted(async () => {
-    if (globalStore.user?.email) {
-        user.value = globalStore.user.email
+    if (authStore.user?.email) {
+        user.value = authStore.user.email
         await filterStore.setFilterLists()
     } else {
         try {

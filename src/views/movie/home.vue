@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { useFilterStore } from "@/stores/filter.js"
+import { useMovieFilterStore } from "@/stores/movieFilter.js"
 import TypeTab from "@/components/home/type-tab.vue"
 import Sort from "@/components/home/sort.vue"
 import Filter from "@/components/home/filter/index.vue"
@@ -42,7 +42,7 @@ import { fetchMovieList } from "@/services/movieService.js"
 import gsap from "gsap"
 import ScrollTrigger from "gsap/ScrollTrigger"
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const isLoading = ref(false)
 const currType = ref("")
 const movieList = ref([])

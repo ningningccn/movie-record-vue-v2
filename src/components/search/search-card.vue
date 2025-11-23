@@ -33,10 +33,10 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 import gsap from 'gsap'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const emit = defineEmits(['getDataId'])
 const props = defineProps({
     id: {
@@ -60,7 +60,7 @@ const props = defineProps({
     },
 })
 
-const isAdded = computed(() => filterStore.nameLists.some((name) => name === props.title))
+const isAdded = computed(() => filterStore.nameList.some((name) => name === props.title))
 
 const imgUrl = computed(() => {
     return props.poster ? `https://image.tmdb.org/t/p/w500${props.poster}` : ''

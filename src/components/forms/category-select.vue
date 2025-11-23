@@ -2,7 +2,7 @@
     <div>
         <VueMultiselect
             v-model="selectList"
-            :options="categoryArray"
+            :options="categoryOptions"
             :multiple="true"
             :close-on-select="false"
             :clear-on-select="false"
@@ -40,7 +40,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VueMultiselect from 'vue-multiselect'
-import { categoryTranslation, categoryArray } from '@/translation/category'
+import { categoryLabels, categoryOptions } from '@/constants'
 
 const props = defineProps({
     data: {
@@ -52,7 +52,7 @@ const selectList = defineModel('category')
 
 if (props.data) {
     const categoryList = props.data?.map((item) => {
-        const label = categoryTranslation[item.id] ?? item.id
+        const label = categoryLabels[item.id] ?? item.id
         return {
             id: item.id,
             label,

@@ -98,13 +98,12 @@
 </template>
 
 <script setup>
-import { countryTranslate } from '@/translation/country'
-import { categoryTranslation } from '@/translation/category.js'
+import { countryLabels } from '@/constants'
 import { useModal } from 'vue-final-modal'
 import { fetchMovieDetailFromApi } from '@/services/searchService.js'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { genresT } from '@/translation'
+import { getGenreLabels } from '@/utils/genre'
 
 import AddMovie from '@/components/modals/search-add-movie-modal.vue'
 import Category from '@/components/forms/category-select.vue'
@@ -152,11 +151,11 @@ const openAddMovieModal = async () => {
 }
 
 getData()
-const genresList = computed(() => genresT(data.value?.genres))
+const genresList = computed(() => getGenreLabels(data.value?.genres))
 
 const country = computed(() => {
     const originCountry = data.value?.origin_country[0]
-    if (countryTranslate.hasOwnProperty(originCountry)) return countryTranslate[originCountry]
+    if (countryLabels.hasOwnProperty(originCountry)) return countryLabels[originCountry]
     else return originCountry
 })
 

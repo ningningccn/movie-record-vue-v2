@@ -30,12 +30,12 @@
 </template>
 
 <script setup>
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 
 import { ref } from 'vue'
 import { Collapse } from 'vue-collapsed'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 const isExpanded = ref(false)
 
 const data = [

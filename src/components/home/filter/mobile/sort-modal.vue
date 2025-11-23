@@ -28,9 +28,9 @@
 
 <script setup lang="ts">
 import { VueFinalModal } from 'vue-final-modal'
-import { useFilterStore } from '@/stores/filter.js'
+import { useMovieFilterStore } from '@/stores/movieFilter.js'
 
-const filterStore = useFilterStore()
+const filterStore = useMovieFilterStore()
 
 const data = [
     { title: '最新加入', slug: 'desc' },

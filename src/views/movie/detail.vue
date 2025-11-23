@@ -90,7 +90,7 @@
 <script setup>
 import { useModal } from 'vue-final-modal'
 import { fetchMovieDetailFromApi } from '@/services/searchService.js'
-import { typeOptions } from '@/translation/type.js'
+import { typeLabels } from '@/constants'
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import gsap from 'gsap'
@@ -105,7 +105,7 @@ const params = ref({
     language: 'zh-TW',
 })
 
-const type = computed(() => typeOptions[data.value?.type] ?? '')
+const type = computed(() => typeLabels[data.value?.type] ?? '')
 
 // Modal config
 const editMovieModal = useModal({

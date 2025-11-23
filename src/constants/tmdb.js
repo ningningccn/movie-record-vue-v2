@@ -1,4 +1,10 @@
-export const categoryTranslation = {
+/**
+ * TMDB (The Movie Database) label mappings
+ * Centralized labels for categories, countries, and media types
+ */
+
+// Category/Genre labels
+export const categoryLabels = {
     28: '動作',
     12: '冒險',
     16: '動畫',
@@ -28,7 +34,26 @@ export const categoryTranslation = {
     10768: '戰爭與政治',
 }
 
-export const categoryArray = Object.entries(categoryTranslation).map(([id, label]) => ({
+// Category options array for form selects
+export const categoryOptions = Object.entries(categoryLabels).map(([id, label]) => ({
     id: Number(id),
     label,
 }))
+
+// Country labels
+export const countryLabels = {
+    JP: '日本',
+    TW: '台灣',
+    US: '美國',
+    KR: '韓國',
+    HK: '香港',
+    CN: '中國',
+}
+
+// Media type labels
+export const typeLabels = {
+    movie: '電影',
+    tv: '電視劇',
+    cartoon: '動漫',
+}
+

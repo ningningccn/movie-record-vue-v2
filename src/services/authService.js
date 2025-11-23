@@ -1,6 +1,6 @@
 import router from "@/router"
 import { setupFirebase } from "@/services/firebase.js"
-import { useGlobalStore } from "@/stores/global.js"
+import { useAuthStore } from "@/stores/auth.js"
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -20,11 +20,11 @@ const db = getFirestore(setupFirebase)
  * @throws {Error} if user email is not available
  */
 export const getUserEmail = () => {
-    const globalStore = useGlobalStore()
-    if (!globalStore.user?.email) {
+    const authStore = useAuthStore()
+    if (!authStore.user?.email) {
         throw new Error("User email is not available")
     }
-    return globalStore.user.email
+    return authStore.user.email
 }
 
 /**
@@ -32,12 +32,12 @@ export const getUserEmail = () => {
  * @returns {Promise<string>} user email, if not logged in, reject
  */
 export const getUserState = async () => {
-    const globalStore = useGlobalStore()
+    const authStore = useAuthStore()
 
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                globalStore.setUserStatus(user)
+                authStore.setUserStatus(user)
                 resolve(user.email)
             } else {
                 reject(user)
@@ -74,11 +74,11 @@ export const loginAccount = async (email, password) => {
  * user logout
  */
 export const logout = () => {
-    const globalStore = useGlobalStore()
+    const authStore = useAuthStore()
     signOut(auth)
         .then(() => {
             router.push("/login") // logout success, redirect to login page
-            globalStore.user = {}
+            authStore.user = {}
         })
         .catch((error) => {
             console.error("Logout failed:", error)
